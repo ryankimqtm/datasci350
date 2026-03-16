@@ -239,7 +239,7 @@ Source: [DataCamp](https://www.datacamp.com/blog/what-is-a-virtual-machine)
 [Ubuntu Terminal](https://ubuntu.com/tutorials/command-line-for-beginners)
 :::
 
-- `sudo apt python3` installs Python 3 
+- `sudo apt install python3` installs Python 3
 - `sudo apt install python3-pip` installs [pip](https://pypi.org/project/pip/)
 :::
 :::
@@ -387,7 +387,7 @@ Source: [DataCamp](https://www.datacamp.com/blog/what-is-a-virtual-machine)
 
 ## Step 06: Log in to the EC2 instance through SSH
 
-:::{style="margin-top: 30px; font-size: 21px;"}
+:::{style="margin-top: 30px; font-size: 20px;"}
 :::{.columns}
 :::{.column width="50%"}
 - Once you click on `Launch`, you will be taken to the Instances page
@@ -401,7 +401,7 @@ Source: [DataCamp](https://www.datacamp.com/blog/what-is-a-virtual-machine)
 :::{.column width="50%"}
 - Click on `SSH client` to see the command to connect to your instance
 - [Open a terminal]{.alert} on your local machine and navigate to the directory where you saved the key pair
-- Run the `chmod 400 "name-of-your-key.pem"` and the `Example` commands provided by AWS to connect to your instance
+- Run the `chmod 400 "name-of-your-key.pem"` and the `Example` commands provided by AWS to connect to your instance (`ssh -i "name-of-your-key.pem" ubuntu@public-ip`)
 
 :::{style="text-align: center;"}
 [![](figures/ssh.png){width="80%"}](#){data-modal-type="image" data-modal-url="figures/ssh.png"}
@@ -464,8 +464,8 @@ Source: [DataCamp](https://www.datacamp.com/blog/what-is-a-virtual-machine)
 :::{.column width="40%"}
 - Once you are in, the first thing you should do is to update the package list
 - Run `sudo apt update` to refresh the package list
-- Then, type `sudo apt get upgrade` to install the latest updates
-  - You can use the `-y` flag to automatically answer `yes` to all prompts
+- Then, type `sudo apt upgrade` to install the latest updates
+  - You can use the `-y` flag to automatically answer `yes` to all prompts, e.g., `sudo apt update && sudo apt upgrade -y`
 - You can also install software using `sudo apt install`
 - For example, to install Python 3, run `sudo apt install python3`
 - To install pip, run `sudo apt install python3-pip`
@@ -477,7 +477,7 @@ Source: [DataCamp](https://www.datacamp.com/blog/what-is-a-virtual-machine)
 :::{style="text-align: center;"}
 [![](figures/update.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/update.png"}
 
-`sudo apt update && sudo apt upgrade && sudo apt install python3 && sudo apt install -y python3-pip`
+`sudo apt update && sudo apt upgrade -y && sudo apt install -y python3 && sudo apt install -y python3-pip`
 :::
 :::
 :::
@@ -490,6 +490,7 @@ Source: [DataCamp](https://www.datacamp.com/blog/what-is-a-virtual-machine)
 :::{.column width="40%"}
 - You can add files to your instance using `scp` (secure copy)
 - `scp` is a command-line tool that allows you to copy files securely
+- The `-i` flag ("identity file") specifies which private key file to use for authentication (the `.pem` file you downloaded when creating the key pair)
 - To copy a file [from your local machine to your instance]{.alert}, run `scp -i "name-of-your-key.pem" file-to-copy ubuntu@public-ip:/path/to/destination`
 - To copy a file [from your instance to your local machine]{.alert}, run `scp -i "name-of-your-key.pem" ubuntu@public-ip:/path/to/file-to-copy /path/to/destination`
 - You can also use `scp` to copy files [between two remote servers]{.alert}
@@ -497,17 +498,17 @@ Source: [DataCamp](https://www.datacamp.com/blog/what-is-a-virtual-machine)
 :::
 
 :::{.column width="60%"}
-- Open a [new bash/zsh local terminal]{.alert} (not the one you are using to connect to your instance) and type the following (one line at a time):
+- Open a [new bash/zsh local terminal (**not the one you are using to connect to your instance!**)]{.alert} and type the following (one line at a time):
 
 ```verbatim
 echo "print('Hello, DATASCI350!')" > hello.py
-scp -i datasci350.pem hello.py ubuntu@XXXXXX.compute-1.amazonaws.com:~ 
+scp -i qtm350.pem hello.py ubuntu@XXXXXX.compute-1.amazonaws.com:~ 
 ```
 :::{style="text-align: center;"}
 [![](figures/scp.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/scp.png"}
 :::
 
-- [Don't forget to replace `XXXXXX` with your public IP]{.alert} and note that [`:~` is your home directory on the instance]{.alert}
+- [Don't forget to replace `XXXXXX` with your public IP]{.alert} and note that [`:~` is your home directory on the instance. Don't forget to add it!]{.alert}
 - You can find your public IP on the AWS Console, on the Instances page. It's the same you copied in the "Example" command when connecting via SSH
 - You can check (`ls`) and run (`python3`) the file on your instance
 
@@ -528,7 +529,7 @@ scp -i datasci350.pem hello.py ubuntu@XXXXXX.compute-1.amazonaws.com:~
 - Terminating an instance will [delete it]{.alert} and you will not be charged for it (but [you will lose all data]{.alert})
 - You can stop or terminate your instance from the [Instances page]{.alert} on the AWS Console
 - You can also [reboot]{.alert} your instance if it is not responding
-- So let's stop our instance now! 🛑
+- So let's [terminate]{.alert} our instance now! 🛑
 :::
 
 :::{.column width="60%"}
@@ -544,7 +545,7 @@ scp -i datasci350.pem hello.py ubuntu@XXXXXX.compute-1.amazonaws.com:~
 
 ## Activity 01
 
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 - Create an EC2 instance on AWS called `jupyter`
 - Connect to your instance using SSH
 - Update the package list, and install Python 3, pip, and Jupyter
@@ -554,8 +555,8 @@ scp -i datasci350.pem hello.py ubuntu@XXXXXX.compute-1.amazonaws.com:~
 - Open a new bash/zsh terminal locally, and type this to forward your connection to port `8000`
   - `ssh -i "<your-key>.pem" ubuntu@<public_IPv4_DNS_address_of_your_EC2_instance> -L 8000:localhost:8888`
 - Start your Jupyter notebook with `jupyter notebook`
-- Open your browser and go to `http://localhost:8000`
-- Copy and paste the token from the terminal
+- Click on the link provided in the terminal (it will be something like `http://localhost:8888/?token=...`)
+- You can also open your browser and go to `http://localhost:8000`, and copy the token from the terminal to log in (it does not work without the token)
 - Create a new notebook and run `print('Hello, DATASCI350!')` (or any other code you like!)
 - [Do not]{.alert} terminate your instance, we will use it later
 :::

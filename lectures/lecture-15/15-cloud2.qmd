@@ -364,7 +364,7 @@ Source: [DataCamp](https://www.datacamp.com/blog/what-is-a-virtual-machine)
 :::{.column width="40%"}
 - You may also increase the storage capacity of the `Root` volume under Configure storage
 - By default you will be allocated a small 8-GB root disk
-- The free tier gives you [30 GB of storage]{.alert}, so you can increase the size to 30 GB
+- The free tier gives you [30 GB of storage]{.alert}, but 8 GB is usually enough for testing and learning purposes
 - You can also add additional volumes if you need more storage
 - `gp3` is the default volume type, and it works fine for most use cases
 - `io2` is the fastest and most expensive volume type, usually used for high-performance databases (which require millisecond latency)
@@ -546,36 +546,20 @@ scp -i qtm350.pem hello.py ubuntu@XXXXXX.compute-1.amazonaws.com:~
 ## Activity 01
 
 :::{style="margin-top: 30px; font-size: 22px;"}
-- Create an EC2 instance on AWS called `jupyter`
-- Connect to your instance using SSH
-- Update the package list, and install Python 3, pip, and Jupyter
-  - `sudo apt install python3-notebook`
-  - `source ~/.profile`
-- Test it with `which python3`, `which pip3`, and `which jupyter`
-- Open a new bash/zsh terminal locally, and type this to forward your connection to port `8000`
-  - `ssh -i "<your-key>.pem" ubuntu@<public_IPv4_DNS_address_of_your_EC2_instance> -L 8000:localhost:8888`
-- Start your Jupyter notebook with `jupyter notebook`
-- Click on the link provided in the terminal (it will be something like `http://localhost:8888/?token=...`)
-- You can also open your browser and go to `http://localhost:8000`, and copy the token from the terminal to log in (it does not work without the token)
-- Create a new notebook and run `print('Hello, DATASCI350!')` (or any other code you like!)
-- [Do not]{.alert} terminate your instance, we will use it later
-:::
-
-# Let's see the code! 🚀 {background-color="#2d4563"}
-
-## Activity 01
-
-:::{style="margin-top: 30px; font-size: 30px;"}
-```verbatim
-sudo apt update && sudo apt upgrade
-sudo apt install python3 python3-pip python3-notebook
-source ~/.profile
-which python3
-which pip3
-which jupyter
-ssh -i your-key.pem ubuntu@XXXXX -L 8000:localhost:8888
-jupyter notebook
-```
+1. Create an EC2 instance on AWS called `jupyter` (as we did in the previous slides)
+2. Connect to your instance [with port forwarding]{.alert} from your local terminal:
+    - `ssh -i "<your-key>.pem" ubuntu@<public_IPv4_DNS_address> -L 8000:localhost:8888`
+    - The `-L 8000:localhost:8888` part forwards port 8888 on the instance to port 8000 on your machine
+3. Update, upgrade, and install Python 3, pip, and Jupyter:
+    - `sudo apt update && sudo apt upgrade -y`
+    - `sudo apt install -y python3 python3-pip python3-notebook`
+    - `source ~/.profile`
+4. Check that everything is installed: `which python3`, `which pip3`, `which jupyter`
+5. Start Jupyter: `jupyter notebook`
+6. Open your browser and go to `http://localhost:8000`. Copy the token from the terminal to log in
+    - You can also click the link in the terminal (it looks like `http://localhost:8888/?token=...`) and change `8888` to `8000`
+7. Create a new notebook and run `print('Hello, DATASCI350!')` (or any other code you like!)
+8. [Do not]{.alert} terminate your instance, we will use it later
 :::
 
 ## Activity 01
@@ -596,11 +580,13 @@ jupyter notebook
 
 :::{style="margin-top: 30px; font-size: 21px;"}
 - Now that you have your EC2 instance running, let's do some data analysis
-- Let's create a simple weather dataset, upload it to our EC2 instance, analyse it, and download the results
-- Install the required packages:
-  - `sudo apt install python3-numpy python3-pandas python3-matplotlib python3-seaborn`
+- We will practise [two ways]{.alert} of getting files onto your instance:
+  - **Method 1 (`scp`)**: Create a file on your local machine, then upload it to the instance. Use this when you have files on your own computer that are not available online (e.g., your own datasets, private code)
+  - **Method 2 (`wget`)**: Download a file directly from the internet to the instance. Use this when the file is already hosted somewhere (e.g., GitHub, a public dataset URL). This skips your local machine entirely
+- First, install the required packages on your instance:
+  - `sudo apt install -y python3-numpy python3-pandas python3-matplotlib python3-seaborn`
 
-- On your local machine, create a simple weather dataset with the Python code below, or download it here: [weather_data.py](https://github.com/danilofreire/datasci350/blob/main/lectures/lecture-15/weather_data.py)
+- **Method 1: local to cloud with `scp`.** On your [local machine]{.alert}, create a weather dataset with the Python code below, or download it here: [weather_data.py](https://github.com/danilofreire/datasci350/blob/main/lectures/lecture-15/weather_data.py)
 
 ```python
 # weather_data.py
@@ -641,14 +627,20 @@ print("Weather data saved to weather_data.txt")
 
 ## Activity 02
 
-:::{style="margin-top: 30px; font-size: 24px;"}
-- Run this script on your local machine: `python3 weather_data.py`
+:::{style="margin-top: 30px; font-size: 22px;"}
+- Run this script on your [local machine]{.alert}: `python3 weather_data.py`
 - It will create a file called `weather_data.txt` with 30 days of weather data
-- Upload the dataset to your EC2 instance:
+- Now upload it to your EC2 instance using `scp` (from a [local terminal]{.alert}):
   - `scp -i <your-key>.pem weather_data.txt ubuntu@<your-instance-ip>:~/`
+- You can verify it arrived by running `ls` on your instance
 
-- Create another Python script to analyse the data:
-- Either create a new file on your local machine or use the code: [weather_analysis.py](https://github.com/danilofreire/datasci350/blob/main/lectures/lecture-15/weather_analysis.py)
+- **Method 2: internet to cloud with `wget`.** Now let's get the analysis script [directly on the instance]{.alert}, without going through your local machine. Run this on your [EC2 instance]{.alert}:
+
+:::{style="font-size: 20px;"}
+- `wget https://raw.githubusercontent.com/danilofreire/datasci350/main/lectures/lecture-15/weather_analysis.py` (one line)
+:::
+
+- The code is shown below for reference (you don't need to copy it, `wget` already downloaded it):
 
 ```python
 # weather_analysis.py
@@ -706,20 +698,17 @@ print("Analysis complete. Results saved to 'weather_analysis.png'")
 ## Activity 02
 
 :::{style="margin-top: 30px; font-size: 24px;"}
-- Upload the files to your EC2 instance:
-  - `scp -i <your-key>.pem <file> ubuntu@<your-instance-ip>:~/`
-
-- Create a Jupyter notebook session with port forwarding:
-  - `ssh -i <your-key>.pem ubuntu@<your-instance-ip> -L 8000:localhost:8888`
-  - `jupyter notebook`
-
-- Open Jupyter in your browser (`http://localhost:8000`) and run your analysis
-- Download the resulting image to your local machine:
-  - From a new terminal on your local machine:
+- Both files are now on your instance: `weather_data.txt` (uploaded via `scp`) and `weather_analysis.py` (downloaded via `wget`)
+- Run the analysis on your instance: `python3 weather_analysis.py`
+- Or, if you prefer, open Jupyter (`jupyter notebook`) and run it there
+- Download the resulting image back to your [local machine]{.alert} (using `scp` again, from a local terminal):
   - `scp -i <your-key>.pem ubuntu@<your-instance-ip>:~/weather_analysis.png ./`
-
 - View the image on your local machine
 - [Don't forget to terminate your instance when done!]{.alert}
+
+:::{style="margin-top: 15px; background: rgba(45, 69, 99, 0.1); padding: 15px; border-radius: 10px;"}
+**Recap**: we used `scp` to move files between your computer and the instance, and `wget` to download files from the internet directly to the instance. Both are useful in different situations!
+:::
 :::
 
 ## Activity 02 Result

@@ -1348,6 +1348,8 @@ Danilo Freire
 <li>Please find it here: <a href="https://github.com/danilofreire/datasci350/blob/main/project/project-instructions.pdf" class="uri">https://github.com/danilofreire/datasci350/blob/main/project/project-instructions.pdf</a></li>
 <li>The project is due on <span class="alert">April 27, 2026</span></li>
 <li>Groups of 4-5 students</li>
+<li>Please send me a list with the names and emails of the group members by <span class="alert">next Monday</span> if possible</li>
+<li>If you don’t have a group, no problem! We’ll <span class="alert">randomly assign you to one next week</span></li>
 <li>You will create a GitHub repository with a report based on World Bank data</li>
 <li>The report should be in Quarto, the data cleaning and descriptive statistics in SQL, and the data analysis and visualisation in Python</li>
 <li>Please let me know if you have any questions!</li>
@@ -1404,7 +1406,7 @@ Danilo Freire
 <li>Examples: PostgreSQL, MySQL, SQLite, Oracle, SQL Server</li>
 </ul></li>
 <li>Here we will focus on <a href="https://www.sqlite.org/index.html" data-modal-type="iframe">SQLite</a></li>
-<li>Why? It is open-source, powerful, and widely used in industry: phones, browsers, TVs, operating systems, and even cars use it!</li>
+<li>Why? It is open-source, powerful, and widely used in industry: phones, browsers, TVs, operating systems, LLM/RAGs, and even cars use it!</li>
 <li>It has several advanced features too, such as <a href="https://www.sqlite.org/fts5.html" data-modal-type="iframe">full-text search</a> and <a href="https://www.sqlite.org/windowfunctions.html" data-modal-type="iframe">window functions</a></li>
 </ul>
 </div><div class="column" style="width:50%;">
@@ -1464,7 +1466,7 @@ Danilo Freire
 <li>If you use macOS or Linux, you probably already have SQLite installed</li>
 <li>To check, open a terminal and type <code>sqlite3</code>
 <ul>
-<li>Then type <code>.quit</code> to exit the SQLite prompt!</li>
+<li>Then type <code>.quit</code> to exit the SQLite prompt</li>
 </ul></li>
 <li>If you see the SQLite prompt, you are good to go! 😊</li>
 <li>In case you don’t have SQLite installed, you can download it from the <a href="https://www.sqlite.org/download.html">SQLite website</a> or using <a href="https://brew.sh/">Homebrew</a> (recommended)</li>
@@ -1521,9 +1523,8 @@ Danilo Freire
 <div class="column" style="width:40%;">
 <ul>
 <li>To use SQLite in VS Code, you need to install the <a href="https://marketplace.visualstudio.com/items?itemName=yy0931.vscode-sqlite3-editor">SQLite3 Editor</a> extension (click on the link to go to the extension page)</li>
-<li>Or you can search for <code>SQLite3 Editor</code> in the extensions tab in VS Code</li>
 <li>Click on <code>Install</code> to install the extension</li>
-<li>As we will see later, this extension allows you to connect to your SQLite database and run SQL commands directly in VS Code, and even edit files without having to write any SQL queries (!)</li>
+<li>This extension allows you to connect to your SQLite database and run SQL commands directly in VS Code, and even edit files without having to write any SQL queries (!)</li>
 <li>You can use it to create tables, export data to CSV and JSON formats, run queries in the command line, and compare versions using <code>git diff</code></li>
 <li>It is a very useful extension and I highly recommend it! 😊</li>
 <li>We will use this extension today to interact with our SQLite database</li>
@@ -1547,7 +1548,7 @@ Danilo Freire
 </section>
 <section id="creating-a-database-with-sqlite3-editor" class="slide level2">
 <h2>Creating a database with SQLite3 Editor</h2>
-<div style="margin-top: 50px; font-size: 23px;">
+<div style="margin-top: 50px; font-size: 25px;">
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -1569,7 +1570,7 @@ Danilo Freire
 </section>
 <section id="creating-a-table-with-sqlite3-editor" class="slide level2">
 <h2>Creating a table with SQLite3 Editor</h2>
-<div style="margin-top: 50px; font-size: 22px;">
+<div style="margin-top: 50px; font-size: 24px;">
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -1876,13 +1877,11 @@ Danilo Freire
 <li>The <a href="https://en.wikipedia.org/wiki/Database_schema" data-modal-type="iframe">table schema</a> is the structure of a table in a database</li>
 <li>It defines the columns, data types, constraints, and relationships between tables</li>
 <li>It is defined when the table is created but can be modified later</li>
-<li>The schema is important because it ensures that the data is stored correctly and efficiently</li>
 <li>Usually, there is no need to change the schema frequently, but it is possible to do so if needed</li>
 <li>You can view it with the <code>PRAGMA table_info(table-name)</code> command</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <ul>
-<li>The <code>PRAGMA table_info(table-name)</code> command returns one row for each column in the table</li>
 <li>The columns are:
 <ul>
 <li><code>cid</code>: Column ID</li>
@@ -2168,7 +2167,7 @@ Danilo Freire
 <span id="cb20-5"><a href></a>GROUP BY nationality</span>
 <span id="cb20-6"><a href></a>HAVING SUM(victories) &gt; 10;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:60%;">
-<div id="8fb608e6" class="cell" data-execution_count="1">
+<div id="50c2b25f" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href></a><span class="co"># Python</span></span>
 <span id="cb21-2"><a href></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb21-3"><a href></a></span>

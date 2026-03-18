@@ -77,6 +77,8 @@ AWS Support Center
 - Please find it here: <https://github.com/danilofreire/datasci350/blob/main/project/project-instructions.pdf>
 - The project is due on [April 27, 2026]{.alert}
 - Groups of 4-5 students
+- Please send me a list with the names and emails of the group members by [next Monday]{.alert} if possible
+- If you don't have a group, no problem! We'll [randomly assign you to one next week]{.alert}
 - You will create a GitHub repository with a report based on World Bank data
 - The report should be in Quarto, the data cleaning and descriptive statistics in SQL, and the data analysis and visualisation in Python
 - Please let me know if you have any questions!
@@ -123,7 +125,7 @@ AWS Support Center
   - The most common type of database
   - Examples: PostgreSQL, MySQL, SQLite, Oracle, SQL Server
 - Here we will focus on [SQLite](https://www.sqlite.org/index.html){data-modal-type="iframe"} 
-- Why? It is open-source, powerful, and widely used in industry: phones, browsers, TVs, operating systems, and even cars use it!
+- Why? It is open-source, powerful, and widely used in industry: phones, browsers, TVs, operating systems, LLM/RAGs, and even cars use it!
 - It has several advanced features too, such as [full-text search](https://www.sqlite.org/fts5.html){data-modal-type="iframe"} and [window functions](https://www.sqlite.org/windowfunctions.html){data-modal-type="iframe"}
 :::
 
@@ -174,7 +176,7 @@ AWS Support Center
 :::{style="margin-top: 50px; font-size: 20px;"}
 - If you use macOS or Linux, you probably already have SQLite installed
 - To check, open a terminal and type `sqlite3` 
-  - Then type `.quit` to exit the SQLite prompt!
+  - Then type `.quit` to exit the SQLite prompt
 - If you see the SQLite prompt, you are good to go! 😊
 - In case you don't have SQLite installed, you can download it from the [SQLite website](https://www.sqlite.org/download.html) or using [Homebrew](https://brew.sh/) (recommended)
 - To install [Homebrew](https://brew.sh/), paste the following command in your terminal
@@ -235,9 +237,8 @@ sqlite>
 :::{.columns}
 :::{.column width="40%"}
 - To use SQLite in VS Code, you need to install the [SQLite3 Editor](https://marketplace.visualstudio.com/items?itemName=yy0931.vscode-sqlite3-editor) extension (click on the link to go to the extension page)
-- Or you can search for `SQLite3 Editor` in the extensions tab in VS Code
 - Click on `Install` to install the extension
-- As we will see later, this extension allows you to connect to your SQLite database and run SQL commands directly in VS Code, and even edit files without having to write any SQL queries (!)
+- This extension allows you to connect to your SQLite database and run SQL commands directly in VS Code, and even edit files without having to write any SQL queries (!)
 - You can use it to create tables, export data to CSV and JSON formats, run queries in the command line, and compare versions using `git diff`
 - It is a very useful extension and I highly recommend it! 😊
 - We will use this extension today to interact with our SQLite database
@@ -258,7 +259,7 @@ sqlite>
 
 ## Creating a database with SQLite3 Editor
 
-:::{style="margin-top: 50px; font-size: 23px;"}
+:::{style="margin-top: 50px; font-size: 25px;"}
 :::{.columns}
 :::{.column width="50%"}
 - It is very easy to create a [SQLite database file](https://www.sqlite.org/onefile.html) using the extension
@@ -283,7 +284,7 @@ touch example.db
 
 ## Creating a table with SQLite3 Editor
 
-:::{style="margin-top: 50px; font-size: 22px;"}
+:::{style="margin-top: 50px; font-size: 24px;"}
 :::{.columns}
 :::{.column width="50%"}
 - Now that you have opened the file with the extension, you will see the following screen (right)
@@ -511,13 +512,11 @@ DROP TABLE students;
 - The [table schema](https://en.wikipedia.org/wiki/Database_schema){data-modal-type="iframe"} is the structure of a table in a database
 - It defines the columns, data types, constraints, and relationships between tables
 - It is defined when the table is created but can be modified later
-- The schema is important because it ensures that the data is stored correctly and efficiently
 - Usually, there is no need to change the schema frequently, but it is possible to do so if needed
 - You can view it with the `PRAGMA table_info(table-name)` command
 :::
 
 :::{.column width="50%"}
-- The `PRAGMA table_info(table-name)` command returns one row for each column in the table
 - The columns are:
   - `cid`: Column ID
   - `name`: Column name

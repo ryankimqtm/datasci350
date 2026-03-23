@@ -120,20 +120,32 @@ cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='drivers
 ```
 :::
 
-## Inserting data
+## Inserting data with `executemany()`
 
 :::{style="margin-top: 50px; font-size: 22px;"}
 - Once the table exists, we populate it using `INSERT INTO`
-- Again, `cursor.execute()` runs the command, and `conn.commit()` [makes the insertions permanent]{.alert}
+- [`executemany()`]{.alert} lets you insert many rows at once: you write the SQL template once and pass a [list of tuples]{.alert} with the data
+  - A [tuple]{.alert} is like a list, but uses parentheses instead of brackets and [cannot be changed]{.alert} after creation
+- The `?` symbols are [placeholders]{.alert}: Python fills them in with each tuple's values
+- Python's `None` is automatically converted to SQL's `NULL`
+- As before, `conn.commit()` makes the insertions permanent
 
 ```{python}
 #| echo: true
 #| eval: true
 # Insert a few rows
-cur.execute("INSERT INTO drivers (driver_name, team, nationality, victories) VALUES ('Lewis Hamilton', 'Mercedes', 'British', 103);")
-cur.execute("INSERT INTO drivers (driver_name, team, nationality, victories) VALUES ('Max Verstappen', 'Red Bull Racing', 'Dutch', 55);")
-cur.execute("INSERT INTO drivers (driver_name, team, nationality, victories) VALUES ('Fernando Alonso', 'Aston Martin', NULL, NULL);")
-cur.execute("INSERT INTO drivers (driver_name, team, nationality) VALUES ('Charles Leclerc', 'Ferrari', 'Monégasque');") 
+drivers = [
+    ("Lewis Hamilton",   "Mercedes",         "British",    103),
+    ("Max Verstappen",   "Red Bull Racing",  "Dutch",       55),
+    ("Fernando Alonso",  "Aston Martin",      None,        None),
+    ("Charles Leclerc",  "Ferrari",           "Monégasque", None),
+]
+
+cur.executemany(
+    "INSERT INTO drivers (driver_name, team, nationality, victories)"
+    " VALUES (?, ?, ?, ?);",
+    drivers,
+)
 
 # Commit the insertions
 conn.commit()
@@ -178,16 +190,13 @@ print(row2) # Second row
 
 :::{style="margin-top: 50px; font-size: 22px;"}
 - A more "Pythonic" and [memory-efficient]{.alert} way to process results row-by-row is to iterate directly over the cursor
+- This works because `cur.execute()` [returns the cursor itself]{.alert}, and cursors are iterable
+- You can write it all in one line:
 
 ```{python}
 #| echo: true
 #| eval: true
-# Execute the query
-query = "SELECT driver_name, team FROM drivers WHERE driver_name LIKE 'M%'"
-
-# Loop directly over the cursor object after execute
-for row_tuple in cur.execute(query):
-     print(row_tuple) 
+for row in cur.execute("SELECT driver_name, team FROM drivers WHERE victories > 50"): print(row)
 ```
 :::
 
@@ -202,9 +211,7 @@ for row_tuple in cur.execute(query):
 #| echo: true
 #| eval: true
 query_in = "SELECT driver_name, team FROM drivers WHERE team IN ('Ferrari', 'Mercedes')" 
-cur.execute(query_in)
-for row in cur.fetchall():
-    print(row)
+for row in cur.execute(query_in): print(row)
 ```
 
 - `NOT IN` works similarly to exclude values in the list
@@ -212,9 +219,7 @@ for row in cur.fetchall():
 #| echo: true
 #| eval: true
 query_not_in = "SELECT driver_name, team FROM drivers WHERE team NOT IN ('Ferrari', 'Mercedes')" 
-cur.execute(query_not_in)
-for row in cur.fetchall():
-    print(row)
+for row in cur.execute(query_not_in): print(row)
 ```
 - `BETWEEN` checks if a value is within a specified range. [Inclusive]{.alert} of the endpoints
 
@@ -222,43 +227,45 @@ for row in cur.fetchall():
 #| echo: true
 #| eval: true
 query_between = "SELECT driver_name, victories FROM drivers WHERE victories BETWEEN 10 AND 60" 
-cur.execute(query_between)
-for row in cur.fetchall():
-    print(row)
+for row in cur.execute(query_between): print(row)
 ```
 
 - `NOT BETWEEN` excludes values within the specified range
+
+```{python}
+#| echo: true
+#| eval: true
+# Drivers with victories outside the 10-60 range
+for row in cur.execute("SELECT driver_name, victories FROM drivers WHERE victories NOT BETWEEN 10 AND 60"): print(row)
+```
 :::
 
 ## `LIKE` operator: basic patterns
 
 :::{style="margin-top: 50px; font-size: 22px;"}
 - `LIKE` enables simple pattern matching in text strings
-  - [`%`]{.alert}: Matches any sequence (including none) of characters
-  - [`_`]{.alert}: Matches exactly one character
+  - [`%`]{.alert}: Matches any sequence (including none) of characters (like `*` in Bash)
+  - [`_`]{.alert}: Matches exactly one character (like `?` in Bash)
 
 ```{python}
 #| echo: true
 #| eval: true
 # Starts with 'L'
-cur.execute("SELECT driver_name FROM drivers WHERE driver_name LIKE 'L%'")
-for row in cur.fetchall(): print(row)
+for row in cur.execute("SELECT driver_name FROM drivers WHERE driver_name LIKE 'L%'"): print(row)
 ```
 
 ```{python}
 #| echo: true
 #| eval: true
 # Ends with 'Racing'
-cur.execute("SELECT team FROM drivers WHERE team LIKE '%Racing'")
-for row in cur.fetchall(): print(row)
+for row in cur.execute("SELECT team FROM drivers WHERE team LIKE '%Racing'"): print(row)
 ```
 
 ```{python}
 #| echo: true
 #| eval: true
 # 'a' as the second letter 
-cur.execute("SELECT driver_name FROM drivers WHERE driver_name LIKE '_a%'")
-for row in cur.fetchall(): print(row)
+for row in cur.execute("SELECT driver_name FROM drivers WHERE driver_name LIKE '_a%'"): print(row)
 ```
 :::
 
@@ -271,23 +278,29 @@ for row in cur.fetchall(): print(row)
 #| echo: true
 #| eval: true
 # Case-insensitive search for names starting with 'l'
-cur.execute("SELECT driver_name FROM drivers WHERE LOWER(driver_name) LIKE 'l%'")
-for row in cur.fetchall(): print(row)
+for row in cur.execute("SELECT driver_name FROM drivers WHERE LOWER(driver_name) LIKE 'l%'"): print(row)
 ```
 
-- You can also use `COLLATE NOCASE` to make a specific comparison case-insensitive. [This is a more general (and recommended) approach.]{.alert}
+- You can also use [`COLLATE NOCASE`]{.alert} to make a specific comparison case-insensitive
+  - `COLLATE` tells SQLite [which rules to use when comparing text]{.alert}. `NOCASE` means "treat upper- and lower-case letters as the same"
+  - Unlike `LOWER()`, this works directly on the original column without transforming it, which is cleaner and faster on large tables
 
 ```{python}
 #| echo: true
 #| eval: true
 # Case-insensitive search for names starting with 'l' using COLLATE
-cur.execute("SELECT driver_name FROM drivers WHERE driver_name LIKE 'l%' COLLATE NOCASE")
-
-for row in cur.fetchall(): print(row)
+for row in cur.execute('''SELECT driver_name FROM drivers 
+                          WHERE driver_name LIKE 'l%' COLLATE NOCASE'''): print(row)
 ```
 
 - Use `NOT LIKE` to find strings that [do not match]{.alert} the pattern
 
+```{python}
+#| echo: true
+#| eval: true
+# Drivers whose names do NOT start with 'L'
+for row in cur.execute("SELECT driver_name FROM drivers WHERE driver_name NOT LIKE 'L%'"): print(row)
+```
 :::
 
 ## Try it yourself! 🤓 {#sec:exercise01}
@@ -303,7 +316,7 @@ for row in cur.fetchall(): print(row)
 
 # Handling missing data {background-color="#2d4563"}
 
-## Finding NULLs (`IS NULL`)  and `COALESCE`
+## Finding `NULL`s (`IS NULL`)  and `COALESCE`
 
 :::{style="margin-top: 50px; font-size: 22px;"}
 - SQL represents missing values as `NULL`. Use `IS NULL` to find them. [`IS NOT NULL` finds rows with values]{.alert}
@@ -311,8 +324,7 @@ for row in cur.fetchall(): print(row)
 ```{python}
 #| echo: true
 #| eval: true
-cur.execute("SELECT driver_name, victories FROM drivers WHERE victories IS NULL")
-for row in cur.fetchall(): print(row)
+for row in cur.execute("SELECT driver_name, victories FROM drivers WHERE victories IS NULL"): print(row)
 ```
 
 - `COALESCE(value1, value2, ...)` is useful for replacing `NULL`s with a default value. It returns the [first non-NULL expression]{.alert} in its arguments
@@ -321,8 +333,8 @@ for row in cur.fetchall(): print(row)
 #| echo: true
 #| eval: true
 # If 'victories' is NULL, display 0 instead.
-cur.execute("SELECT driver_name, COALESCE(victories, 0) AS victories_filled FROM drivers")
-for row in cur.fetchall(): print(row)
+for row in cur.execute('''SELECT driver_name, 
+                          COALESCE(victories, 0) AS victories_filled FROM drivers'''): print(row)
 ```
 :::
 
@@ -345,8 +357,7 @@ SELECT driver_name,
   ) AS victories_imputed
 FROM drivers; 
 ''' 
-cur.execute(query_coalesce_sub)
-for row in cur.fetchall(): print(row)
+for row in cur.execute(query_coalesce_sub): print(row)
 ```
 - Here, `NULL` victories are replaced by the average of non-NULL victories
 :::
@@ -357,7 +368,7 @@ for row in cur.fetchall(): print(row)
 
 :::{style="margin-top: 50px; font-size: 21px;"}
 - Window functions compute values across a set of rows (a "window") related to the current row, without collapsing them like `GROUP BY`
-- Essential for ranking, running totals, moving averages, etc
+- Necessary for ranking, running totals, moving averages, etc
 - Basic syntax involves the [`OVER()`]{.alert} clause
 - [Requires SQLite version 3.25.0 or newer]{.alert} (you probably have it, but let's check!)
 
@@ -371,18 +382,19 @@ more_drivers_data = [
     ('Lando Norris', 'McLaren', 'British', 2),
     ('Esteban Ocon', 'Alpine', 'French', 1) 
 ]
+
 # Check if data already exists to avoid duplicates 
 cur.execute("SELECT COUNT(*) FROM drivers WHERE driver_name = 'Valtteri Bottas'")
 if cur.fetchone()[0] == 0: # Not found
-    cur.executemany('INSERT INTO drivers (driver_name, team, nationality, victories) VALUES (?, ?, ?, ?)', more_drivers_data)
+    cur.executemany('INSERT INTO drivers (driver_name, team, nationality, victories) VALUES (?, ?, ?, ?)', 
+                    more_drivers_data)
     conn.commit()
     print(f"Added {len(more_drivers_data)} more drivers.")
 else:
     print("Additional drivers already exist.")
 
-# Check SQLite Version
-cur.execute("SELECT sqlite_version();")
-print(f"SQLite Version: {cur.fetchone()[0]}")
+# Check SQLite version
+print(f"SQLite Version: {cur.execute('SELECT sqlite_version();').fetchone()[0]}")
 ```
 :::
 
@@ -407,7 +419,10 @@ FROM drivers
 WHERE victories IS NOT NULL 
 ORDER BY rank_overall; 
 '''
+
+# Print column names and results
 cur.execute(query_window_avg_rank)
+print([desc[0] for desc in cur.description])  # Shows column names
 for row in cur.fetchall(): print(row)
 ```
 :::
@@ -422,7 +437,6 @@ for row in cur.fetchall(): print(row)
 #| eval: true
 # GROUP BY example (summarizes)
 cur.execute("SELECT team, ROUND(AVG(victories), 2) FROM drivers WHERE victories IS NOT NULL GROUP BY team")
-print("--- GROUP BY Output ---")
 for row in cur.fetchall(): print(row)
 ```
 
@@ -436,7 +450,6 @@ cur.execute('''
     FROM drivers 
     WHERE victories IS NOT NULL ORDER BY team, victories DESC
 ''')
-print("\n--- Window Function Output ---")
 for row in cur.fetchall(): print(row)
 ```
 :::
@@ -461,6 +474,7 @@ for row in cur.fetchall(): print(row)
 - SQLite provides standard functions for text processing
 - `LENGTH(str)`, `UPPER(str)`, `LOWER(str)`
 - `SUBSTR(str, start, length)` extracts a portion of the string ([start is 1-indexed]{.alert})
+- `--` is used for comments in SQL, so we can add notes about what each function does
 
 ```{python}
 #| echo: true
@@ -496,8 +510,8 @@ SELECT driver_name,
     'Driver: ' || driver_name AS labelled_name -- Concatenation
 FROM drivers LIMIT 4;
 '''
-cur.execute(query_str2)
-for row in cur.fetchall(): print(row)
+
+for row in cur.execute(query_str2): print(row)
 ```
 :::
 
@@ -507,7 +521,7 @@ for row in cur.fetchall(): print(row)
 
 :::{style="margin-top: 50px; font-size: 22px;"}
 - The `CASE` statement is SQL's way of implementing [if-then-else logic]{.alert} within a query
-- `CASE WHEN condition THEN result ELSE default_result END
+- `CASE WHEN condition THEN result ELSE default_result END`
 
 ```{python}
 #| echo: true
@@ -520,8 +534,8 @@ SELECT driver_name, victories,
     END AS category 
 FROM drivers;
 '''
-cur.execute(query_case1)
-for row in cur.fetchall(): print(row)
+
+for row in cur.execute(query_case1): print(row)
 ```
 :::
 
@@ -546,8 +560,8 @@ SELECT driver_name, victories,
     END AS status
 FROM drivers ORDER BY victories DESC NULLS LAST;
 '''
-cur.execute(query_case2)
-for row in cur.fetchall(): print(row)
+
+for row in cur.execute(query_case2): print(row)
 ```
 :::
 
@@ -575,8 +589,8 @@ SELECT driver_name,
     END AS victories_filled
 FROM drivers WHERE driver_name LIKE 'F%' OR driver_name LIKE 'L%'; -- Limit output
 '''
-cur.execute(query_case_null)
-for row in cur.fetchall(): print(row)
+
+for row in cur.execute(query_case_null): print(row)
 ```
 :::
 
@@ -593,7 +607,7 @@ for row in cur.fetchall(): print(row)
 - [[Appendix 03]{.button}](#sec:appendix03) 
 :::
 
-# Using SQL with `pandas` 🐼 {background-color="#2d4563"}
+# Using SQL with pandas 🐼 {background-color="#2d4563"}
 
 ## Reading data with `pandas.read_sql`
 
@@ -613,7 +627,6 @@ df = pd.read_sql('SELECT * FROM drivers', conn)
 print(df) 
 ```
 
-- This combines execution and fetching into one step, returning a structured table
 :::
 
 ## `read_sql` with any `SELECT` query
@@ -666,7 +679,7 @@ print(df.query('victories > 50 and nationality == "British"'))
 #| echo: true
 #| eval: true
 # Example: Create a DataFrame with British drivers
-df_british = df[df['nationality'] == 'British'].copy()
+df_british = df.query("nationality == 'British'").copy()
 
 # Write to a new table named 'british_drivers'
 # index=False: Important! Prevents pandas index from becoming a DB column
@@ -794,24 +807,20 @@ conn = sqlite3.connect(db_file)
 cur = conn.cursor() 
 
 # Find M names
-cur.execute("SELECT * FROM drivers WHERE driver_name LIKE 'M%';")
 print("--- Drivers starting with M ---")
-for row in cur.fetchall(): print(row)
+for row in cur.execute("SELECT * FROM drivers WHERE driver_name LIKE 'M%';"): print(row)
 
 # Find 7 char nationalities
-cur.execute("SELECT * FROM drivers WHERE LENGTH(nationality) = 7;")
 print("\n--- Nationalities with 7 chars ---")
-for row in cur.fetchall(): print(row)
+for row in cur.execute("SELECT * FROM drivers WHERE LENGTH(nationality) = 7;"): print(row)
 
 # Find L or M names
-cur.execute("SELECT * FROM drivers WHERE driver_name LIKE 'L%' OR driver_name LIKE 'M%';")
 print("\n--- Drivers starting with L or M ---")
-for row in cur.fetchall(): print(row)
+for row in cur.execute("SELECT * FROM drivers WHERE driver_name LIKE 'L%' OR driver_name LIKE 'M%';"): print(row)
 
 # Find 1-10 wins
-cur.execute("SELECT * FROM drivers WHERE victories BETWEEN 1 AND 10;")
 print("\n--- Drivers with 1-10 wins ---")
-for row in cur.fetchall(): print(row)
+for row in cur.execute("SELECT * FROM drivers WHERE victories BETWEEN 1 AND 10;"): print(row)
 
 conn.close()
 ```
@@ -841,9 +850,9 @@ FROM drivers
 WHERE victories IS NOT NULL 
 ORDER BY nationality, rank_nationality; 
 '''
-cur.execute(query_rank_nationality)
+
 print("\n--- Drivers ranked by victories within nationality ---")
-for row in cur.fetchall(): print(row)
+for row in cur.execute(query_rank_nationality): print(row)
 
 conn.close()
 ```
@@ -877,9 +886,9 @@ SELECT
 FROM drivers
 ORDER BY victories DESC NULLS LAST; 
 '''
-cur.execute(query_driver_level)
+
 print("--- Driver classification using CASE ---")
-for row in cur.fetchall(): print(row)
+for row in cur.execute(query_driver_level): print(row)
 
 conn.close()
 ```
@@ -946,15 +955,12 @@ conn.close()
 ```{python}
 #| echo: true
 #| eval: false 
-import os
-db_file_to_delete = 'lecture17.db' 
-if os.path.exists(db_file_to_delete):
-    try:
-        # Ensure connection is closed first!
-        os.remove(db_file_to_delete)
-        print(f"Deleted database file: {db_file_to_delete}")
-    except OSError as e:
-        print(f"Error deleting file {db_file_to_delete}: {e}")
+from pathlib import Path
+
+db = Path('lecture17.db')
+if db.exists():
+    db.unlink()  # Ensure connection is closed first!
+    print(f"Deleted: {db}")
 ```
 
 - **Option 2**: Drop all tables programmatically
@@ -963,17 +969,15 @@ if os.path.exists(db_file_to_delete):
 #| echo: true
 #| eval: false 
 import sqlite3
-db_file_to_clean = 'lecture17.db' 
-conn_clean = sqlite3.connect(db_file_to_clean)
-cur_clean = conn_clean.cursor()
-cur_clean.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';")
-tables = cur_clean.fetchall()
-print(f"Tables to drop: {tables}")
-for table_name_tuple in tables:
-    cur_clean.execute(f"DROP TABLE IF EXISTS {table_name_tuple[0]}")
-    print(f"Dropped table: {table_name_tuple[0]}")
-conn_clean.commit()
-conn_clean.close()
+
+with sqlite3.connect('lecture17.db') as conn:
+    tables = [row[0] for row in conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
+    )]
+    for name in tables:
+        conn.execute(f"DROP TABLE IF EXISTS {name}")
+        print(f"Dropped: {name}")
+    conn.commit()
 print("Finished dropping tables.")
 ```
 

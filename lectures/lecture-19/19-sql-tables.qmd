@@ -22,17 +22,6 @@ editor:
 
 # Hello again! 😊 <br> {background-color="#2d4563"}
 
-## Group project
-
-:::{style="margin-top: 50px; font-size: 30px;"}
-- Thanks to those who have already sent me their group members! 😉
-- If you haven't done so yet, please email me your group members as soon as possible (4-5 people per group)
-- Otherwise, you'll be assigned to a random group
-- The project instructions are available at <https://github.com/danilofreire/datasci350/blob/main/project/project-instructions.pdf>
-- The submission deadline is [April 27, 2026]{.alert}
-- Please reach out if you have any questions or need help!
-:::
-
 # Brief recap 📚 {background-color="#2d4563"}
 
 ## Recap of last class and today's plan
@@ -176,6 +165,7 @@ pd.read_sql('SELECT * FROM teams', connection)
 - If there's no match for a record in either table, that record will be [excluded from the results]{.alert}
 - The matching condition is specified in the `ON` clause (e.g., `ON table1.id = table2.id`)
 - Note that Haaland (`player_id` 6) is not in the `teams` table (which only has 5 rows), so he will not appear in the result set
+- **Note:** here we join on `player_id = team_id` because both are auto-incremented IDs that happen to line up. In practice, you would have a `team_id` foreign key column in the `players` table to link them properly
 
 ```{python}
 #| echo: true
@@ -270,7 +260,7 @@ cursor.execute('DROP TABLE IF EXISTS products;')
 cursor.execute('''
 CREATE TABLE products (
     product_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    product_name TEXT NOT NULL,
+    product_name TEXT NOT NULL UNIQUE,
     price REAL 
 );
 ''')
@@ -628,7 +618,7 @@ print(pd.read_sql('''
 :::{style="margin-top: 50px; font-size: 20px;"}
 - The `EXCEPT` operator returns all rows from the [first SELECT statement that are not present in the second SELECT statement's results]{.alert}
 - It finds the difference between two tables (e.g., "Give me everything in A, except for the things that are also in B")
-- For example, now we want to run a "re-engagement" campaign
+- For example, now we want to run a "re-engagement" campaign using the same tables as before
   - **Table 1:** `TopSpenders` (customers who spent over $500)
   - **Table 2:** `FrequentShoppers` (customers who made 10+ purchases)
   - Find customers who are `TopSpenders` but are not `FrequentShoppers` (they spent a lot once, but haven't been back)
@@ -683,18 +673,62 @@ print(pd.read_sql('''
 ```{python}
 #| echo: true
 #| eval: true
-# Messi already exists, and he has 10 goals and 5 victories
+# Let's see Messi's current stats before the UPSERT
+print("Before UPSERT:")
+print(pd.read_sql("SELECT * FROM players WHERE player_name = 'Messi'", connection))
+
 # We will insert him again with 2 more goals and 1 more victory
-cursor.execute(""" 
-INSERT INTO players (player_name, goals, victories) 
-VALUES ('Messi', 2, 1) 
-ON CONFLICT(player_name) DO UPDATE SET 
+# Since 'Messi' already exists, the ON CONFLICT clause updates his stats instead
+cursor.execute("""
+INSERT INTO players (player_name, goals, victories)
+VALUES ('Messi', 2, 1)
+ON CONFLICT(player_name) DO UPDATE SET
     goals = goals + excluded.goals,
     victories = victories + excluded.victories;
 """)
+connection.commit()
 
-pd.read_sql('SELECT * FROM players', connection)
+print("\nAfter UPSERT:")
+print(pd.read_sql('SELECT * FROM players', connection))
 ```
+:::
+
+## Upsert with `DO NOTHING`
+
+:::{style="margin-top: 50px; font-size: 21px;"}
+- In the previous example, we used `DO UPDATE SET` to change the existing row when a conflict occurs
+- Sometimes you just want to [skip the insert silently]{.alert} if the row already exists, without updating anything
+- For that, you can use `DO NOTHING` instead
+
+```{python}
+#| echo: true
+#| eval: true
+# Try to insert 'Neymar' again with different stats
+# Since 'Neymar' already exists, nothing happens
+cursor.execute("""
+INSERT INTO players (player_name, goals, victories)
+VALUES ('Neymar', 100, 100)
+ON CONFLICT(player_name) DO NOTHING;
+""")
+connection.commit()
+
+# Neymar's stats are unchanged!
+print(pd.read_sql("SELECT * FROM players WHERE player_name = 'Neymar'", connection))
+```
+
+- This is useful when you are [loading data from multiple sources]{.alert} and want to keep the first version you inserted without raising an error
+- Think of `DO NOTHING` as "insert if new, ignore if duplicate"
+:::
+
+## Try it yourself! 🧠 {#sec:exercise03}
+
+:::{style="margin-top: 50px; font-size: 24px;"}
+- Using the `products` table from earlier (Coffee Maker, Toaster, Blender, Microwave, Air Fryer), write an `UPSERT` statement that:
+  1. Tries to insert a new product called `'Toaster'` with a price of `39.99`
+  2. If `'Toaster'` already exists, update its price to the new value (`39.99`)
+- **Hint:** remember the `excluded` keyword and the `ON CONFLICT` syntax from the examples above!
+- Print the `products` table before and after to check your result
+- [[Appendix 03]{.button}](#sec:appendix03)
 :::
 
 # Views 🔎 {background-color="#2d4563"}
@@ -703,9 +737,9 @@ pd.read_sql('SELECT * FROM players', connection)
 
 :::{style="margin-top: 50px; font-size: 20px;"}
 - A `VIEW` is a virtual table based on the result of a `SELECT` query.
-- It does not store data itself but provides a way to simplify complex queries or encapsulate frequently used queries.
-- You can create a view using the `CREATE VIEW` statement, followed by the view name and the `SELECT` query.
-- In SQLite, you can create a view using the `CREATE VIEW` statement, and you can also drop it using `DROP VIEW`.
+- It does not store data itself, but it is useful for [several reasons]{.alert}: saving you from rewriting complex queries, restricting which columns or rows users can see (security), and providing a stable interface even if the underlying table structure changes
+- You can create a view using the `CREATE VIEW` statement, followed by the view name and the `SELECT` query
+- In SQLite, you can also drop a view using `DROP VIEW`
 
 ```{python}
 #| echo: true
@@ -729,34 +763,35 @@ pd.read_sql('SELECT * FROM player_stats LIMIT 4', connection)
 ## Views
 
 :::{style="margin-top: 50px; font-size: 20px;"}
-- You can also use the view in a join with another table
-- For example, let's create a view that combines colours and sizes to show all possible T-shirt combinations, as we did earlier
-- So we can simply query `SELECT * FROM colour_size` instead of writing the `CROSS JOIN` every time!
-
+- Views really shine when you have a [complex query that you need to run often]{.alert}
+- For example, imagine you regularly need a summary of each product with its average rating and number of reviews
+- Without a view, you would have to write the full `LEFT JOIN` + `GROUP BY` query every time
+- With a view, you write it once and then query it like a regular table!
 
 ```{python}
 #| echo: true
 #| eval: true
-# Drop the view if it already exists to avoid errors on re-run
-cursor.execute('DROP VIEW IF EXISTS colour_size;')
+cursor.execute('DROP VIEW IF EXISTS product_summary;')
 
-# Create the view using cursor.execute()
+# Create a view that joins products with reviews and calculates stats
 cursor.execute('''
-CREATE VIEW colour_size AS
+CREATE VIEW product_summary AS
 SELECT
-    c.colour_name,
-    s.size_code,
-    c.colour_name || ' - ' || s.size_code as t_shirt -- Use || for concatenation
-FROM colours AS c
-CROSS JOIN sizes AS s
-ORDER BY c.colour_name, s.size_code DESC;
+    p.product_name,
+    COUNT(r.review_id) AS num_reviews,
+    ROUND(AVG(r.rating), 1) AS avg_rating
+FROM products p
+LEFT JOIN reviews r ON p.product_id = r.product_id
+GROUP BY p.product_id;
 ''')
-connection.commit() # Commit the view creation
+connection.commit()
 
-# Now showcase the view by querying it with pandas
-pd.read_sql('SELECT * FROM colour_size;', connection)
+# Now we can query the view with a simple SELECT
+pd.read_sql('SELECT * FROM product_summary;', connection)
 ```
 
+- Notice how products with no reviews (Microwave, Air Fryer) still appear thanks to the `LEFT JOIN`, with `0` reviews and no rating
+- Anyone can now run `SELECT * FROM product_summary` without knowing how the join works!
 :::
 
 # Conclusion 📖 {background-color="#2d4563"}
@@ -769,11 +804,10 @@ pd.read_sql('SELECT * FROM colour_size;', connection)
 - We saw how to merge tables vertically (by row) with `UNION`, `UNION ALL`, `INTERSECT`, and `EXCEPT`
 - We also saw how SQLite implements `UPSERT` functionality using `INSERT ... ON CONFLICT` and how to update existing records (`DO UPDATE SET`) or `DO NOTHING` on conflicts
 - We saw how to create and use `VIEWS` in SQLite, which are virtual tables based on `SELECT` queries
+- Check the appendices for exercise solutions! 📝
 :::
 
 # And that's all for today! 🎉 {background-color="#2d4563"}
-
-# Thank you and have a great rest of your day! 🙏 {background-color="#2d4563"}
 
 ## Appendix 01 {#sec:appendix01}
 
@@ -809,38 +843,34 @@ print(pd.read_sql('''
 [[Back to exercise]{.button}](#sec:exercise01b)
 :::
 
-## Appendix 02 {#sec:appendix02}
+## Appendix 03 {#sec:appendix03}
 
 :::{style="margin-top: 50px; font-size: 20px;"}
-- Here is the solution to the self-join exercise comparing player victories.
-- Note the use of `CAST(... AS REAL)` or multiplying by `1.0` to ensure floating-point division in SQLite.
+- Here is the solution to the UPSERT exercise updating the Toaster price.
 
 ```{python}
 #| echo: true
 #| eval: true
-print("Self Join on Players to Compare Victories:")
-print(pd.read_sql('''
-SELECT
-    p1.player_name,
-    p1.victories,
-    p2.player_name AS compared_to,
-    p2.victories AS their_victories,
-    -- Ensure floating point division by casting one operand to REAL or NUMERIC
-    ROUND(CAST(p1.victories AS REAL) / p2.victories, 2) AS victories_ratio
-FROM players p1
-JOIN players p2
-    ON p1.player_id < p2.player_id -- Avoid duplicates and self-comparison
-WHERE
-    p2.victories > 0 -- Avoid division by zero
-ORDER BY
-    p1.player_id, p2.player_id; -- Consistent ordering
-''', connection))
+print("Before UPSERT:")
+print(pd.read_sql("SELECT * FROM products WHERE product_name = 'Toaster'", connection))
+
+# UPSERT: insert 'Toaster' at 39.99, or update price if it already exists
+cursor.execute("""
+INSERT INTO products (product_name, price)
+VALUES ('Toaster', 39.99)
+ON CONFLICT(product_name) DO UPDATE SET
+    price = excluded.price;
+""")
+connection.commit()
+
+print("\nAfter UPSERT:")
+print(pd.read_sql("SELECT * FROM products WHERE product_name = 'Toaster'", connection))
 ```
-[[Back to exercise]{.button}](#sec:exercise02)
+
+[[Back to exercise]{.button}](#sec:exercise03)
 :::
 
-
-## Appendix 03 {#sec:appendix03}
+## Appendix 04 {#sec:appendix04}
 ### Cleaning the SQLite database
 
 :::{style="margin-top: 50px; font-size: 22px;"}

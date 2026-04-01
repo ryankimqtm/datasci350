@@ -1,0 +1,1705 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: DATASCI 350 - Data Science Computing\n",
+        "subtitle: Lecture 20 - Parallel Computing\n",
+        "author:\n",
+        "  - name: Danilo Freire\n",
+        "    email: danilo.freire@emory.edu\n",
+        "    affiliations: \"Department of Data and Decision Sciences <br> Emory University\"\n",
+        "format:\n",
+        "  clean-revealjs:\n",
+        "    self-contained: true\n",
+        "    code-overflow: wrap\n",
+        "    footer: \"[Parallel Computing](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-20/20-parallel-computing.html)\"\n",
+        "transition: slide\n",
+        "transition-speed: default\n",
+        "scrollable: true\n",
+        "execute:\n",
+        "  freeze: auto\n",
+        "engine: python3\n",
+        "revealjs-plugins:\n",
+        "  - fontawesome\n",
+        "  - multimodal\n",
+        "editor:\n",
+        "  render-on-save: true\n",
+        "---\n",
+        "\n",
+        "# Hello again, my friends! 😊 <br> {background-color=\"#2d4563\"}\n",
+        "\n",
+        "# Brief recap 📚 {background-color=\"#2d4563\"}\n",
+        "\n",
+        "## SQL joins and set operations\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 25px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- Last class we covered advanced SQL table operations:\n",
+        "  - [INNER, LEFT, and FULL OUTER JOIN]{.alert} to combine tables horizontally\n",
+        "  - [CROSS JOIN]{.alert} to produce every combination of two tables\n",
+        "  - [SELF JOIN]{.alert} to compare rows within the same table\n",
+        "  - [UNION, INTERSECT, and EXCEPT]{.alert} to combine query results vertically\n",
+        "  - [UPSERT]{.alert} with `INSERT ... ON CONFLICT` to handle duplicates\n",
+        "  - [VIEWS]{.alert} as saved queries you can treat like tables\n",
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}\n",
+        ":::{style=\"text-align: center; margin-top: -30px;\"}\n",
+        "[![](../lecture-19/figures/joins.webp){width=\"90%\"}](#){data-modal-type=\"image\" data-modal-url=\"../lecture-19/figures/joins.webp\"}\n",
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "# Today's agenda 📅 {background-color=\"#2d4563\"}\n",
+        "\n",
+        "## Lecture outline\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 23px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- [Serial vs parallel execution]{.alert}\n",
+        "  - The `map` function and why it matters\n",
+        "  - Embarrassingly parallel problems\n",
+        "  - Big O notation and what parallelism can (and cannot) fix\n",
+        "- [`joblib`]{.alert} for single-node parallelism\n",
+        "  - `Parallel` and `delayed`\n",
+        "  - Timing serial vs parallel with `%timeit`\n",
+        "- [`Dask`]{.alert} for scalable computing\n",
+        "  - Lazy evaluation: arrays and DataFrames\n",
+        "  - Reading and writing CSV and Parquet files\n",
+        "  - `dask.delayed` for custom pipelines\n",
+        "- [Best practices]{.alert}: when to parallelise and when not to\n",
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}\n",
+        ":::{style=\"text-align: center; margin-top: -30px;\"}\n",
+        "[![](figures/cores.webp){width=\"80%\"}](#){data-modal-type=\"image\" data-modal-url=\"figures/cores.webp\"}\n",
+        "[![](figures/dask.png){width=\"55%\"}](#){data-modal-type=\"image\" data-modal-url=\"figures/dask.png\"}\n",
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "## Funny AI news of the day 😂\n",
+        "\n",
+        ":::{style=\"margin-top: 20px; font-size: 21px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=55%}\n",
+        "- Anthropic shipped a debug file with [512K lines of source code]{.alert} inside a routine update ([Decrypt](https://decrypt.co/362917/anthropic-accidentally-leaked-claude-code-source-internet-keeping-forever))\n",
+        "- The cause? They [forgot to add it to `.npmignore`]{.alert}. So it shipped to every user who ran `npm install`\n",
+        "- That's why I keep telling you to use `.gitignore` properly! 😅\n",
+        "- Spotted within minutes, posted on X\n",
+        "- [21 million views]{.alert} before the team woke up\n",
+        "- Code mirrored across GitHub; DMCA takedowns couldn't keep up\n",
+        "- [Sigrid Jin](https://github.com/instructkr) (most active Claude Code user in the world, [25B tokens/year per the WSJ](https://www.wsj.com/tech/ai/claude-code-cursor-codex-vibe-coding-52750531)) rewrote it all in Python before sunrise\n",
+        "- [His repo](https://github.com/instructkr/claw-code) hit [50K stars in 2 hours]{.alert} 🚀\n",
+        "- Anthropic had built \"Undercover Mode\" to stop Claude from leaking secrets. [Then a human leaked their own code]{.alert} 🤦🏻‍♂️\n",
+        ":::\n",
+        "\n",
+        ":::{.column width=45%}\n",
+        ":::{style=\"text-align: center; margin-top: -30px;\"}\n",
+        "[![](figures/anthropic-code-leak.png){width=\"75%\"}](#){data-modal-type=\"image\" data-modal-url=\"figures/anthropic-code-leak.png\"}\n",
+        "\n",
+        "Source: <https://x.com/Fried_rice/status/2038894956459290963>\n",
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "# Serial vs Parallel Algorithms  {background-color=\"#2d4563\"}\n",
+        "\n",
+        "## Serial Execution\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 24pt;\"}\n",
+        "- Typical programs operate lines sequentially:"
+      ],
+      "id": "b0049c95"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "# Import packages\n",
+        "import numpy as np\n",
+        "\n",
+        "# Define an array of numbers\n",
+        "foo = np.array([0, 1, 2, 3, 4, 5])\n",
+        "\n",
+        "# Define a function that squares numbers\n",
+        "def bar(x):\n",
+        "    return x * x\n",
+        "\n",
+        "# Loop over each element and perform an action on it\n",
+        "for element in foo:\n",
+        "    # Print the result of bar\n",
+        "    print(bar(element))"
+      ],
+      "id": "3d06ed01",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "## The `map` function\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 26px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- A key tool that we will use later is called `map`\n",
+        "- This lets us apply a function to each element in a list or array:"
+      ],
+      "id": "50bdf5b2"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "# (Very) inefficient way to define a map function\n",
+        "def my_map(function, array):\n",
+        "    # create a container for the results\n",
+        "    output = []\n",
+        "\n",
+        "    # loop over each element\n",
+        "    for element in array:\n",
+        "        \n",
+        "        # add the intermediate result to the container\n",
+        "        output.append(function(element))\n",
+        "    \n",
+        "    # return the now-filled container\n",
+        "    return output"
+      ],
+      "id": "82fceb1b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}"
+      ],
+      "id": "fbe31dcb"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "my_map(bar, foo)"
+      ],
+      "id": "9c1b0afa",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- Python helpfully provides a `map` function in the standard library:"
+      ],
+      "id": "a91c7198"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "list(map(bar, foo))"
+      ],
+      "id": "76b53c6b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- The built-in `map` function is much faster than mine (it's implemented in `C`), so of course you should use that one! 😂\n",
+        "::: \n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "## Using `joblib` for parallel computing\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 22px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- Each step of our `map` call is [independent]{.alert} — perfect for parallelism\n",
+        "- [`joblib`](https://joblib.readthedocs.io/) makes this easy. Two things to know:\n",
+        "  - `Parallel(n_jobs=k)` runs `k` tasks at the same time\n",
+        "  - `delayed(f)` wraps `f` so joblib can schedule it\n",
+        "- Combine them with a generator expression (see right)\n",
+        "- Install with `pip install joblib`\n",
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}\n",
+        "- Using our `bar` function and `foo` array from before:\n",
+        "\n",
+        ":::{style=\"font-size: 1.2em;\"}"
+      ],
+      "id": "89bd3e39"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "# Install joblib if you haven't done so yet\n",
+        "# !pip install joblib\n",
+        "\n",
+        "# Import joblib functions \n",
+        "from joblib import Parallel, delayed\n",
+        "\n",
+        "results = Parallel(n_jobs=6)(\n",
+        "    delayed(bar)(x) for x in foo\n",
+        ")\n",
+        "results"
+      ],
+      "id": "1046bf82",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "- `joblib` creates 6 instances of `bar` and applies each one to a different element of `foo`\n",
+        "- The results are the same as before, but the computation runs in parallel\n",
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "## Serial vs parallel execution\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 22px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- `calculation` runs 10 heavy operations on 10 million numbers\n",
+        "- Each call is fully independent: [embarrassingly parallel]{.alert}\n",
+        "- We time three things with `%timeit`:\n",
+        "  - one call (baseline)\n",
+        "  - four calls in serial\n",
+        "  - four calls in parallel\n",
+        "\n",
+        "- [One call:]{.alert}\n",
+        "\n",
+        ":::{style=\"font-size: 1.2em;\"}"
+      ],
+      "id": "f69e8bb9"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "def calculation(size=10000000):\n",
+        "    # Create a large array and perform operations\n",
+        "    arr = np.random.rand(size)\n",
+        "    for _ in range(10):\n",
+        "        arr = np.sqrt(arr) + np.sin(arr)\n",
+        "    return np.mean(arr)\n",
+        "\n",
+        "# Single run\n",
+        "%timeit calculation()"
+      ],
+      "id": "463a271d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}\n",
+        "- [Four calls, serial:]{.alert}\n",
+        "\n",
+        ":::{style=\"font-size: 1.2em;\"}"
+      ],
+      "id": "650d256a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "# Sequential runs (4 times)\n",
+        "%timeit [calculation() for _ in range(4)]"
+      ],
+      "id": "58d176d9",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "- [Four calls, parallel:]{.alert}"
+      ],
+      "id": "e0e41e02"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "%%timeit\n",
+        "# Parallel runs (4 times)\n",
+        "Parallel(n_jobs=4)(\n",
+        "    delayed(calculation)() for _ in range(4)\n",
+        ")"
+      ],
+      "id": "2356e452",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "- Not exactly 4× faster — there is some overhead — but the speedup is real\n",
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "# Big O notation {background-color=\"#2d4563\"}\n",
+        "\n",
+        "## Big O notation: why it matters for parallel computing\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 22px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- [Big O notation]{.alert} describes how runtime grows as the input grows\n",
+        "- [O(1)]{.alert}: constant — does not change with input size (e.g., reading one array element)\n",
+        "- [O(n)]{.alert}: linear — doubles when input doubles (e.g., a single loop)\n",
+        "- [O(n²)]{.alert}: quadratic — quadruples when input doubles (e.g., nested loops)\n",
+        "- Our `calculation` function called on `n` inputs is [O(n)]{.alert}\n",
+        "  - 2 calls take ~2× as long as 1 call, 100 calls take ~100× as long\n",
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}\n",
+        ":::{style=\"text-align: center;\"}"
+      ],
+      "id": "54b9fbbd"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| code-fold: true\n",
+        "#| eval: true\n",
+        "import matplotlib.pyplot as plt\n",
+        "import numpy as np\n",
+        "\n",
+        "# Simulate processing times\n",
+        "num_images = np.array([1, 10, 50, 100, 200])\n",
+        "sequential_time = num_images * 2  # 2 seconds per image\n",
+        "parallel_time = (num_images * 2) / 4  # 4 cores, ideal speedup\n",
+        "\n",
+        "plt.figure(figsize=(8, 5))\n",
+        "plt.plot(num_images, sequential_time, 'o-', label='Serial O(n)', linewidth=2, markersize=8)\n",
+        "plt.plot(num_images, parallel_time, 's-', label='Parallel O(n/4)', linewidth=2, markersize=8)\n",
+        "plt.xlabel('Number of Images', fontsize=12)\n",
+        "plt.ylabel('Time (seconds)', fontsize=12)\n",
+        "plt.title('O(n) Scaling: Serial vs Parallel', fontsize=14, fontweight='bold')\n",
+        "plt.legend(fontsize=11)\n",
+        "plt.grid(True, alpha=0.3)\n",
+        "plt.show()"
+      ],
+      "id": "feb2b192",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "## What parallelism actually does to complexity\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 22px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- With `p` cores, an O(n) problem becomes [O(n/p + overhead)]{.alert}\n",
+        "  - 4 cores: theoretically 4× faster — in practice slightly less due to overhead\n",
+        "- [Parallelism never changes the Big O class]{.alert} — only the constant\n",
+        "  - O(n²) stays O(n²); you just reach \"too slow\" later\n",
+        "- Best candidates: [embarrassingly parallel O(n) tasks]{.alert}\n",
+        "  - Running `n` independent calculations\n",
+        "  - Applying the same function to `n` inputs\n",
+        "  - No shared state, no dependencies between tasks\n",
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}\n",
+        "- [Poor candidates for parallelism:]{.alert}"
+      ],
+      "id": "2980a5fc"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "# O(n²): every pair of elements — not independent\n",
+        "def pairwise_sum(data):\n",
+        "    n = len(data)\n",
+        "    results = []\n",
+        "    for i in range(n):\n",
+        "        for j in range(n):\n",
+        "            results.append(data[i] + data[j])\n",
+        "    return results\n",
+        "\n",
+        "data = list(range(1000))\n",
+        "# Don't run: ~1 million operations\n",
+        "# pairwise_sum(data)"
+      ],
+      "id": "b9e00e9f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- Other bad candidates: steps that depend on previous results, algorithms with shared state, memory-bound problems\n",
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "## Try it yourself! 🧠 {#sec:exercise01}\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 22px;\"}\n",
+        "- Install `joblib` and `NumPy` if you haven't done so yet\n",
+        "  - `!pip install joblib numpy`\n",
+        "- Compare the time of the serial and parallel versions of the following function:"
+      ],
+      "id": "67a4646c"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: true\n",
+        "#| eval: false\n",
+        "def square(x):\n",
+        "    return x**2\n",
+        "\n",
+        "# Create a large array to process\n",
+        "numbers = np.arange(1000000)\n",
+        "\n",
+        "# Sequential version\n",
+        "%timeit [square(x) for x in numbers]"
+      ],
+      "id": "5ff1d921",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- Then try the parallel version:"
+      ],
+      "id": "a1e863bb"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: true\n",
+        "#| eval: false\n",
+        "from joblib import Parallel, delayed\n",
+        "\n",
+        "# Parallel version\n",
+        "%timeit Parallel(n_jobs=4)(delayed(square)(x) for x in numbers)"
+      ],
+      "id": "71ba5e59",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- What did you find? Is the parallel version faster?\n",
+        "- [Hint: for a function this lightweight, the parallel version is often *slower* due to joblib's overhead]{.alert}\n",
+        "- [[Appendix 01]{.button}](#sec:appendix01)\n",
+        ":::\n",
+        "\n",
+        "# Dask {background-color=\"#2d4563\"}\n",
+        "\n",
+        "## Dask\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 20px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- [Dask](https://dask.org/) is a flexible parallel computing library for analytic computing\n",
+        "- It is composed of two components:\n",
+        "  - [Dynamic task scheduling]{.alert} optimised for computation\n",
+        "  - [\"Big Data\" collections]{.alert} like parallel arrays, dataframes, and lists that extend common interfaces like NumPy, Pandas, or Python iterators to larger-than-memory or distributed environments\n",
+        "- Dask has four design goals:\n",
+        "  - [Familiar:]{.alert} mirrors the NumPy and Pandas APIs you already know\n",
+        "  - [Flexible:]{.alert} lets you schedule custom workloads, not just arrays and dataframes\n",
+        "  - [Native:]{.alert} pure Python, no JVM or external runtime needed\n",
+        "  - [Fast:]{.alert} low overhead on both small and large data\n",
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}\n",
+        "- Let's import Dask and see how it works"
+      ],
+      "id": "d330d30d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "import dask.dataframe as dd\n",
+        "import dask.array as da"
+      ],
+      "id": "52c7e160",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- Dask arrays are a parallel and distributed version of NumPy arrays\n",
+        "- They are composed of many NumPy arrays, split along one or more dimensions\n",
+        "- Each chunk is a separate NumPy array that can be processed in parallel"
+      ],
+      "id": "190f8894"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "data = np.random.normal(size=100000).reshape(200, 500)\n",
+        "a = da.from_array(data, chunks=(100, 100))\n",
+        "a"
+      ],
+      "id": "b85a4ecb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "## Dask arrays\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 22px;\"}\n",
+        "- Dask arrays are [lazy]{.alert}: they do not compute anything until you call `.compute()`\n",
+        "- This lets you build up a full computation graph (an execution plan) before any work runs\n",
+        "- Dask can then [optimise that graph and minimise memory use]{.alert} before executing\n",
+        "- For example, let's slice the Dask array `a` to get the first 10 rows of the 6th column"
+      ],
+      "id": "d8a86d61"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "a[:10, 5] # first 10 rows of the 6th column"
+      ],
+      "id": "d7e2f3ec",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- We use the `.compute()` method to compute the result"
+      ],
+      "id": "1e962ea0"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "a[:10, 5].compute()"
+      ],
+      "id": "4d962d09",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "## Dask arrays\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 22px;\"}\n",
+        "- Dask Array supports many common NumPy operations including:\n",
+        "- Basic arithmetic and scalar mathematics (`+`, `*`, `exp`, `log`, etc)\n",
+        "- Reductions along axes (`sum()`, `mean()`, `std()`)\n",
+        "- Tensor operations and matrix multiplication (`tensordot`)\n",
+        "- Array slicing and basic indexing\n",
+        "- Axis reordering and transposition"
+      ],
+      "id": "f7ae954d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "a.sum().compute()"
+      ],
+      "id": "1937ee1f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- Let's compare a similar operation in NumPy:"
+      ],
+      "id": "c31a7e70"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "size = 100000000\n",
+        "np_arr = np.random.random(size)\n",
+        "%timeit np_result = np.sqrt(np_arr) + np.sin(np_arr)"
+      ],
+      "id": "852b13fb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- And in Dask:"
+      ],
+      "id": "9e388dda"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "da_arr = da.random.random(size, chunks='auto')\n",
+        "%timeit (da.sqrt(da_arr) + da.sin(da_arr)).compute()"
+      ],
+      "id": "88230ce3",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "## Dask dataframes\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 22px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- Dask also provides a parallelised version of Pandas dataframes\n",
+        "- They are composed of many Pandas dataframes, split along the index\n",
+        "- Let's jump into an example:"
+      ],
+      "id": "491047f4"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "import dask\n",
+        "df = dask.datasets.timeseries()"
+      ],
+      "id": "61eb7103",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- This is a small dataset of about 240 MB\n",
+        "- Unlike Pandas, Dask DataFrames [are also lazy]{.alert}\n",
+        "- No data is printed here, instead it is replaced by ellipses (`...`)\n",
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}"
+      ],
+      "id": "07af3c25"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "df"
+      ],
+      "id": "e31b3393",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- Nonetheless, the column names and dtypes are known"
+      ],
+      "id": "1f3c0fa6"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "df.dtypes"
+      ],
+      "id": "efe46b55",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "## Dask dataframes\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 20px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- Dask DataFrames support a large subset of the Pandas API\n",
+        "- Some operations will automatically display the data"
+      ],
+      "id": "8b8a7d29"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "import pandas as pd\n",
+        "\n",
+        "pd.options.display.precision = 2\n",
+        "pd.options.display.max_rows = 10\n",
+        "\n",
+        "df.head()"
+      ],
+      "id": "e09069d3",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}\n",
+        "- Here we filter rows where `y > 0`, then compute the standard deviation of `x` per group:"
+      ],
+      "id": "2f0c6102"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "df2 = df[df.y > 0]\n",
+        "df3 = df2.groupby(\"name\").x.std()\n",
+        "df3"
+      ],
+      "id": "72293cee",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- Note that `df3` is still not shown\n",
+        "- We can use the `.compute()` method to display the result"
+      ],
+      "id": "b0ae6e07"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "df3.compute()"
+      ],
+      "id": "acb7610a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "## Dask dataframes\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 20px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- Aggregations are also supported\n",
+        "- Here we aggregate the sum of the `x` column and the maximum of the `y` column by the `name` column"
+      ],
+      "id": "eeb8101c"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "df4 = df.groupby(\"name\").aggregate({\"x\": \"sum\", \"y\": \"max\"})\n",
+        "df4.compute()"
+      ],
+      "id": "6bca8a3c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}\n",
+        "- If you have enough RAM for the whole dataset, you can keep it in memory with `.persist()`\n",
+        "- Once persisted, future computations on that data skip the re-loading step"
+      ],
+      "id": "a28a658b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "df5 = df4.persist()\n",
+        "df5.head()"
+      ],
+      "id": "67409f20",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "## Try it yourself! 🧠 {#sec:exercise02}\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 18px;\"}\n",
+        "- Install `dask` if you haven't done so yet\n",
+        "  - `!pip install dask`\n",
+        "\n",
+        "- [Find the right chunk size!]{.alert}\n",
+        "\n",
+        "- Create a Dask array with **10 million** random numbers (or less if you have memory constraints)\n",
+        "- Vary the chunk size and time the following operation:\n",
+        "- Calculate `mean(sqrt(x^2))` on the Dask array\n",
+        "- See the code below for an example with three different chunk sizes. Which one worked best for you? Why do you think that is?\n",
+        "\n",
+        "```python\n",
+        "import numpy as np\n",
+        "import dask.array as da\n",
+        "\n",
+        "size = 10_000_000\n",
+        "\n",
+        "# Dask with SMALL chunks\n",
+        "da_data_small = da.random.random(size, chunks=100_000)  # 100 chunks\n",
+        "%timeit da.sqrt(da_data_small**2).mean().compute()\n",
+        "\n",
+        "# Dask with MEDIUM chunks\n",
+        "da_data_medium = da.random.random(size, chunks=2_000_000)  # 5 chunks\n",
+        "%timeit da.sqrt(da_data_medium**2).mean().compute()\n",
+        "\n",
+        "# Dask with LARGE chunks\n",
+        "da_data_large = da.random.random(size, chunks=5_000_000)  # Only 2 chunks\n",
+        "%timeit da.sqrt(da_data_large**2).mean().compute()\n",
+        "```\n",
+        "- [[Appendix 02]{.button}](#sec:appendix02)\n",
+        ":::\n",
+        "\n",
+        "## Dask and SQL\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 20px;\"}\n",
+        "- [dask-sql](https://dask-sql.readthedocs.io/en/stable/) is a library that allows you to run SQL queries on Dask DataFrames\n",
+        "- It is built on top of [Apache Calcite](https://calcite.apache.org/), a SQL interpreter\n",
+        "- It is still under development, but it already has many features\n",
+        "- You can install it with `pip install dask-sql`\n",
+        "- A `dask_sql.Context` is the Python equivalent to a SQL database, \n",
+        "- It is the interface for registering tables and functions, and for running queries\n",
+        "- A single `Context` is created and used for the duration of a Python script or notebook"
+      ],
+      "id": "d8f9cb2d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: false\n",
+        "# Note: dask-sql requires `pip install dask-sql dask-expr`\n",
+        "# The cells below are shown for reference but not executed\n",
+        "from dask_sql import Context\n",
+        "c = Context()"
+      ],
+      "id": "ff7fb12f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "## Dask and SQL\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 20px;\"}\n",
+        "- Once a `Context` has been created, there are many ways to register tables in it\n",
+        "- The simplest way to do this is through the `create_table` method\n",
+        "- Supported input types include Pandas DataFrames, Dask DataFrames, remote datasets (like on Amazon S3), and more\n",
+        "  - More information here: <https://dask-sql.readthedocs.io/en/latest/data_input.html>"
+      ],
+      "id": "64b2b08e"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: false\n",
+        "# Register and persist a dask table\n",
+        "from dask.datasets import timeseries\n",
+        "ddf = timeseries()\n",
+        "c.create_table(\"dask\", ddf, persist=True)"
+      ],
+      "id": "8bb25c37",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- Now we can run SQL queries on the `timeseries` table"
+      ],
+      "id": "8228f401"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: false\n",
+        "c.sql(\"SELECT AVG(x) FROM dask\").compute()"
+      ],
+      "id": "3788d86b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "## Combining Dask and Pandas\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 20px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- Dask and Pandas work together naturally\n",
+        "- Use Dask for the heavy lifting (large data, parallelism), then call `.compute()` to get a regular Pandas DataFrame for final steps\n",
+        "- This is the typical real-world pattern:\n",
+        "  1. Load and filter with Dask (fast, parallel)\n",
+        "  2. Aggregate to a small result\n",
+        "  3. Call `.compute()` — now you have Pandas\n",
+        "  4. Use Pandas for plotting, formatting, or export\n",
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}"
+      ],
+      "id": "deb1e3c0"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "import dask\n",
+        "import dask.dataframe as dd\n",
+        "\n",
+        "df = dask.datasets.timeseries()\n",
+        "\n",
+        "# Step 1-2: filter and aggregate with Dask\n",
+        "summary = (\n",
+        "    df[df.x > 0]\n",
+        "    .groupby(\"name\")\n",
+        "    .agg({\"x\": \"mean\", \"y\": \"std\"})\n",
+        ")\n",
+        "\n",
+        "# Step 3: bring to Pandas\n",
+        "pdf = summary.compute()\n",
+        "\n",
+        "# Step 4: use Pandas normally\n",
+        "pdf.sort_values(\"x\", ascending=False).head(5)"
+      ],
+      "id": "2e4fe2af",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "# Read and write data with Dask {background-color=\"#2d4563\"}\n",
+        "\n",
+        "## Reading and writing data\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 20px;\"}\n",
+        "- `.csv` is very common in data science (and for good reasons)\n",
+        "- Pandas reads and writes `.csv` files very well, but it is not the best option for large files\n",
+        "- It may need several gigabytes of memory to read a large file, as it reads the entire file into memory\n",
+        "- Dask provides a [much more efficient way](https://docs.dask.org/en/latest/dataframe-create.html) to read and write `.csv` files\n",
+        "- Let's split our dataset"
+      ],
+      "id": "b6706b32"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "df = dask.datasets.timeseries()\n",
+        "df"
+      ],
+      "id": "bb98783c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "import os\n",
+        "import datetime\n",
+        "\n",
+        "if not os.path.exists('data'):\n",
+        "    os.mkdir('data')\n",
+        "\n",
+        "def name(i):\n",
+        "    \"\"\" Provide date for filename given index\n",
+        "\n",
+        "    Examples\n",
+        "    --------\n",
+        "    >>> name(0)\n",
+        "    '2000-01-01'\n",
+        "    >>> name(10)\n",
+        "    '2000-01-11'\n",
+        "    \"\"\"\n",
+        "    return str(datetime.date(2000, 1, 1) + i * datetime.timedelta(days=1))\n",
+        "\n",
+        "df.to_csv('data/*.csv', name_function=name);"
+      ],
+      "id": "d0b04b58",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "## Reading and writing data\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 20px;\"}\n",
+        "- We now have many CSV files in our `data` directory, one for each day in the month of January 2000\n",
+        "- Each CSV file holds time series data for that day\n",
+        "- We can read all of them as one logical dataframe using the `dd.read_csv` function "
+      ],
+      "id": "39dad75c"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "df = dd.read_csv('data/2000-*-*.csv')\n",
+        "df"
+      ],
+      "id": "bcdb2339",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- Let's do a simple computation"
+      ],
+      "id": "df7d71bd"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "%timeit df.groupby('name').x.mean().compute()"
+      ],
+      "id": "3891e3b7",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "## Reading and writing data\n",
+        "### Parquet files\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 20px;\"}\n",
+        "- Although `.csv` files are nice, new formats like [Parquet](https://parquet.apache.org/) are gaining popularity\n",
+        "- Data are [stored by column rather than by row]{.alert}, allowing for efficient querying of specific columns without reading entire rows\n",
+        "- It can be used with various programming languages and data processing frameworks\n",
+        "- Achieves up to [75% reduction in file size]{.alert} compared to uncompressed formats"
+      ],
+      "id": "976cbd6f"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "df.to_parquet('data/2000-01.parquet', engine='pyarrow')"
+      ],
+      "id": "2aecba27",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- Now we can read the parquet file"
+      ],
+      "id": "c25a697e"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "df = dd.read_parquet('data/2000-01.parquet', columns=['name', 'x'], engine='pyarrow')\n",
+        "df"
+      ],
+      "id": "f7b862f0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- Let's do the same computation as before"
+      ],
+      "id": "a7123009"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "%timeit df.groupby('name').x.mean().compute()"
+      ],
+      "id": "a9d8400d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "# Dask delayed {background-color=\"#2d4563\"}\n",
+        "\n",
+        "## Dask delayed\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 22px;\"}\n",
+        ":::{.columns}\n",
+        ":::{.column width=\"50%\"}\n",
+        "- Sometimes you don't want to use an entire Dask DataFrame or Dask Array\n",
+        "- You may want to parallelise a single function, for instance, or a small part of your code\n",
+        "- There is a way to do this with Dask: the `dask.delayed` function"
+      ],
+      "id": "4177e4ba"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "def calculation(size=10000000):\n",
+        "    arr = np.random.rand(size)\n",
+        "    for _ in range(10):\n",
+        "        arr = np.sqrt(arr) + np.sin(arr)\n",
+        "    return np.mean(arr)\n",
+        "\n",
+        "%timeit [calculation() for _ in range(4)]"
+      ],
+      "id": "7b6d14c3",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        ":::{.column width=\"50%\"}\n",
+        "- We just need to add the `@dask.delayed` decorator to the function"
+      ],
+      "id": "214da157"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "@dask.delayed\n",
+        "def delayed_calculation(size=10000000):\n",
+        "    arr = np.random.rand(size)\n",
+        "    for _ in range(10):\n",
+        "        arr = np.sqrt(arr) + np.sin(arr)\n",
+        "    return np.mean(arr)\n",
+        "\n",
+        "results = []\n",
+        "for _ in range(5):\n",
+        "    results.append(delayed_calculation())\n",
+        "\n",
+        "# Compute all results at once\n",
+        "%timeit final_results = dask.compute(*results)"
+      ],
+      "id": "df8d6230",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- The results are much faster, and we didn't have to change the code at all!\n",
+        "- Just remember to add the `.compute()` method at the end\n",
+        ":::\n",
+        ":::\n",
+        ":::\n",
+        "\n",
+        "## Dask delayed\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 20px;\"}\n",
+        "- We can even visualise the computation graph"
+      ],
+      "id": "950214c3"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "@dask.delayed\n",
+        "def generate_data(size):\n",
+        "    return np.random.rand(size)\n",
+        "\n",
+        "@dask.delayed\n",
+        "def transform_data(data):\n",
+        "    return np.sqrt(data) + np.sin(data)\n",
+        "\n",
+        "@dask.delayed\n",
+        "def aggregate_data(data):\n",
+        "    return {\n",
+        "        'mean': np.mean(data),\n",
+        "        'std': np.std(data),\n",
+        "        'max': np.max(data)\n",
+        "    }\n",
+        "\n",
+        "# Compare execution\n",
+        "sizes = [1000000, 2000000, 3000000]\n",
+        "\n",
+        "# Dask execution\n",
+        "dask_results = []\n",
+        "for size in sizes:\n",
+        "    data = generate_data(size)\n",
+        "    transformed = transform_data(data)\n",
+        "    stats = aggregate_data(transformed)\n",
+        "    dask_results.append(stats)\n",
+        "\n",
+        "%timeit dask.compute(*dask_results)"
+      ],
+      "id": "ee1993f2",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: false\n",
+        "# Requires graphviz: pip install graphviz\n",
+        "dask.visualize(*dask_results)"
+      ],
+      "id": "bd28617c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::\n",
+        "\n",
+        "# Best practices {background-color=\"#2d4563\"}\n",
+        "\n",
+        "## Best practices\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 23px;\"}\n",
+        "- Parallel computing is not always the right tool. Here are some tips from the Dask docs:\n",
+        "- [Start small]{.alert}:  NumPy, pandas, scikit-learn may have faster functions for what you’re trying to do. Sometimes just by changing the data format to Parquet you can get a huge speedup\n",
+        "- [Sampling]{.alert}:  If you have a large dataset, try working with a sample of the data first. _Do you really need_ all those TBs of data? \n",
+        "- [Load data with Dask]{.alert}:  If you have a large dataset, load it with Dask from the start. It’s much easier to scale up than to scale down\n",
+        "- [Use `.compute()` and `.persist()` sparingly]{.alert}:  These functions can be expensive, so use them only when you need to\n",
+        "- [Experiment with chunk sizes]{.alert}:  The right chunk size can make a big difference in performance (or use `chunks='auto'` if you’re unsure)\n",
+        "- [Break up computations into many pieces]{.alert}:  This will allow Dask to parallelise the computation faster\n",
+        "- [Use `.parquet` files for large datasets]{.alert}:  They are much more efficient than `.csv` files\n",
+        "- More tips can be found [here](https://docs.dask.org/en/latest/best-practices.html)\n",
+        ":::\n",
+        "\n",
+        "# And that's all for today! 🎉 {background-color=\"#2d4563\"}\n",
+        "\n",
+        "# See you next time! 😊 {background-color=\"#2d4563\"}\n",
+        "\n",
+        "## Appendix 01 {#sec:appendix01}\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 24px;\"}\n",
+        "- Here is the solution to the exercise:"
+      ],
+      "id": "2c5f5636"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "def square(x):\n",
+        "    return x**2\n",
+        "\n",
+        "# Create a large array to process\n",
+        "numbers = np.arange(1000000)\n",
+        "\n",
+        "# Sequential version\n",
+        "%timeit [square(x) for x in numbers]"
+      ],
+      "id": "33037f85",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "from joblib import Parallel, delayed\n",
+        "\n",
+        "# Parallel version\n",
+        "%timeit Parallel(n_jobs=4)(delayed(square)(x) for x in numbers)"
+      ],
+      "id": "c57fa51f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "- [Expected result:]{.alert} the parallel version is *slower* here. `square(x)` is so fast that joblib's process-spawning overhead dominates. Parallel computing pays off when each task is heavy, not trivial.\n",
+        "\n",
+        "[[Back to exercise]{.button}](#sec:exercise01)\n",
+        ":::\n",
+        "\n",
+        "## Appendix 02 {#sec:appendix02}\n",
+        "\n",
+        ":::{style=\"margin-top: 30px; font-size: 22px;\"}\n",
+        "- Create an array with **10 million** random numbers and calculate: `mean(sqrt(x^2))`\n",
+        "- Try different chunk sizes and see which one works best"
+      ],
+      "id": "10b59761"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "size = 10000000\n",
+        "\n",
+        "# Dask with SMALL chunks \n",
+        "da_data_small = da.random.random(size, chunks=100000)\n",
+        "%timeit da.sqrt(da_data_small**2).mean().compute()"
+      ],
+      "id": "23aa1621",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "# Dask with MEDIUM chunks \n",
+        "da_data_medium = da.random.random(size, chunks=2000000)\n",
+        "%timeit da.sqrt(da_data_medium**2).mean().compute()"
+      ],
+      "id": "01f57571",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "# Dask with LARGE chunks \n",
+        "da_data_large = da.random.random(size, chunks=5000000)\n",
+        "%timeit da.sqrt(da_data_large**2).mean().compute()"
+      ],
+      "id": "85348d59",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "#| echo: true\n",
+        "#| eval: true\n",
+        "# Dask with AUTO chunks \n",
+        "da_data_auto = da.random.random(size, chunks='auto')\n",
+        "%timeit da.sqrt(da_data_auto**2).mean().compute()"
+      ],
+      "id": "7da9f7b8",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "[[Back to exercise]{.button}](#sec:exercise02)\n",
+        ":::"
+      ],
+      "id": "fc027fbd"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "/opt/miniconda3/share/jupyter/kernels/python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

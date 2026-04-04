@@ -1,6 +1,6 @@
 ---
 title: DATASCI 350 - Data Science Computing
-subtitle: Lecture 22 - Parallelising Data Analysis with Dask and AutoML
+subtitle: Lecture 21 - Parallelising Data Analysis with Dask and AutoML
 author:
   - name: Danilo Freire
     email: danilo.freire@emory.edu
@@ -9,7 +9,7 @@ format:
   clean-revealjs:
     self-contained: true
     code-overflow: wrap
-    footer: "[Parallel Computing II](22-parallel-automl.html)"
+    footer: "[Parallel Computing II](21-parallel-automl.html)"
 transition: slide
 transition-speed: default
 scrollable: true

@@ -489,7 +489,7 @@ print(f"Time taken: {elapsed_time:.2f} seconds")
 ## Incremental Search
 
 :::{style="margin-top: 30px; font-size: 30px;"}
-- It took [less than two minutes]{.alert} to train the model, which is _pretty fast_ considering the size of the dataset
+- It took [about 4 minutes]{.alert} to train the model, which is _pretty fast_ considering the size of the dataset
 - My computer has 16 GB of RAM, so the full dataset would not fit in memory
 - But [the model ran fine]{.alert} because Dask processes data in chunks — no slowdown
 - Now let's see another example...

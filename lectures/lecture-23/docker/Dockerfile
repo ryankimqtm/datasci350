@@ -5,7 +5,7 @@ FROM python:3
 RUN pip install numpy pandas matplotlib
 
 # Add a script
-RUN echo "print('Hello, QTM350!')" > hello.py
+RUN echo "print('Hello, DATASCI350!')" > hello.py
 
 # Run the script
 CMD ["python", "hello.py"]

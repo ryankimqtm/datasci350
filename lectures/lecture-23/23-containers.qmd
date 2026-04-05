@@ -780,19 +780,19 @@ docker build -t datasci350-example .
 ## Let's see how it looks like
 
 :::{style="margin-top: 30px; font-size: 20px; text-align: center;"}
-[![](figures/docker-build.png){width="90%"}](#){data-modal-type="image" data-modal-url="figures/docker-build.png"}
+[![](figures/docker-build.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/docker-build.png"}
 :::
 
 ## Looks pretty good! 👍
 
 :::{style="margin-top: 30px; font-size: 20px; text-align: center;"}
-[![](figures/docker-build02.png){width="90%"}](#){data-modal-type="image" data-modal-url="figures/docker-build02.png"}
+[![](figures/docker-build02.png){width="85%"}](#){data-modal-type="image" data-modal-url="figures/docker-build02.png"}
 :::
 
 ## Looks pretty good! 👍
 
 :::{style="margin-top: 30px; font-size: 20px; text-align: center;"}
-[![](figures/docker-build03.png){width="90%"}](#){data-modal-type="image" data-modal-url="figures/docker-build03.png"}
+[![](figures/docker-build03.png){width="85%"}](#){data-modal-type="image" data-modal-url="figures/docker-build03.png"}
 :::
 
 ## Let's run and share the container! 🏃‍♂️
@@ -834,7 +834,7 @@ docker push danilofreire/datasci350-example:latest
 :::{style="margin-top: 30px; font-size: 20px; text-align: center;"}
 Link: <https://hub.docker.com/r/danilofreire/datasci350-example>
 
-[![](figures/docker-hub-image.png){width="90%"}](#){data-modal-type="image" data-modal-url="figures/docker-hub-image.png"}
+[![](figures/docker-hub-image.png){width="80%"}](#){data-modal-type="image" data-modal-url="figures/docker-hub-image.png"}
 :::
 
 ## Docker pull

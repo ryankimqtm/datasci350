@@ -1,0 +1,4 @@
+project:
+  type: default
+  post-render:
+    - "find . -name '*.quarto_ipynb*' -delete"

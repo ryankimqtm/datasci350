@@ -51,7 +51,7 @@ editor:
 
 ## Lecture outline
 
-:::{style="margin-top: 30px; font-size: 24px;"}
+:::{style="margin-top: 30px; font-size: 26px;"}
 :::{.columns}
 :::{.column width="45%"}
 - New topic today: [how do we make sure our results are reproducible?]{.alert}
@@ -77,7 +77,7 @@ editor:
 :::{.columns}
 :::{.column width="50%"}
 - [You now have a project!]{.alert}
-- Your code works great, it runs pretty fast thanks to Dask, your Quarto reports are beautiful, and your analyses (all done in the command line) are stored in a well-documented GitHub repository
+- Your code works great, it runs pretty fast thanks to Dask, your Quarto reports are beautiful, and your analyses (all done in the command line) are stored in a well-documented GitHub repository 😁
 - Are you done? 🤔
 - [Not quite!]{.alert} 😅
 - What if you need to run your code on a different machine? Or share it with a colleague? Or run it again in a few months?
@@ -145,48 +145,46 @@ SyntaxError: Missing parentheses in call to 'print'. Did you mean print("Hello w
 
 ## The reproducibility crisis 🚨
 
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 24px;"}
 :::{.columns}
 :::{.column width="50%"}
-- The [reproducibility crisis]{.alert}: many researchers cannot replicate published results, including their own
-- Affects computer science, statistics, psychology, medicine, and many other fields
-- Causes include p-hacking, publication bias, and low statistical power, but also [poor documentation and dependency management]{.alert}
-- The statistical problems are harder to fix, but the computational side [can be solved with tools we already have]{.alert}
-- A [Nature survey](https://www.nature.com/articles/533452a) found that 70%+ of scholars failed to reproduce someone else's work, and [over half could not reproduce their own]{.alert} 😳
-- 90% of researchers agree there is a crisis
+- [Reproducibility crisis]{.alert}: many researchers cannot replicate published results
+- Affects CS, statistics, psychology, medicine, and other fields
+- Some causes are statistical (p-hacking, publication bias, low power)
+- But [poor documentation and dependency management]{.alert} are just as common
+- The good news: the computational side [can be solved with tools we already have]{.alert}
+- A [Nature survey](https://www.nature.com/articles/533452a) found that [70%+ of scholars]{.alert} failed to reproduce others' work
+- [Over half]{.alert} could not reproduce [their own]{.alert} results 😳
 :::
 
 :::{.column width="50%"}
-- Missing code, undeclared packages, and OS differences are among the most common computational culprits
-
 :::{style="text-align: center; margin-top: -20px;"}
-[![](figures/reproducibility.webp){width="80%"}](#){data-modal-type="image" data-modal-url="figures/reproducibility.webp"}
+[![](figures/reproducibility.webp){width="85%"}](#){data-modal-type="image" data-modal-url="figures/reproducibility.webp"}
 :::
 :::
 :::
 :::
 
-## The reproducibility trade-off 🔄
+## The reproducibility trade-off
 
-:::{style="margin-top: 30px; font-size: 22px;"}
-:::{style="text-align: center;"}
-[![](figures/trade-off.png){width="80%"}](#){data-modal-type="image" data-modal-url="figures/trade-off.png"}
+:::{style="margin-top: 30px; font-size: 24px;"}
+:::{style="text-align: center; margin-top: 10px;"}
+[![](figures/trade-off.png){width=85%"}](#){data-modal-type="image" data-modal-url="figures/trade-off.png"}
 :::
 
-- How far should we go to ensure that our results are reproducible?
-- [Due diligence starts at declaring dependencies]{.alert}
-- You can [manage your declared dependencies]{.alert} with a package/environment manager such as `conda` or `pip`
-- You can also [package your dependencies]{.alert} with tools like `renv` (for R), or `pipenv` (for Python)
-- Online environments can be created for your work (in a relatively user-friendly way), such as [Code Ocean](https://codeocean.com/) ($$$), or [Binder](https://mybinder.org/) (free, but with several limitations)
-- [Containers are awesome]{.alert}, and container tools like [Docker](https://www.docker.com/) and [Singularity](https://sylabs.io/singularity/) can be used to package your code and dependencies in a portable way
-- Which one should you use? It depends on your needs, but the more integrated your workflow is, the better!
+- How far should we go to ensure reproducibility? [It depends on your needs]{.alert}
+- At minimum, [declare your dependencies]{.alert} so others know what you used
+- [Manage them]{.alert} with a package/environment manager (`conda`, `pip`, `uv`)
+- [Package them]{.alert} with tools like `renv` (R) or `uv` (Python) for version pinning
+- Host them online with [Code Ocean](https://codeocean.com/) ($$$) or [Binder](https://mybinder.org/) (free but limited)
+- Go further with [containers]{.alert} ([Docker](https://www.docker.com/), [Singularity](https://sylabs.io/singularity/)) for full portability
+- The more integrated your workflow, the better!
+
 :::
 
-## How to declare dependencies? 📜
+## How to declare dependencies?
 
-:::{style="margin-top: 30px; font-size: 23px;"}
-:::{.columns}
-:::{.column width="50%"}
+:::{style="margin-top: 30px; font-size: 27px;"}
 - Say you have an analysis using Python, NumPy, pandas, and matplotlib. Ask yourself:
   - What packages do I need?
   - Will this work on my collaborator’s OS?
@@ -197,22 +195,8 @@ SyntaxError: Missing parentheses in call to 'print'. Did you mean print("Hello w
 - Which file depends on your package manager:
   - `conda` (Python and R): `environment.yml`
   - `pip` (Python only): `requirements.txt`
-:::
-
-:::{.column width="50%"}
-- `environment.yml` (for `conda`)
-  - Creates an environment with specific packages and versions
-  - Generate with `conda env export -f environment.yml`
-  - `-f` is a flag for "file"
-  - More details in the [conda documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
-
-- `requirements.txt` (for `pip`)
-  - Generate with `pip freeze | grep -v ‘file://’ > requirements.txt`
-  - Install with `pip install -r requirements.txt`
-  - `-r` is short for `--requirement` (read packages from a file)
-  - Let’s see some examples
-:::
-:::
+  - `uv` (Python only): `pyproject.toml` + `uv.lock`
+- Let’s see some examples
 :::
 
 # Virtual environments 🌐 {background-color="#2d4563"}
@@ -220,10 +204,10 @@ SyntaxError: Missing parentheses in call to 'print'. Did you mean print("Hello w
 ## Conda: `environment.yml` file
 
 :::{style="margin-top: 30px; font-size: 21px;"}
-- [Conda environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) allow you to create isolated environments with specific versions of packages
-- [Each environment can have its own dependencies]{.alert}, and you can switch between them easily
-- As they are isolated from each other, you can have different versions of the same package in different environments, and you can share the environment file with others
-- They are probably the [most user-friendly]{.alert} way to manage dependencies in Python, and are widely used in data science
+- [Conda environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) let you create [isolated environments]{.alert} with specific versions of packages
+- Each environment has its own dependencies, and you can [switch between them]{.alert} easily
+- You can have different versions of the same package in different environments
+- Probably the [most user-friendly]{.alert} way to manage dependencies in Python
 - Here's how to create one:
 
 ```{verbatim}
@@ -250,7 +234,7 @@ echo "print('Hello, world!')" > scripts/hello.py
 ## Conda: `environment.yml` file
 
 :::{style="margin-top: 30px; font-size: 23px;"}
-- To create an `environment.yml` file, you can use the following command (you can create the file in any folder, e.g., your Desktop):
+- To create an `environment.yml` file, run:
 
 ```{verbatim}
 conda env export --name datasci350 --file ~/Desktop/environment.yml
@@ -468,7 +452,7 @@ wheel==0.44.0
 
 ## Making `requirements.txt` more portable
 
-:::{style="margin-top: 30px; font-size: 18px;"}
+:::{style="margin-top: 30px; font-size: 20px;"}
 - However, `pip freeze` often includes [local file paths]{.alert} that won't work on other machines
 - To create a truly portable `requirements.txt`, we need to [remove these local paths]{.alert}
 - The easiest way is to use `grep` to filter out lines containing `file://`
@@ -476,9 +460,6 @@ wheel==0.44.0
 ```{verbatim}
 # Remove local file paths from requirements.txt
 pip freeze | grep -v 'file://' > clean-requirements.txt
-
-# Or if you already have a requirements.txt with local paths:
-grep -v 'file://' requirements.txt > clean-requirements.txt
 ```
 
 - What this command does:
@@ -518,68 +499,116 @@ pip install -r clean-requirements.txt  # -r reads package names from the file
 
 - And that's all there is to it! 😊
 - It works in a similar way to `conda`, and it is also widely used in the Python community
+- It is recommended to create a virtual environment (e.g., with `venv` or `virtualenv`) before installing packages with `pip` to avoid conflicts with system packages
 - However, it is not as user-friendly as `conda`, and it does not manage environments as well (it only installs packages in the current environment)
-- You can also use `pipenv` to manage your dependencies
+- You can also use `uv` to manage your dependencies
 - Let's see how it works in the next slide 🤓
 :::
 
-## `pipenv` 🐍
+## `uv`: a fast Python package manager
 
-:::{style="margin-top: 30px; font-size: 19px;"}
+:::{style="margin-top: 30px; font-size: 21px;"}
 :::{.columns}
 :::{.column width="50%"}
-- [Pipenv](https://pipenv.pypa.io/en/latest/) is a modern package manager for Python that combines `pip` and `virtualenv` into a single tool
-- It automatically creates and manages virtual environments for your projects
+- [uv](https://docs.astral.sh/uv/) is a modern, [very fast]{.alert} Python package and project manager built by [Astral](https://astral.sh/) (the creators of [Ruff](https://docs.astral.sh/ruff/))
+- Written in Rust, it replaces `pip`, `pip-tools`, `pipenv`, `poetry`, `virtualenv`, and `pyenv` in a single tool!
+- [10-100x faster]{.alert} than `pip` for installing packages 🏎️
+- Installs Python itself, so you don't need a separate Python installer
+- Works on macOS, Linux, and Windows
 
 ```{verbatim}
-# Install pipenv
-pip install pipenv
+# Install uv (macOS/Linux)
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Create project directory and navigate to it
-mkdir datasci350
-cd datasci350
+# Or with Homebrew
+brew install uv
 
-# Install packages (creates Pipfile automatically)
-pipenv install numpy pandas matplotlib
-
-# Activate the virtual environment
-pipenv shell
-
-# Run commands without activating
-pipenv run python script.py
-
-# Install development dependencies
-pipenv install pytest --dev
+# Check installation
+uv --version
 ```
 :::
 
 :::{.column width="50%"}
-- [`Pipfile`:]{.alert} Human-readable file with direct dependencies (TOML format)
-- [`Pipfile.lock`:]{.alert} Auto-generated with exact versions and hashes (JSON format)
+- Create a new project with `uv init`:
 
-- Example Pipfile:
-```{toml}
-[[source]]
-url = "https://pypi.org/simple"
+```{verbatim}
+# Create a new project
+uv init datasci350-project
+cd datasci350-project
 
-[packages]
-numpy = ">=1.20.0"
-pandas = ">=2.0.0"
-matplotlib = "~=3.5.0"
+# Add dependencies
+uv add numpy pandas matplotlib
 
-[dev-packages]
-pytest = "*"
-black = "*"
+# Run a script (uv handles the environment)
+uv run python script.py
 
-[requires]
-python_version = "3.12"
+# Add development dependencies
+uv add --dev pytest ruff
 ```
 
+- `uv init` creates a [`pyproject.toml`]{.alert} file with your project metadata and dependencies
+- `uv add` installs packages and updates the [lock file]{.alert} (`uv.lock`) automatically
+- `--dev` flag adds packages to a separate development group (e.g., for testing and linting)
+- `uv run` executes commands inside the project environment without needing to activate it
+:::
+:::
+:::
+
+## `uv`: project files and sharing
+
+:::{style="margin-top: 30px; font-size: 20px;"}
+:::{.columns}
+:::{.column width="50%"}
+- A `uv` project has two key files:
+  - [`pyproject.toml`]{.alert}: your direct dependencies (human-readable)
+  - [`uv.lock`]{.alert}: exact versions for reproducibility (auto-generated)
+
+- [TOML]{.alert} (Tom's Obvious Minimal Language) is a simple config format with key-value pairs and `[sections]`, similar to YAML. Created by Tom Preston-Werner (co-founder of GitHub). [More here](https://toml.io/en/)
+- Example `pyproject.toml`:
+
+```{toml}
+[project]
+name = "datasci350-project"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=1.26.0",
+    "pandas>=2.2.0",
+    "matplotlib>=3.9.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0", "ruff>=0.4"]
+```
+:::
+
+:::{.column width="50%"}
 - To share your environment with others:
 
-1. Share your project files (including `Pipfile` and `Pipfile.lock`)
-2. Run `pipenv install`, and you're done! 🎉
+1. Push `pyproject.toml` and `uv.lock` to your repository
+2. Your collaborator runs `uv sync`, and they are done! 🎉
 
+```{verbatim}
+# Clone the repo and sync dependencies
+git clone https://github.com/user/project.git
+cd project
+uv sync
+
+# Run the project
+uv run python analysis.py
+```
+
+- `uv` can also manage [Python versions]{.alert} directly:
+
+```{verbatim}
+# Install a specific Python version
+uv python install 3.12
+
+# Pin Python version for the project
+uv python pin 3.12
+```
+
+- More details in the [uv documentation](https://docs.astral.sh/uv/)
 :::
 :::
 :::
@@ -630,7 +659,7 @@ python_version = "3.12"
 
 ## What are software containers?
 
-:::{style="margin-top: 30px; font-size: 26px;"}
+:::{style="margin-top: 30px; font-size: 28px;"}
 :::{.columns}
 :::{.column width="50%"}
 - [Containers](https://www.docker.com/resources/what-container) package software so it can run on any system
@@ -650,14 +679,15 @@ python_version = "3.12"
 
 ## What is Docker? 🐳
 
-:::{style="margin-top: 30px; font-size: 24px;"}
+:::{style="margin-top: 30px; font-size: 23px;"}
 :::{.columns}
 :::{.column width="50%"}
 - [Docker](https://www.docker.com/) is the leading containerisation platform
 - Three main concepts:
-  - [Container]{.alert}: an executable package with everything needed to run an application
-  - [Image]{.alert}: a snapshot that produces a container when started with `run` ([more here](https://stackoverflow.com/questions/23735149/what-is-the-difference-between-a-docker-image-and-a-container))
-  - [Registry]{.alert}: a collection of repositories from which you pull images
+  - [Image]{.alert}: a read-only template (like a recipe) that contains the OS, libraries, code, and configuration. You [build]{.alert} images from a `Dockerfile`
+  - [Container]{.alert}: a running instance of an image. You can run [many containers from the same image]{.alert}
+  - [Registry]{.alert}: a collection of repositories from which you pull images (e.g., Docker Hub)
+- Think of it this way: an image is a class, a container is an object ([more here](https://stackoverflow.com/questions/23735149/what-is-the-difference-between-a-docker-image-and-a-container))
 - The syntax is similar to Git and Linux, so it should feel familiar
 :::
 
@@ -751,11 +781,11 @@ touch Dockerfile
 :::
 
 :::{.column width="50%"}
-- The syntax: `FROM` sets the base image, `RUN` executes commands during the build, and `CMD` runs when the container starts
-- [Full reference here](https://docs.docker.com/reference/dockerfile/)
+- `FROM` sets the base image, `RUN` executes commands during the build, and `CMD` runs when the container starts. [Full reference here](https://docs.docker.com/reference/dockerfile/)
 
 ```{verbatim}
-# Use an official Python runtime as a parent image
+# Use an official Python runtime as 
+# a parent image
 FROM python:3
 
 # Install libraries
@@ -797,7 +827,7 @@ docker build -t datasci350-example .
 
 ## Let's run and share the container! 🏃‍♂️
 
-:::{style="margin-top: 30px; font-size: 20px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 - To run the container, we can use the following command:
 
 ```{verbatim}
@@ -878,7 +908,7 @@ docker run danilofreire/datasci350-example:latest
 :::{.column width="50%"}
 - [Dependency management]{.alert} is more important than people think
 - It is the first step towards reproducibility and transparency
-- You can use `conda`, `pip`, or `pipenv` to manage your dependencies in Python
+- You can use `conda`, `pip`, or `uv` to manage your dependencies in Python
 - [Docker]{.alert} offers a more comprehensive solution to the reproducibility crisis
 - None of them are difficult to use, and they can [save you a lot of time and headaches in the future]{.alert} 😅
 - In the next class, we will have a hands-on session on Docker, so you can practice building containers and running them on your machine

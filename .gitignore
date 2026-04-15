@@ -1920,3 +1920,5 @@ SKILLS.md
 humaniser-skill.md
 assignments-agents.md
 *.quarto_ipynb*
+
+**/*.quarto_ipynb

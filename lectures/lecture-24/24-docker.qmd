@@ -94,7 +94,7 @@ editor:
 
 :::{style="margin-top: 30px; font-size: 30px;"}
 - Today we will build a container with [all the tools we covered in this course (!)]{.alert} 🤓
-- That includes `bash`, `git`, `Python`, `Jupyter`, `Quarto`, `SQL`, and `Jupyter` tools
+- That includes `bash`, `git`, `Python`, `Quarto`, `SQL`, and `Jupyter` tools
 - We will write a [Dockerfile](https://docs.docker.com/engine/reference/builder/) and run the container locally
 - The base image is the [official Ubuntu image](https://hub.docker.com/_/ubuntu) (same as our AWS instance), and we will install all packages on top of it
 - We will also explore [volume mounts](https://docs.docker.com/storage/volumes/) to persist data and how to manage dependencies inside the container
@@ -237,6 +237,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends\
     git=1:2.43.0-1ubuntu7.3 \
     sqlite3=3.45.1-1ubuntu2.5 \
     libsqlite3-0=3.45.1-1ubuntu2.5 \
+    wget=1.21.4-1ubuntu4.1 \
     python3.12=3.12.3-1ubuntu0.12 \
     python3.12-venv=3.12.3-1ubuntu0.12 \
     python3-pip=24.0+dfsg-1ubuntu1.3 && \

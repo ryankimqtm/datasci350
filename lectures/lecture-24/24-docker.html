@@ -1376,7 +1376,7 @@ Danilo Freire
 <div style="margin-top: 30px; font-size: 30px;">
 <ul>
 <li>Today we will build a container with <span class="alert">all the tools we covered in this course (!)</span> 🤓</li>
-<li>That includes <code>bash</code>, <code>git</code>, <code>Python</code>, <code>Jupyter</code>, <code>Quarto</code>, <code>SQL</code>, and <code>Jupyter</code> tools</li>
+<li>That includes <code>bash</code>, <code>git</code>, <code>Python</code>, <code>Quarto</code>, <code>SQL</code>, and <code>Jupyter</code> tools</li>
 <li>We will write a <a href="https://docs.docker.com/engine/reference/builder/">Dockerfile</a> and run the container locally</li>
 <li>The base image is the <a href="https://hub.docker.com/_/ubuntu">official Ubuntu image</a> (same as our AWS instance), and we will install all packages on top of it</li>
 <li>We will also explore <a href="https://docs.docker.com/storage/volumes/">volume mounts</a> to persist data and how to manage dependencies inside the container</li>
@@ -1539,10 +1539,11 @@ Danilo Freire
 <span id="cb3-5"><a href></a>    git=1:2.43.0-1ubuntu7.3 <span class="dt">\</span></span>
 <span id="cb3-6"><a href></a>    sqlite3=3.45.1-1ubuntu2.5 <span class="dt">\</span></span>
 <span id="cb3-7"><a href></a>    libsqlite3-0=3.45.1-1ubuntu2.5 <span class="dt">\</span></span>
-<span id="cb3-8"><a href></a>    python3.12=3.12.3-1ubuntu0.12 <span class="dt">\</span></span>
-<span id="cb3-9"><a href></a>    python3.12-venv=3.12.3-1ubuntu0.12 <span class="dt">\</span></span>
-<span id="cb3-10"><a href></a>    python3-pip=24.0+dfsg-1ubuntu1.3 <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb3-11"><a href></a>    <span class="ex">apt-get</span> clean <span class="kw">&amp;&amp;</span> <span class="fu">rm</span> <span class="at">-rf</span> /var/lib/apt/lists/<span class="pp">*</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-8"><a href></a>    wget=1.21.4-1ubuntu4.1 <span class="dt">\</span></span>
+<span id="cb3-9"><a href></a>    python3.12=3.12.3-1ubuntu0.12 <span class="dt">\</span></span>
+<span id="cb3-10"><a href></a>    python3.12-venv=3.12.3-1ubuntu0.12 <span class="dt">\</span></span>
+<span id="cb3-11"><a href></a>    python3-pip=24.0+dfsg-1ubuntu1.3 <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb3-12"><a href></a>    <span class="ex">apt-get</span> clean <span class="kw">&amp;&amp;</span> <span class="fu">rm</span> <span class="at">-rf</span> /var/lib/apt/lists/<span class="pp">*</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>So far, so good! 😎</li>
 <li>We are installing <code>bash</code>, <code>git</code>, <code>sqlite3</code>, <code>Python 3.12</code>, and <code>pip</code> in the container, similar to what we did on AWS</li>

@@ -27,7 +27,7 @@ editor:
 :::{style="margin-top: 30px; font-size: 28px;"}
 :::{.columns}
 :::{.column width="50%"}
-- We covered [a lot of content]{.alert} this term! 🤓
+- We covered [a lot of content]{.alert} this semester! 🤓
 - Three key areas for data science:
     - [Reliability]{.alert}: consistent results every time you run your code
     - [Reproducibility]{.alert}: others (and your future self) can obtain the same results with your data and code
@@ -64,6 +64,17 @@ Source: [The Turing Way Community (2025)](https://book.the-turing-way.org/reprod
   * [Docker]{.alert}: [containerisation]{.alert}, packaging apps and dependencies to run anywhere
 :::
 :::
+:::
+
+## A quick favour 🙏
+### Course evaluations are open!
+
+:::{style="margin-top: 40px; font-size: 30px;"}
+- Course evaluations are now open, and I would love to hear your thoughts on the course!
+- Just log on to [Canvas]{.alert} and go to *Account → Profile → Course Evaluations*
+- Works on any device: laptop, tablet, or phone
+- It only takes a few minutes!
+- Thank you so much for taking the time. I really appreciate it! 😊
 :::
 
 # Computational literacy 💻 {background-color="#2d4563"}

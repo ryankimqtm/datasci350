@@ -22,16 +22,6 @@ editor:
 
 # Hello, everyone! 😊 {background-color="#2d4563"}
 
-## Course evaluation
-
-:::{style="margin-top: 30px; font-size: 34px;"}
-- Please complete the course evaluation form!
-- Your feedback helps improve the course
-- Share what you liked too!
-- Canvas → Account → Profile → Course Evaluations
-- Thank you! 🙏
-:::
-
 ## Course recap
 
 :::{style="margin-top: 30px; font-size: 28px;"}
@@ -68,7 +58,7 @@ Source: [The Turing Way Community (2025)](https://book.the-turing-way.org/reprod
 :::
 
 :::{.column width="50%"}
-  * [Pandas & SQL]{.alert}: [Pandas]{.alert} for data manipulation; [SQLite]{.alert} for databases
+  * [SQL & Relational Databases]{.alert}: structured data storage and querying with SQL
   * [AI Tools]{.alert}: programming assistants that generate, explain, and debug code
   * [Dask]{.alert}: [parallel and distributed computing]{.alert} beyond a single machine
   * [Docker]{.alert}: [containerisation]{.alert}, packaging apps and dependencies to run anywhere
@@ -460,32 +450,6 @@ WebUI GitHub repository: <https://github.com/browser-use/web-ui>
 :::
 
 # Python and SQL for data science 🐍 🗄️{background-color="#2d4563"}
-
-## Data wrangling with Pandas
-
-:::{style="margin-top: 30px; font-size: 25px;"}
-:::{.columns}
-:::{.column width="50%"}
-* [Pandas]{.alert}: Python's main data manipulation library. Core objects: `DataFrame` (2D table) and `Series` (1D array)
-* Works best with [tidy data]{.alert}: variables as columns, observations as rows
-* [Reshaping]{.alert}:
-    * `melt()`: wide → long
-    * `pivot()`/`pivot_table()`: long → wide (with optional aggregation)
-* [Combining]{.alert}:
-    * `pd.concat()`: stack DataFrames row/column-wise
-    * `pd.merge()`: database-style joins (`inner`, `left`, `right`, `outer`)
-:::
-:::{.column width="50%"}
-* [Grouping]{.alert}: `df.groupby('column')` for group-wise operations
-* [Aggregation]{.alert}: summary functions (`mean`, `sum`, `count`, `std`, `min`, `max`, custom) via `.agg()`
-* [Applying Functions]{.alert}: `.apply()` (row/column), `.applymap()` (element-wise DF), `.map()` (element-wise Series)
-* [Missing Data ([NaN]{.alert})]{.alert}:
-    * Detect: `isnull()`, `notnull()`, `info()`
-    * Remove: `dropna()`
-    * Impute: `fillna()` (value, mean, median, `method='ffill'`, etc.)
-:::
-:::
-:::
 
 ## Relational databases & SQL
 

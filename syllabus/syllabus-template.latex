@@ -27,6 +27,9 @@ $endif$
 % Font awesome
 \usepackage{fontawesome5}
 
+% Fix for Quarto's \LTcaptype{none} longtable counter issue
+\newcounter{none}
+
 % Add the following packages to support kableExtra
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -239,7 +242,7 @@ $if(author)$
 $endif$
 
 % Date
-\date{{Spring 2026}}
+\date{{Fall 2026}}
 
 % Tightlist
 \providecommand{\tightlist}{%

@@ -1,0 +1,333 @@
+---
+title: "DATASCI 350 - Data Science Computing"
+subtitle: "Lecture 08: Quiz 01 Review Session"
+author:
+  - name: Danilo Freire
+    email: danilo.freire@emory.edu
+    affiliations: "Department of Data and Decision Sciences <br> Emory University"
+format:
+  clean-revealjs:
+    self-contained: true
+    footer: "[Lecture 08](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-08/08-review.html)"
+    transition: slide
+    transition-speed: default
+    scrollable: true
+engine: python3
+revealjs-plugins:
+  - fontawesome
+  - multimodal
+editor:
+  render-on-save: true
+---
+
+# Welcome back! 🧠 {background-color="#2d4563"}
+
+## Today's plan
+
+:::{style="margin-top: 20px; font-size: 28px;"}
+- Quiz 01 is on [Thursday, September 24]{.alert} (75 minutes, in class)
+- Open laptop and notes; you can search the web
+- The quiz tests [understanding and critical evaluation]{.alert}, not memorisation
+- Today is [your session]{.alert}, not mine. I will ask, you will answer
+- We will work through:
+  1. A rapid recap of the seven lectures
+  2. One realistic scenario, broken down together
+  3. Practice questions in pairs
+  4. Open Q&A
+- [Stop me]{.alert} whenever something is unclear. That is the whole point of today
+:::
+
+## Quiz logistics
+
+:::{style="margin-top: 20px; font-size: 28px;"}
+:::{.columns}
+:::{.column width=55%}
+- [Format:]{.alert} 5 short questions plus one bonus
+- [Length:]{.alert} 75 minutes, in person
+- [Material allowed:]{.alert} laptops, notes, lecture slides, web search, AI assistants
+- [What is graded:]{.alert} your reasoning and the commands you actually run, not the polish of your AI's prose
+- [Honour code:]{.alert} write your own answers; if you used an AI, say which one
+- [Coverage:]{.alert} Lectures 01 to 07
+:::
+
+:::{.column width=45%}
+:::{style="text-align: center; margin-top: 20px; font-size: 24px;"}
+[Why open laptop?]{.alert}
+
+The job is not to remember commands. The job is to [know what tool to reach for]{.alert}, [run it]{.alert}, and [explain what just happened]{.alert}.
+:::
+:::
+:::
+:::
+
+# Part 1: rapid recap 🚀 {background-color="#2d4563"}
+
+## How this part works
+
+:::{style="margin-top: 30px; font-size: 30px;"}
+- I will name a [concept or command]{.alert} from one of the seven lectures
+- One of you explains it in [your own words]{.alert} (about 30 seconds)
+- The rest of us [push back, add nuance, or correct]{.alert}
+- I will keep it moving. Wrong answers are useful; silence is not
+- We have about 12 minutes for this section
+:::
+
+## Concept 1: the shell
+
+:::{style="margin-top: 40px; font-size: 32px;"}
+- Volunteer or victim? 🙋
+- In one sentence: [what does the shell do, and why is it useful for data scientists?]{.alert}
+- Follow-ups for the room:
+  - What is the difference between `bash`, `zsh`, and `fish`?
+  - What does it mean for a command to be [piped]{.alert} into another?
+  - Give me one [shell command]{.alert} you actually used this week
+:::
+
+## Concept 2: file system navigation
+
+:::{style="margin-top: 40px; font-size: 30px;"}
+- Pick someone new
+- [What do `pwd`, `cd`, `ls`, `mkdir`, `rm` do?]{.alert} (Pair them up: who explains which?)
+- Quick room poll: in each case, [is the path absolute or relative?]{.alert}
+  - `/Users/danilo/work`
+  - `./scripts/run.sh`
+  - `~/Documents/datasci350`
+  - `../../data/file.csv`
+- Connect to: [globbing patterns]{.alert} (`*`, `?`, `[abc]`)
+:::
+
+## Concept 3: text-processing tools
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+- Three students, one tool each. One sentence per person:
+  - [grep]{.alert} — ?
+  - [sed]{.alert} — ?
+  - [awk]{.alert} — ?
+- Then back to the room: name one [real task]{.alert} you would solve with each
+- Trick question: how would you [count the number of lines containing the word "error"]{.alert} in a log file?
+:::
+
+## Concept 4: Git — local commands
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+- This is the single most quiz-worthy concept of the block. 🎯
+- Volunteer to explain [the three trees of Git]{.alert} (working directory, staging area, repository)
+- Then the room debates:
+  - What does `git add .` actually do?
+  - What is the difference between `git commit` and `git commit -a`?
+  - When would you use `git stash`?
+  - What does `HEAD` mean?
+- Punchline: a commit is [a snapshot, not a diff]{.alert}
+:::
+
+## Concept 5: Git — remote and collaboration
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+- Cold call: [what is the difference between `git fetch` and `git pull`?]{.alert}
+- Follow-up: [what is a "remote", and why might a repo have more than one?]{.alert}
+- Room scenario:
+  - You and a partner edit the same file on different branches
+  - You push, they push, conflicts arise
+  - [Walk me through what happens next]{.alert}
+- Connect to: [pull requests, code review, and merge conflicts]{.alert}
+:::
+
+## Concept 6: branches and pull requests
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+- Pair up with the person next to you. One minute. 🗣️
+  - One of you explains [what a branch is]{.alert}
+  - The other explains [what a pull request adds on top]{.alert}
+- Then I pick two pairs to share
+- Rapid-fire room questions:
+  - Why is the `main` branch usually [protected]{.alert}?
+  - What does it mean to [rebase]{.alert} a branch?
+  - When would you choose [merge]{.alert} over [rebase]{.alert}?
+:::
+
+## Concept 7: the `.gitignore` and good repository hygiene
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+- Last concept of the recap
+- [Why do we use `.gitignore`?]{.alert}
+- Room:
+  - Name three kinds of file you should [never commit]{.alert}
+  - What is the danger of committing a `.env` file by mistake?
+  - How do you [stop tracking]{.alert} a file you already committed?
+:::
+
+# Part 2: a real scenario 🛠️ {background-color="#2d4563"}
+
+## The setup
+
+:::{style="margin-top: 20px; font-size: 26px;"}
+:::{.columns}
+:::{.column width=60%}
+You are joining a small research group, [BrightLab]{.alert}, that does data analysis for a hospital. Your first task: rescue a project that is "almost finished" but has been worked on by three different students over six months.
+
+You clone the repo and find:
+
+- A folder full of `.csv` files, some with the same name and `(1)`, `(2)` suffixes
+- Three Jupyter notebooks named `final.ipynb`, `final-v2.ipynb`, `final-v2-DEFINITELY.ipynb`
+- A README that mentions "running `process.py`" but no `process.py` exists in the repo
+- Branches named `main`, `feature`, `feature-old`, `dani-test`, `delete-me`
+- A `.env` file with what looks like a real database password
+:::
+
+:::{.column width=40%}
+:::{style="text-align: center; margin-top: 30px; font-size: 28px;"}
+🚨
+
+We will work through this together.
+
+I will [not move on]{.alert} until I get answers from at least three different people on each question.
+:::
+:::
+:::
+:::
+
+## Question A: triage
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+- [What is the first command you run]{.alert} after cloning, and why?
+- Hints, if the room is quiet:
+  - You want to know [where you are]{.alert} (which branch, which commit)
+  - You want to know [what's about to break]{.alert} (uncommitted changes, untracked files)
+- Name [at least three useful diagnostic commands]{.alert}
+:::
+
+::: {.notes}
+Aim for: `git status`, `git log --oneline --graph --all`, `git branch -a`, `ls -la`,
+maybe `cat README.md`. The goal is to map the repo before you touch anything.
+:::
+
+## Question B: the secret in `.env`
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+- The `.env` has a real database password
+- Volunteer: [is the secret already exposed?]{.alert}
+- Then the room:
+  - If `.env` is in the repo and the repo is on GitHub, [what should you assume?]{.alert}
+  - Removing it from the working directory and committing — does that fix it?
+  - What is the [correct response]{.alert} (treat the password as compromised, rotate it, then clean history)
+- This is a classic case of [`.gitignore` should have caught it]{.alert}, but it didn't
+:::
+
+## Question C: the Jupyter notebook chaos
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+- Three notebooks, all called "final" with version suffixes
+- Volunteer: [which one do you trust, and how do you tell?]{.alert}
+- Then the room:
+  - What does `git log` on a notebook show, vs on a `.py` file?
+  - Why are notebooks [hard to diff]{.alert}, and what tools help?
+  - If you had to make these reproducible, would you keep them as `.ipynb`, convert to `.py`, or use Quarto?
+:::
+
+## Question D: pull request strategy
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+- Your team agrees: from now on, every change goes through a pull request
+- The room votes by show of hands:
+  - [Branch off `main` for every change]{.alert}
+  - [Branch off the most recent feature branch]{.alert}
+  - [Just push directly when it's a small fix]{.alert}
+- Whatever the room votes, I want one defender of each position to [argue for 60 seconds]{.alert}
+- Then the room: [what evidence would change your mind?]{.alert}
+:::
+
+# Part 3: practice questions 📝 {background-color="#2d4563"}
+
+## How this part works
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+- I will show you [three practice questions]{.alert}, one at a time
+- They are written in the same style as the real Quiz 01
+- Pair up with the person next to you
+- You have [two minutes per question]{.alert} to discuss your answer
+- Then I will pick a pair to share, and the room critiques
+- These are [not the real quiz questions]{.alert}, but the format is identical
+:::
+
+## Practice question 1
+
+:::{style="margin-top: 20px; font-size: 26px;"}
+You have a folder of 200 CSV files dropped into `~/Downloads/incoming/`. They are all named `report-YYYY-MM-DD.csv`. You want to:
+
+1. Move all of them to `~/work/data/`
+2. Print the line count of each file
+3. Concatenate them into a single `combined.csv` (preserving the header row only once)
+
+[Your task:]{.alert}
+
+1. Write the [shell commands]{.alert} you would use, in the order you would run them
+2. Explain how you would test [whether the move worked correctly]{.alert} before you delete the originals
+3. Name one thing that could [go wrong silently]{.alert} (Hint: filename collisions, header rows, encoding)
+
+[Two minutes. Discuss with your partner.]{.alert} ⏱️
+:::
+
+## Practice question 2
+
+:::{style="margin-top: 20px; font-size: 26px;"}
+A teammate sends you the message: "I committed something secret to the repo by accident. Please help."
+
+You ask them to clarify, and they say:
+
+> I committed `config.py` last week with my AWS access key. I deleted it in a later commit, but it's still in `git log`. The repo is public on GitHub.
+
+[Your task:]{.alert}
+
+1. Is the secret [still exposed]{.alert} despite the deletion? Explain why
+2. List the [steps you would take]{.alert} to (a) protect the AWS account and (b) clean the repository
+3. What single line in `.gitignore` would have prevented this?
+
+[Two minutes.]{.alert} ⏱️
+:::
+
+## Practice question 3
+
+:::{style="margin-top: 20px; font-size: 26px;"}
+You are reviewing a pull request from a colleague. The PR has 47 files changed and the description says "small fix to the data pipeline". The diff includes:
+
+- A renamed module
+- A new `requirements.txt`
+- 12 new tests
+- One unrelated commit titled "WIP" 🤔
+
+[Your task:]{.alert}
+
+1. What is your [first concern]{.alert} about this PR?
+2. What [questions would you ask the author]{.alert} before approving?
+3. If you were the author, [how would you have structured this differently]{.alert} to make review easier?
+
+[Two minutes.]{.alert} ⏱️
+:::
+
+# Part 4: open Q&A 💬 {background-color="#2d4563"}
+
+## Anything unclear
+
+:::{style="margin-top: 50px; font-size: 32px;"}
+- This is your last chance before Thursday
+- No question is too small. If [you]{.alert} are unsure, [others]{.alert} are too
+- Topics most often asked about in past semesters:
+  - [Rebasing vs merging]{.alert} — when should I use each?
+  - [Detached HEAD]{.alert} — what is it and how do I get out?
+  - [Pull request reviews]{.alert} — what does a good review look like?
+  - [GitHub Pages]{.alert} — how do I publish a static site from my repo?
+:::
+
+## Last reminders before Thursday
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+- [Thursday, September 24, 5:30 pm, this room]{.alert}
+- Bring your laptop and your charger 🔌
+- The quiz is on [Canvas]{.alert} — log in before you arrive
+- Read each question [twice]{.alert} before you start typing
+- If you are stuck, [skip and come back]{.alert} — do not lose the easy points
+- Cite the AI tool you used (if any). [Honesty over polish]{.alert}
+- See you Thursday. You are ready. 💪
+:::
+
+# See you Thursday! 👋 {background-color="#2d4563"}

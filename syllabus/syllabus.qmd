@@ -1,6 +1,6 @@
 ---
 title: __DATASCI 350 - Data Science Computing__
-date: "Spring 2026"
+date: "Fall 2026"
 lang: en-GB
 author: 
   - Danilo Freire
@@ -94,7 +94,7 @@ This course is designed to be self-contained, providing all the necessary resour
 
 # Course Information
 
-We will meet every Monday and Wednesday from 5:30pm to 6:45pm in the [Psychology Building 230](http://emap.fmd.emory.edu/website/campus/index.htm#?queryzoom=Yes&Query=(bldg='2045')). It is important that you read the materials before class. All information about the course is available on the course's GitHub repository at <https://github.com/danilofreire/datasci350>. While I will try to adhere to the course schedule as much as possible, I also want to adapt to your learning pace and style. The syllabus and course plan may change in the semester. Again, please check [the course repository](https://github.com/danilofreire/datasci350) regularly to check for updates. I will also announce any changes in class and via email.
+We will meet every Tuesday and Thursday from 5:30pm to 6:45pm in [Math & Science Center, Room W301](https://maps.app.goo.gl/JAnhzo63ZcT4GgE87). It is important that you read the materials before class. All information about the course is available on the course's GitHub repository at <https://github.com/danilofreire/datasci350>. While I will try to adhere to the course schedule as much as possible, I also want to adapt to your learning pace and style. The syllabus and course plan may change in the semester. Again, please check [the course repository](https://github.com/danilofreire/datasci350) regularly to check for updates. I will also announce any changes in class and via email.
 
 # Software
 
@@ -156,9 +156,9 @@ Each student's final grade will be based on the following after rounding up to t
 
 The lecture notes cover all the necessary material for the course, and the weekly suggested readings are recommended for those who want to deepen their understanding of the course topics. As mentioned above, the course outline is subject to change, and I will update the syllabus if needed. Please remember to check the course [GitHub repository](https://github.com/danilofreire/datasci350) regularly. Lecture notes, assignments, and other materials will be posted there as the course progresses.
 
-## Module 01: Introduction 
+## Module 01: Introduction
 
-### January 14, 2026:
+### August 27, 2026:
 
 - Syllabus and course repository: <https://github.com/danilofreire/datasci350>.
 - Lecture 01: [Welcome to DATASCI 350 - Introduction](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-01/01-introduction.html).
@@ -172,9 +172,7 @@ Suggested references:
 - Brady, H. E. (2019). [The Challenge of Big Data and Data Science](https://www.annualreviews.org/content/journals/10.1146/annurev-polisci-090216-023229). Annual Review of Political Science, 22(1), 297-323.
 - Zitnik, M., Nguyen, F., Wang, B., Leskovec, J., Goldenberg, A., & Hoffman, M. M. (2019). [Machine Learning for Integrating Data in Biology and Medicine: Principles, Practice, and Opportunities](https://www.sciencedirect.com/science/article/abs/pii/S1566253518304482). Information Fusion, 50, 71-91.
 
-### January 19, 2026: Martin Luther King Day (No Classes)
-
-### January 21, 2026:
+### September 1, 2026:
 
 - Lecture 02: [Computational Literacy](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-02/02-computational-literacy.html).
 - [**Assignment 01**](https://github.com/danilofreire/datasci350/blob/main/assignments/01-assignment.ipynb).
@@ -189,7 +187,7 @@ Suggested references:
 
 ## Module 02: Introduction to the Command-Line Interface and Version Control
 
-### January 26, 2026:
+### September 3, 2026:
 
 - Lecture 03: [The Command-Line Interface (CLI), Shell Basics, and File Management](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-03/03-command-line.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=9a77f4a0-f1ea-498a-b85f-1a8993922f82&hostId=05eb977d-4f8a-440e-9e45-95212b29d103)
@@ -201,7 +199,7 @@ Suggested references:
 - Shotts, W. (2019). [The Linux Command Line: A Complete Introduction](https://linuxcommand.org/tlcl.php). No Starch Press.
 - Healy, K. (2019). [The Plain Person's Guide to Plain Text Social Science](https://plain-text.co/). Chapters 1-5.
 
-### January 28, 2026:
+### September 8, 2026:
 
 - Lecture 04: [More Command Line Tools, Text Files and Scripting](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-04/04-more-command-line.html).
 - **Assignment 01 due (5%).**
@@ -217,7 +215,7 @@ Suggested references:
 - [Vim Adventures](https://vim-adventures.com/). (Instructor's note: this is a fun, albeit cringy, way to learn Vim).
 - Videos: [freeCodeCamp - Command line crash course](https://www.youtube.com/watch?v=yz7nYlnXLfE&pp=ygUXaG93IHRvIHVzZSBjb21tYW5kIGxpbmU%3D), [Percy Grunwald - Absolute beginner guide to the macOS terminal](https://www.youtube.com/watch?v=aKRYQsKR46I&pp=ygUcdGVybWluYWwgZm9yIGJlZ2lubmVycyBtYWNvcw%3D%3D), [NetworkChuck - 50 macOS tips and tricks using terminal](https://www.youtube.com/watch?v=qOrlYzqXPa8&pp=ygUcdGVybWluYWwgZm9yIGJlZ2lubmVycyBtYWNvcw%3D%3D)
 
-### February 02, 2026:
+### September 10, 2026:
 
 - Lecture 05: [Version control with Git and GitHub](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-05/05-git-github.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=f3930dce-298d-4610-a365-406fa3088a87&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
@@ -227,7 +225,7 @@ Suggested references:
 - Chacon, S. and Straub, B. (2014). [Pro Git](https://git-scm.com/book/en/v2). Apress. (Instructor's note: this is _the book_ on Git).
 - GitHub tutorials: [GitHub skills](https://skills.github.com/) (recommended), [Git guides](https://github.com/git-guides), [GitHub learning lab](https://lab.github.com/), [Best practices for repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories).
 
-### February 04, 2026:
+### September 15, 2026:
 
 - Lecture 06: [More Git and GitHub: pull requests, issues, pages, and collaboration features](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-06/06-more-git-github.html).
 - **Assignment 02 due (5%).**
@@ -240,16 +238,20 @@ Suggested references:
 - Beckman, M. D., Çetinkaya-Rundel, M., Horton, N. J., Rundel, C. W., Sullivan, A. J., & Tackett, M. (2021). [Implementing version control with git and GitHub as a learning objective in statistics and data science courses](https://www.tandfonline.com/doi/pdf/10.1080/10691898.2020.1848485). Journal of Statistics and Data Science Education, 29(sup1), S132-S144.
 - Escamilla, E., Klein, M., Cooper, T., Rampin, V., Weigle, M. C., & Nelson, M. L. (2022). [The Rise of GitHub in Scholarly Publications](https://arxiv.org/abs/2208.04895). arXiv preprint arXiv:2208.04895.
 
-### February 09, 2026:
+### September 17, 2026:
 
 - Lecture 07: [More Git Commands, CLI and Git Practice](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-07/07-practice.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=0c41d485-25b6-44a6-a825-70854f1953cb&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
+### September 22, 2026:
+
+- Lecture 08: [Review session for Quiz 01](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-08/08-review.html). This session covers Lectures 01-07 (Introduction, Computational Literacy, CLI, Git/GitHub) and prepares students for Quiz 01 on September 24.
+
 ## Module 03: Literate Programming with Markdown, Quarto, and Jupyter
 
-### February 11, 2026:
+### September 24, 2026:
 
-- Lecture 08: [Quiz 01: Git and Github (6%)](https://github.com/danilofreire/datasci350-quiz01/).
+- Lecture 09: [Quiz 01: Git and Github (6%)](https://github.com/danilofreire/datasci350-quiz01/).
 - **Assignment 03 due (5%).**
 - [**Assignment 04**](https://github.com/danilofreire/datasci350/blob/main/assignments/04-assignment.ipynb).
 
@@ -264,9 +266,9 @@ Suggested references:
 - [Codecademy - How to use Jupyter Notebooks](https://www.codecademy.com/article/how-to-use-jupyter-notebooks)
 - [Course tutorial: Jupyter and Markdown](https://danilofreire.github.io/datasci350/tutorials/02-jupyter-markdown-tutorial.html)
 
-### February 16, 2026:
+### September 29, 2026:
 
-- Lecture 09: [Introduction to Quarto](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-08/08-quarto.html).
+- Lecture 10: [Introduction to Quarto](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-10/10-quarto.html).
 
 Suggested references:
 
@@ -275,9 +277,9 @@ Suggested references:
 - Çetinkaya-Rundel, M. & Lowndes, J. S. (2022) [Keynote talk: Hello Quarto: Share • Collaborate • Teach • Reimagine](https://www.youtube.com/watch?v=p7Hxu4coDl8). [Slides](https://mine.quarto.pub/hello-quarto/#/hello-quarto-title) and [source code](https://github.com/mine-cetinkaya-rundel/hello-quarto). This is one of the nicest Quarto presentations I have seen.
 - [Getting Started with Quarto (YouTube)](https://www.youtube.com/watch?v=_f3latmOhew&t=2s). Note: Posit (formerly RStudio) has a series of tutorials on Quarto on their YouTube channel. You can find their playlist [here](https://www.youtube.com/playlist?list=PL9HYL-VRX0oQI8fVioFxMTBrViFnRX_Df).
 
-### February 18, 2026:
+### October 1, 2026:
 
-- Lecture 10: [Writing Documents, Presentations, and Websites with Quarto](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-09/09-more-quarto.html).
+- Lecture 11: [Writing Documents, Presentations, and Websites with Quarto](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-11/11-more-quarto.html).
 - **Assignment 04 due (5%).**
 - [**Assignment 05**](https://github.com/danilofreire/datasci350/blob/main/assignments/05-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=b3cb9962-bfcd-4b44-a3f4-4357b1442eda&hostId=05eb977d-4f8a-440e-9e45-95212b29d103)
@@ -291,9 +293,9 @@ Suggested references:
 
 ## Module 04: AI-Assisted Programming
 
-### February 23, 2026:
+### October 6, 2026:
 
-- Lecture 11: [AI and Prompt Engineering](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-11/11-ai-programming.html).
+- Lecture 12: [AI and Prompt Engineering](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-12/12-ai-programming.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=ecf9f3d1-7d0d-4ca1-a3a5-a26c5e72427b&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
@@ -306,15 +308,18 @@ Suggested references:
 - OpenAI (2025). [Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering).
 - Google (2025). [Gemini Prompting Guide](https://services.google.com/fh/files/misc/gemini-for-google-workspace-prompting-guide-101.pdf). 
 
-### February 25, 2026:
+### October 8, 2026:
 
-- Lecture 12: [Quiz 02: Literate Programming (6%)](https://github.com/danilofreire/datasci350-quiz02/).
+- Lecture 13: [Quiz 02: Literate Programming (6%)](https://github.com/danilofreire/datasci350-quiz02/).
 - **Assignment 05 due (5%).**
 - [**Assignment 06**](https://github.com/danilofreire/datasci350/blob/main/assignments/06-assignment.ipynb).
 
-### March 02, 2026:
+### October 13, 2026: Fall Break (No Classes)
 
-- Lecture 13: [AI-Assisted Programming, APIs, and Agents](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-13/13-ai.html).
+
+### October 15, 2026:
+
+- Lecture 14: [AI-Assisted Programming, APIs, and Agents](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-14/14-ai.html).
 
 Suggested references:
 
@@ -325,9 +330,9 @@ Suggested references:
 
 ## Module 05: Introduction to Cloud Computing
 
-### March 04, 2026:
+### October 20, 2026:
 
-- Lecture 14: [Introduction to Cloud Computing](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-14/14-cloud.html).
+- Lecture 15: [Introduction to Cloud Computing](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-15/15-cloud.html).
 - **Assignment 06 due (5%).**
 - [**Assignment 07**](https://github.com/danilofreire/datasci350/blob/main/assignments/07-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=8691380c-2ccb-49fa-aab1-471754aeb24c&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
@@ -341,18 +346,16 @@ Suggested references:
 - Newman, S. (2021). [Building microservices: designing fine-grained systems](https://books.google.com.br/books?id=ZvM5EAAAQBAJ&lpg=PT16&ots=ui8f8ybCQq&dq=Building%20Microservices%20by%20Sam%20Newman&lr&pg=PA1#v=onepage&q&f=false). O'Reilly Media, Inc.
 - Erl, T., Puttini, R., & Mahmood, Z. (2013). [Cloud computing: concepts, technology & architecture](https://books.google.com.br/books?id=zqhpAgAAQBAJ&lpg=PR13&ots=N7cmAFxaQV&dq=%22Cloud%20Computing%3A%20Concepts%2C%20Technology%20%26%20Architecture%22%20by%20Thomas%20Erl%20&lr&pg=PR13#v=onepage&q=%22Cloud%20Computing:%20Concepts,%20Technology%20&%20Architecture%22%20by%20Thomas%20Erl&f=false). Pearson Education.
 
-### March 9 and 11, 2026: Spring Break (No Classes)
+### October 22, 2026:
 
-### March 16, 2026:
-
-- Lecture 15: [More Cloud Computing with Amazon Web Services (AWS)](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-15/15-cloud2.html).
+- Lecture 16: [More Cloud Computing with Amazon Web Services (AWS)](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-16/16-cloud2.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=9a098f1f-ebd6-40cd-aa4e-b8f096683a37&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
-## Module 06: Introduction to SQL Databases 
+## Module 06: Introduction to SQL Databases
 
-### March 18, 2026:
+### October 27, 2026:
 
-- Lecture 16: [Introduction to SQL: Data Types, Tables, and Queries](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-16/16-introduction-sql.html).
+- Lecture 17: [Introduction to SQL: Data Types, Tables, and Queries](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-17/17-introduction-sql.html).
 - **Assignment 07 due (5%).**
 - No assignment this week.
 - [Instructions for the Final Project](https://github.com/danilofreire/datasci350/tree/main/project).
@@ -367,17 +370,12 @@ Suggested references:
 - [SQLite Documentation](https://www.sqlite.org/docs.html).
 - [SQL for Data Science](https://www.coursera.org/learn/sql-for-data-science?irgwc=1).
 
-### March 23, 2026:
+### October 29, 2026:
 
-- Lecture 17: [SQL in Python: Connecting to Databases with Pandas](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-17/17-sql-python.html).
+- Lecture 18: [SQL in Python: Connecting to Databases with Pandas](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-18/18-sql-python.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=ebd517ed-7bf1-447c-8e30-9c5abb75ef16&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
-### March 25, 2026:
-
-- Lecture 18: [Quiz 03: AI-Assisted Programming and Cloud Computing (6%)](https://github.com/danilofreire/datasci350-quiz03/).
-- [**Assignment 08**](https://github.com/danilofreire/datasci350/blob/main/assignments/08-assignment.ipynb).
-
-### March 30, 2026:
+### November 3, 2026:
 
 - Lecture 19: [Merging Tables in SQL](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-19/19-sql-tables.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=0d1466b5-ef43-4ab3-90aa-c46ae0554f19&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
@@ -389,11 +387,16 @@ Suggested references:
 - [Mode Analytics: SQL Joins](https://mode.com/sql-tutorial/sql-joins/).
 - [SQL Joins Tutorial](https://www.sqlitetutorial.net/sqlite-join/).
 
+### November 5, 2026:
+
+- Lecture 20: [Quiz 03: AI-Assisted Programming and Cloud Computing (6%)](https://github.com/danilofreire/datasci350-quiz03/).
+- [**Assignment 08**](https://github.com/danilofreire/datasci350/blob/main/assignments/08-assignment.ipynb).
+
 ## Module 07: Parallel Computing
 
-### April 01, 2026:
+### November 10, 2026:
 
-- Lecture 20: [Parallel Computing with Dask](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-20/20-parallel-computing.html).
+- Lecture 21: [Parallel Computing with Dask](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-21/21-parallel-computing.html).
 - **Assignment 08 due (5%).**
 - [**Assignment 09**](https://github.com/danilofreire/datasci350/blob/main/assignments/09-assignment.ipynb).
 
@@ -404,9 +407,9 @@ Suggested references:
 - [Coiled - Intro to Dask Tutorial (YouTube)](https://www.youtube.com/watch?v=z18qjLu-Mw4&list=PLeDTMczuyDQ8S73cdc0PrnTO80kfzpgz2&pp=iAQB).
 - Rocklin, M. (2017). [Dask: Flexible Library for Parallel Computing in Python](https://proceedings.scipy.org/articles/Majora-7b98e3ed-013). In Proceedings of the 16th Python in Science Conference (Vol. 126, p. 130).
 
-### April 06, 2026:
+### November 12, 2026:
 
-- Lecture 21: [Application: Parallelising Data Analysis with Dask and AutoML](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-22/22-parallel-automl.html).
+- Lecture 22: [Application: Parallelising Data Analysis with Dask and AutoML](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-22/22-parallel-automl.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=a2403e39-2c84-473b-8e78-ea0889581b0c&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
@@ -415,15 +418,9 @@ Suggested references:
 - He, X., Zhao, K., & Chu, X. (2021). [AutoML: A Survey of the State-of-The-Art](https://www.sciencedirect.com/science/article/abs/pii/S0950705120307516). Knowledge-based systems, 212, 106622.
 - [TPOT Documentation](https://epistasislab.github.io/tpot/).
 
-### April 08, 2026:
-
-- Lecture 22: [Quiz 04: SQL Databases (6%)](https://github.com/danilofreire/datasci350-quiz04/).
-- **Assignment 09 due (5%).**
-- [**Assignment 10**](https://github.com/danilofreire/datasci350/blob/main/assignments/10-assignment.ipynb).
-
 ## Module 08: Containers and Reproducibility
 
-### April 13, 2026:
+### November 17, 2026:
 
 - Lecture 23: [Dependency Management, Virtual Environments, and Containers](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-23/23-containers.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=8273ae04-10b2-4eee-9b8a-77f97ef43550&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
@@ -433,23 +430,33 @@ Suggested references:
 - [Docker Documentation](https://docs.docker.com/)
 - [ComposeCraft](https://github.com/composecraft/composecraft). A tool to help you manage, edit and share docker compose files in a GUI way.
 
-### April 15, 2026:
+### November 19, 2026:
 
-- Lecture 24: [Docker for Data Science](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-24/24-docker.html).
+- Lecture 24: [Quiz 04: SQL Databases (6%)](https://github.com/danilofreire/datasci350-quiz04/).
+- **Assignment 09 due (5%).**
+- [**Assignment 10**](https://github.com/danilofreire/datasci350/blob/main/assignments/10-assignment.ipynb).
+
+### November 24, 2026:
+
+- Lecture 25: [Docker for Data Science](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-25/25-docker.html).
 - **Assignment 10 due (5%).**
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=f2e51b56-a8f6-4178-8656-fec9d42679b1&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
-### April 20, 2026:
+### November 26, 2026: Thanksgiving Recess (No Classes)
 
-- Lecture 25: [Course Review](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-25/25-revision.html).
+
+### December 1, 2026:
+
+- Lecture 26: [Course Review](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-26/26-revision.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=d19e2d39-f38c-4a1e-9d5d-c3113bd3ad36&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
-### April 22, 2026:
+### December 3, 2026:
 
-- Lecture 26: [Quiz 05: Dask, Docker and Containers (6%)](https://github.com/danilofreire/datasci350-quiz05/).
+- Lecture 27: [Quiz 05: Dask, Docker and Containers (6%)](https://github.com/danilofreire/datasci350-quiz05/).
 
-### April 27, 2026:
+### December 8, 2026:
 
 - No lectures.
 - Q&A session and final project work time.
 - [Final Project due (20%).](https://github.com/danilofreire/datasci350/tree/main/project)
+

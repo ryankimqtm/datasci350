@@ -47,6 +47,7 @@ This repository is organised as follows:
 - [`assignments/`](https://github.com/danilofreire/datasci350/tree/main/assignments): Contains all course assignments
 - [`lectures/`](https://github.com/danilofreire/datasci350/tree/main/lectures): Includes lecture materials and code
 - [`tutorials/`](https://github.com/danilofreire/datasci350/tree/main/tutorials): Step-by-step guides for the tools used in the course
+- [`grades/`](https://github.com/danilofreire/datasci350/tree/main/grades): Reusable Python script for computing final grades from a Canvas CSV export, applying the syllabus weights and 11-band rubric. Student data is excluded from version control via a folder-level `.gitignore`.
 - [`README.md`](https://github.com/danilofreire/datasci350/blob/main/README.md): This file, providing an overview of the course and repository
 - [`syllabus.pdf`](https://github.com/danilofreire/datasci350/blob/main/syllabus/syllabus.pdf): Course syllabus in PDF format
 

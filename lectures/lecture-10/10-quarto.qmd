@@ -8,7 +8,7 @@ author:
 format:
   clean-revealjs:
     self-contained: true
-    footer: "[Reproducible Research](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-10/10-quarto.html)"
+    footer: "[Reproducible Research](https://danilofreire.github.io/datasci350/lectures/lecture-10/10-quarto.html)"
 transition: slide
 transition-speed: default
 scrollable: true

@@ -8,7 +8,7 @@ author:
 format:
   clean-revealjs:
     self-contained: true
-    footer: "[AI 2](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-14/14-ai.html)"
+    footer: "[AI 2](https://danilofreire.github.io/datasci350/lectures/lecture-14/14-ai.html)"
 transition: slide
 transition-speed: default
 scrollable: true

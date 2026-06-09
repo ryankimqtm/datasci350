@@ -9,7 +9,7 @@ author:
 format:
   clean-revealjs:
     self-contained: true
-    footer: "[Git Practice](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-07/07-practice.html)"
+    footer: "[Git Practice](https://danilofreire.github.io/datasci350/lectures/lecture-07/07-practice.html)"
 transition: slide
 transition-speed: default
 scrollable: true

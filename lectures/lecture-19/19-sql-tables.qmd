@@ -9,7 +9,7 @@ format:
     clean-revealjs:
         self-contained: true
         code-overflow: wrap
-        footer: "[SQL Joins](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-19/19-sql-tables.html)"
+        footer: "[SQL Joins](https://danilofreire.github.io/datasci350/lectures/lecture-19/19-sql-tables.html)"
 transition: slide
 transition-speed: default
 scrollable: true

@@ -8,7 +8,7 @@ author:
 format:
   clean-revealjs:
     self-contained: true
-    footer: "[AI & Prompt Engineering](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-12/12-ai-programming.html)"
+    footer: "[AI & Prompt Engineering](https://danilofreire.github.io/datasci350/lectures/lecture-12/12-ai-programming.html)"
 transition: slide
 transition-speed: default
 scrollable: true
@@ -120,7 +120,7 @@ Source: [r/ProgrammerHumor](https://www.reddit.com/r/ProgrammerHumor/comments/1d
 :::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width=55%}
-- Here's something you (hopefully) already know: [Computers only understand numbers]{.alert} (remember [lecture 02?](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-02/02-computational-literacy.html))
+- Here's something you (hopefully) already know: [Computers only understand numbers]{.alert} (remember [lecture 02?](https://danilofreire.github.io/datasci350/lectures/lecture-02/02-computational-literacy.html))
 - When you type "Hello, how are you?", the LLM sees something like: `[15496, 11, 703, 527, 499, 30]`
 - This creates a [translation problem]{.alert}:
   - How do we convert text into numbers?

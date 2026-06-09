@@ -9,7 +9,7 @@ format:
   clean-revealjs:
     self-contained: true
     code-overflow: wrap
-    footer: "[SQLite and Python](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-18/18-sql-python.html)"
+    footer: "[SQLite and Python](https://danilofreire.github.io/datasci350/lectures/lecture-18/18-sql-python.html)"
 transition: slide
 transition-speed: default
 scrollable: true

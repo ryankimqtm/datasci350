@@ -9,7 +9,7 @@ format:
   clean-revealjs:
     self-contained: true
     code-overflow: wrap
-    footer: "[Introduction to SQL](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-17/17-introduction-sql.html)"
+    footer: "[Introduction to SQL](https://danilofreire.github.io/datasci350/lectures/lecture-17/17-introduction-sql.html)"
 transition: slide
 transition-speed: default
 scrollable: true

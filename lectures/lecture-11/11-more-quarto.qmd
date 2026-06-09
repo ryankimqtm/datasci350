@@ -8,7 +8,7 @@ author:
 format:
   clean-revealjs:
     self-contained: true
-    footer: "[More Quarto](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-11/11-more-quarto.html)"
+    footer: "[More Quarto](https://danilofreire.github.io/datasci350/lectures/lecture-11/11-more-quarto.html)"
 transition: slide
 transition-speed: default
 scrollable: true

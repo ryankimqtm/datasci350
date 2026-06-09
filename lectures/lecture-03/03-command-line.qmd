@@ -8,7 +8,7 @@ author:
 format:
   clean-revealjs:
     self-contained: true
-    footer: "[Command Line](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-03/03-command-line.html#/title-slide)"
+    footer: "[Command Line](https://danilofreire.github.io/datasci350/lectures/lecture-03/03-command-line.html#/title-slide)"
 transition: slide
 transition-speed: default
 scrollable: true

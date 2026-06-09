@@ -161,7 +161,7 @@ The lecture notes cover all the necessary material for the course, and the weekl
 ### August 27, 2026:
 
 - Syllabus and course repository: <https://github.com/danilofreire/datasci350>.
-- Lecture 01: [Welcome to DATASCI 350 - Introduction](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-01/01-introduction.html).
+- Lecture 01: [Welcome to DATASCI 350 - Introduction](https://danilofreire.github.io/datasci350/lectures/lecture-01/01-introduction.html).
 - [Course Tutorials: How to Install Anaconda, Jupyter, VSCode, and Open a Free Educational Account on GitHub](https://github.com/danilofreire/datasci350/tutorials).
 
 Suggested references:
@@ -174,7 +174,7 @@ Suggested references:
 
 ### September 1, 2026:
 
-- Lecture 02: [Computational Literacy](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-02/02-computational-literacy.html).
+- Lecture 02: [Computational Literacy](https://danilofreire.github.io/datasci350/lectures/lecture-02/02-computational-literacy.html).
 - [**Assignment 01**](https://github.com/danilofreire/datasci350/blob/main/assignments/01-assignment.ipynb).
 
 Suggested references:
@@ -189,7 +189,7 @@ Suggested references:
 
 ### September 3, 2026:
 
-- Lecture 03: [The Command-Line Interface (CLI), Shell Basics, and File Management](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-03/03-command-line.html).
+- Lecture 03: [The Command-Line Interface (CLI), Shell Basics, and File Management](https://danilofreire.github.io/datasci350/lectures/lecture-03/03-command-line.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=9a77f4a0-f1ea-498a-b85f-1a8993922f82&hostId=05eb977d-4f8a-440e-9e45-95212b29d103)
 
 Suggested references:
@@ -201,7 +201,7 @@ Suggested references:
 
 ### September 8, 2026:
 
-- Lecture 04: [More Command Line Tools, Text Files and Scripting](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-04/04-more-command-line.html).
+- Lecture 04: [More Command Line Tools, Text Files and Scripting](https://danilofreire.github.io/datasci350/lectures/lecture-04/04-more-command-line.html).
 - **Assignment 01 due (5%).**
 - [**Assignment 02**](https://github.com/danilofreire/datasci350/blob/main/assignments/02-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=9a77f4a0-f1ea-498a-b85f-1a8993922f82&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
@@ -217,7 +217,7 @@ Suggested references:
 
 ### September 10, 2026:
 
-- Lecture 05: [Version control with Git and GitHub](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-05/05-git-github.html).
+- Lecture 05: [Version control with Git and GitHub](https://danilofreire.github.io/datasci350/lectures/lecture-05/05-git-github.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=f3930dce-298d-4610-a365-406fa3088a87&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
@@ -227,7 +227,7 @@ Suggested references:
 
 ### September 15, 2026:
 
-- Lecture 06: [More Git and GitHub: pull requests, issues, pages, and collaboration features](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-06/06-more-git-github.html).
+- Lecture 06: [More Git and GitHub: pull requests, issues, pages, and collaboration features](https://danilofreire.github.io/datasci350/lectures/lecture-06/06-more-git-github.html).
 - **Assignment 02 due (5%).**
 - [**Assignment 03**](https://github.com/danilofreire/datasci350/blob/main/assignments/03-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=eec92538-78d8-4974-ba7b-8f83b5f3b215&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
@@ -240,12 +240,12 @@ Suggested references:
 
 ### September 17, 2026:
 
-- Lecture 07: [More Git Commands, CLI and Git Practice](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-07/07-practice.html).
+- Lecture 07: [More Git Commands, CLI and Git Practice](https://danilofreire.github.io/datasci350/lectures/lecture-07/07-practice.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=0c41d485-25b6-44a6-a825-70854f1953cb&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 ### September 22, 2026:
 
-- Lecture 08: [Review session for Quiz 01](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-08/08-review.html). This session covers Lectures 01-07 (Introduction, Computational Literacy, CLI, Git/GitHub) and prepares students for Quiz 01 on September 24.
+- Lecture 08: [Review session for Quiz 01](https://danilofreire.github.io/datasci350/lectures/lecture-08/08-review.html). This session covers Lectures 01-07 (Introduction, Computational Literacy, CLI, Git/GitHub) and prepares students for Quiz 01 on September 24.
 
 ## Module 03: Literate Programming with Markdown, Quarto, and Jupyter
 
@@ -268,7 +268,7 @@ Suggested references:
 
 ### September 29, 2026:
 
-- Lecture 10: [Introduction to Quarto](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-10/10-quarto.html).
+- Lecture 10: [Introduction to Quarto](https://danilofreire.github.io/datasci350/lectures/lecture-10/10-quarto.html).
 
 Suggested references:
 
@@ -279,7 +279,7 @@ Suggested references:
 
 ### October 1, 2026:
 
-- Lecture 11: [Writing Documents, Presentations, and Websites with Quarto](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-11/11-more-quarto.html).
+- Lecture 11: [Writing Documents, Presentations, and Websites with Quarto](https://danilofreire.github.io/datasci350/lectures/lecture-11/11-more-quarto.html).
 - **Assignment 04 due (5%).**
 - [**Assignment 05**](https://github.com/danilofreire/datasci350/blob/main/assignments/05-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=b3cb9962-bfcd-4b44-a3f4-4357b1442eda&hostId=05eb977d-4f8a-440e-9e45-95212b29d103)
@@ -295,7 +295,7 @@ Suggested references:
 
 ### October 6, 2026:
 
-- Lecture 12: [AI and Prompt Engineering](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-12/12-ai-programming.html).
+- Lecture 12: [AI and Prompt Engineering](https://danilofreire.github.io/datasci350/lectures/lecture-12/12-ai-programming.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=ecf9f3d1-7d0d-4ca1-a3a5-a26c5e72427b&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
@@ -319,7 +319,7 @@ Suggested references:
 
 ### October 15, 2026:
 
-- Lecture 14: [AI-Assisted Programming, APIs, and Agents](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-14/14-ai.html).
+- Lecture 14: [AI-Assisted Programming, APIs, and Agents](https://danilofreire.github.io/datasci350/lectures/lecture-14/14-ai.html).
 
 Suggested references:
 
@@ -332,7 +332,7 @@ Suggested references:
 
 ### October 20, 2026:
 
-- Lecture 15: [Introduction to Cloud Computing](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-15/15-cloud.html).
+- Lecture 15: [Introduction to Cloud Computing](https://danilofreire.github.io/datasci350/lectures/lecture-15/15-cloud.html).
 - **Assignment 06 due (5%).**
 - [**Assignment 07**](https://github.com/danilofreire/datasci350/blob/main/assignments/07-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=8691380c-2ccb-49fa-aab1-471754aeb24c&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
@@ -348,14 +348,14 @@ Suggested references:
 
 ### October 22, 2026:
 
-- Lecture 16: [More Cloud Computing with Amazon Web Services (AWS)](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-16/16-cloud2.html).
+- Lecture 16: [More Cloud Computing with Amazon Web Services (AWS)](https://danilofreire.github.io/datasci350/lectures/lecture-16/16-cloud2.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=9a098f1f-ebd6-40cd-aa4e-b8f096683a37&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 ## Module 06: Introduction to SQL Databases
 
 ### October 27, 2026:
 
-- Lecture 17: [Introduction to SQL: Data Types, Tables, and Queries](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-17/17-introduction-sql.html).
+- Lecture 17: [Introduction to SQL: Data Types, Tables, and Queries](https://danilofreire.github.io/datasci350/lectures/lecture-17/17-introduction-sql.html).
 - **Assignment 07 due (5%).**
 - No assignment this week.
 - [Instructions for the Final Project](https://github.com/danilofreire/datasci350/tree/main/project).
@@ -372,12 +372,12 @@ Suggested references:
 
 ### October 29, 2026:
 
-- Lecture 18: [SQL in Python: Connecting to Databases with Pandas](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-18/18-sql-python.html).
+- Lecture 18: [SQL in Python: Connecting to Databases with Pandas](https://danilofreire.github.io/datasci350/lectures/lecture-18/18-sql-python.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=ebd517ed-7bf1-447c-8e30-9c5abb75ef16&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 ### November 3, 2026:
 
-- Lecture 19: [Merging Tables in SQL](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-19/19-sql-tables.html).
+- Lecture 19: [Merging Tables in SQL](https://danilofreire.github.io/datasci350/lectures/lecture-19/19-sql-tables.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=0d1466b5-ef43-4ab3-90aa-c46ae0554f19&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
@@ -396,7 +396,7 @@ Suggested references:
 
 ### November 10, 2026:
 
-- Lecture 21: [Parallel Computing with Dask](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-21/21-parallel-computing.html).
+- Lecture 21: [Parallel Computing with Dask](https://danilofreire.github.io/datasci350/lectures/lecture-21/21-parallel-computing.html).
 - **Assignment 08 due (5%).**
 - [**Assignment 09**](https://github.com/danilofreire/datasci350/blob/main/assignments/09-assignment.ipynb).
 
@@ -409,7 +409,7 @@ Suggested references:
 
 ### November 12, 2026:
 
-- Lecture 22: [Application: Parallelising Data Analysis with Dask and AutoML](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-22/22-parallel-automl.html).
+- Lecture 22: [Application: Parallelising Data Analysis with Dask and AutoML](https://danilofreire.github.io/datasci350/lectures/lecture-22/22-parallel-automl.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=a2403e39-2c84-473b-8e78-ea0889581b0c&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
@@ -422,7 +422,7 @@ Suggested references:
 
 ### November 17, 2026:
 
-- Lecture 23: [Dependency Management, Virtual Environments, and Containers](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-23/23-containers.html).
+- Lecture 23: [Dependency Management, Virtual Environments, and Containers](https://danilofreire.github.io/datasci350/lectures/lecture-23/23-containers.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=8273ae04-10b2-4eee-9b8a-77f97ef43550&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
@@ -438,7 +438,7 @@ Suggested references:
 
 ### November 24, 2026:
 
-- Lecture 25: [Docker for Data Science](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-25/25-docker.html).
+- Lecture 25: [Docker for Data Science](https://danilofreire.github.io/datasci350/lectures/lecture-25/25-docker.html).
 - **Assignment 10 due (5%).**
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=f2e51b56-a8f6-4178-8656-fec9d42679b1&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
@@ -447,7 +447,7 @@ Suggested references:
 
 ### December 1, 2026:
 
-- Lecture 26: [Course Review](https://raw.githack.com/danilofreire/datasci350/main/lectures/lecture-26/26-revision.html).
+- Lecture 26: [Course Review](https://danilofreire.github.io/datasci350/lectures/lecture-26/26-revision.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=d19e2d39-f38c-4a1e-9d5d-c3113bd3ad36&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 ### December 3, 2026:

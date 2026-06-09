@@ -75,7 +75,7 @@ The project will be due on December 8 at 11:59 PM. Please send the link to your 
    - A `figures` folder with the plots and tables generated in the analysis.
    - A `scripts` folder with the SQL and Python scripts used in the analysis.
 
-All group members should contribute to the repository. It can be helpful to assign roles to each member to ensure that everyone contributes equally to the project. Although the repository will be hosted on someone's GitHub account, all members should have access to it.
+All group members must contribute to the repository. It can be helpful to assign roles to each member to ensure that everyone contributes equally to the project. Each member's participation will be verified by the number of lines and commits in the repository, and anyone without contributions will receive a grade of 0 for the project. Although the repository will be hosted on someone's GitHub account, all members should have access to it.
 
 2. A Quarto report in PDF and HTML format. When you submit an HTML file, please make sure it is rendered on GitHub and all figures are displayed correctly. The report should include the following sections:
    - Title, names of project members and their Emory IDs.
@@ -86,8 +86,6 @@ All group members should contribute to the repository. It can be helpful to assi
    - Conclusion.
 
 The report should be concise, but not too brief. You may aim for 5 pages, excluding the code.  You should focus on the main results and insights from the analysis. The report should be fully reproducible, meaning that anyone should be able to run the code and generate the same results as in the report.
-
-If you have any questions, please let me know. 
 
 # Grading Rubric
 

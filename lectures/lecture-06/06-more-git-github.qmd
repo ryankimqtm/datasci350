@@ -726,7 +726,7 @@ Pull requests
 :::
 :::
 
-## Summary 📝
+## Summary
 
 :::{style="margin-top: 40px; font-size: 26px;"}
 - `git push` sends your commits to GitHub, `git pull` brings other people's back

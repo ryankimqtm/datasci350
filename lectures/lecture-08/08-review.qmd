@@ -41,14 +41,14 @@ editor:
 | 3 | Files, wildcards, and text | 04 |
 | 4 | Git on your machine | 05, 07 |
 | 5 | GitHub and collaboration | 06, 07 |
-| 6 | Checklist for Thursday | all |
+| 6 | Checklist | all |
 :::
 :::
 
 :::{.column width="48%"}
-[What Thursday looks like]{.alert}
+[What the quiz looks like]{.alert}
 
-- Quiz 01 is on [Thursday 24 September]{.alert}, in this room, and it is worth 6%
+- Quiz 01 is [next class]{.alert}, in this room, and it is worth 6%
 - You fork a repository that I give you, then clone your own copy
 - You work through a numbered list of shell and Git tasks
 - You record [every command you run]{.alert} in a file called `commands.txt`
@@ -103,7 +103,7 @@ We delete this folder together at the end of the class
 ## Before the quiz
 
 :::{style="margin-top: 40px; font-size: 24px;"}
-The quiz ends with a [push to GitHub]{.alert}. Make sure your machine is logged in before Thursday:
+The quiz ends with a [push to GitHub]{.alert}. Make sure your machine is logged in before the quiz:
 
 :::{style="margin-top: 30px;"}
 :::
@@ -121,7 +121,7 @@ The quiz ends with a [push to GitHub]{.alert}. Make sure your machine is logged 
 :::{.callout-tip style="font-size: 22px;"}
 `gh` is the convenient route, but it is not the only one. A plain `git push` over HTTPS works too, as long as your browser sign-in went through.
 
-What matters is that [some]{.alert} push from this laptop reaches GitHub before Thursday.
+What matters is that [some]{.alert} push from this laptop reaches GitHub before the quiz.
 :::
 
 :::{style="margin-top: 20px;"}
@@ -644,7 +644,7 @@ cat commands.txt
 :::
 :::
 
-# Round 6: ready for Thursday {background-color="#1B3A6B"}
+# Round 6: ready for the quiz {background-color="#1B3A6B"}
 
 ## What actually goes wrong
 
@@ -668,7 +668,7 @@ The fix for almost all of them is the same: [run `git status` and `pwd` often]{.
 :::
 :::
 
-## Your checklist for Thursday
+## Your checklist for the quiz
 
 :::{style="margin-top: 30px; font-size: 25px;"}
 :::{.columns}
@@ -725,7 +725,7 @@ rm -rf ds350-review
 
 # Questions? {background-color="#1B3A6B"}
 
-# See you on Thursday! {background-color="#1B3A6B"}
+# See you soon! {background-color="#1B3A6B"}
 
 # Appendix: solutions {background-color="#1B3A6B"}
 

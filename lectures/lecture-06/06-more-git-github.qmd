@@ -726,6 +726,40 @@ Pull requests
 :::
 :::
 
+## Summary 📝
+
+:::{style="margin-top: 40px; font-size: 26px;"}
+- `git push` sends your commits to GitHub, `git pull` brings other people's back
+- `.gitignore` keeps data, keys, and generated output out of the repository
+- A [merge conflict]{.alert} means two people changed the same line. Git marks it, you choose
+- [Branches]{.alert} let you work without touching `main`, and `merge` brings the work back
+- `git switch -c new-branch <hash>` is the safe way to revisit an old commit
+- [Clone]{.alert} copies a repository to your computer. [Fork]{.alert} copies it to your account
+- [Issues]{.alert} track what needs doing, [pull requests]{.alert} propose the change itself
+- Pages, Actions, Gists, and the CLI are all built on the same repository
+:::
+
+## Next class
+
+:::{style="margin-top: 30px; font-size: 26px;"}
+:::{.columns}
+:::{.column width="55%"}
+- [`git diff`]{.alert}: see exactly what changed, line by line, before you commit
+- [Fixing mistakes]{.alert}: amend a commit message, and undo a commit with `git reset`
+- [`git cherry-pick`]{.alert}: take one commit from a branch without merging the whole thing
+- [`git rebase`]{.alert}: replay your commits on top of someone else's work
+- Plus more of the GitHub CLI
+- Bring your `my-project` repository. We will keep working on it 🤓
+:::
+
+:::{.column width="45%"}
+:::{style="text-align: center; margin-top: 40px;"}
+[![A preview: `git diff` showing one added line](figures/git-diff-preview.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/git-diff-preview.png"}
+:::
+:::
+:::
+:::
+
 # Phew! That's all for today! 🎉 {background-color="#1B3A6B"}
 
 # Thank you for your attention and see you soon! 😊🙏 {background-color="#1B3A6B"}

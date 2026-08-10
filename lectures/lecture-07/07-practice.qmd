@@ -15,14 +15,13 @@ transition-speed: default
 scrollable: true
 revealjs-plugins:
   - multimodal
-engine: python3
 editor:
   render-on-save: true
 ---
 
-# Hello, everyone! 😊 {background-color="#2d4563"}
+# Hello, everyone! 😊 {background-color="#1B3A6B"}
 
-# Recap and lecture overview 📚 {background-color="#2d4563"}
+# Recap and lecture overview 📚 {background-color="#1B3A6B"}
 
 ## Recap of our last lecture
 ### In our last class, we covered
@@ -75,18 +74,17 @@ Today we will cover:
 :::
 :::
 
-# Understanding changes with git diff 🔍 {background-color="#2d4563"}
+# Understanding changes with git diff 🔍 {background-color="#1B3A6B"}
 
 ## What is `git diff`?
 
 :::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- `git diff` shows you [what has changed]{.alert} between commits, branches, or your working directory
-- It is one of the most useful Git commands for understanding your code changes
-- Helps you review changes before committing
-- Let's see how it works with our former `my-project` repository
-- First, let's make some changes in the `01-data-cleaning.py` file
+- `git diff` shows [what has changed]{.alert}, line by line
+- It compares your working directory, the staging area, commits, or branches
+- Read it before every commit. It is the cheapest way to catch a mistake
+- Let's make a change in `my-project` and look at it
 
 ```bash
 echo "# This is a data cleaning script" >> ./01-data-cleaning.py
@@ -99,16 +97,18 @@ git diff
 [![](figures/diff-01.png){width="80%"}](#){data-modal-type="image" data-modal-url="figures/diff-01.png"}
 :::
 
-- `diff --git a/file b/file` shows Git is comparing two versions of the same file (`a` = original, `b` = modified)
-- `--- a/file` and `+++ b/file` indicate the original file (before) and new file (after) being compared
-- `@@ -0,0 +1 @@` shows the line numbers affected, with `+` lines indicating additions and `-` lines indicating deletions. `-0,0` means that the original file had no lines, and `+1` means one line was added
+Reading the output:
+
+- `a/` is the old version, `b/` is the new one
+- `@@ -0,0 +1 @@` gives the line numbers: none before, one line now
+- `+` marks an added line, `-` a deleted one
 :::
 :::
 :::
 
 ## Common `git diff` commands
 
-:::{style="margin-top: 30px; font-size: 18px;"}
+:::{style="margin-top: 30px; font-size: 21px;"}
 :::{.columns}
 :::{.column width="50%"}
 **Basic diff commands:**
@@ -139,16 +139,15 @@ git diff
 :::
 :::
 
-# Amending and undoing commits 📝 {background-color="#2d4563"}
+# Amending and undoing commits {background-color="#1B3A6B"}
 
 ## What is `git commit --amend`?
 
 :::{style="margin-top: 30px; font-size: 24px;"}
-- `git commit --amend` allows you to [modify your last commit]{.alert}
-- Useful when you forgot to add files or made a typo in the commit message
-- Can add staged changes to the previous commit
-- Can also change the commit message
-- [Use with caution!]{.alert} Only amend commits that haven't been pushed yet
+- `git commit --amend` [rewrites your last commit]{.alert}
+- Use it when you mistyped the message, or forgot to add a file
+- Whatever is staged gets folded into the previous commit
+- [Only amend commits you have not pushed]{.alert}. Rewriting shared history causes trouble for everyone else
 
 :::{style="text-align: center; margin-top: -20px;"}
 [![](figures/amend-message.png){width="60%"}](#){data-modal-type="image" data-modal-url="figures/amend-message.png"}
@@ -196,8 +195,9 @@ git commit --amend -m "Updated commit message"
 :::{.column width="50%"}
 - If you made a mistake, git allows you to undo commits
 - `git reset` can move the HEAD pointer to a previous commit
-- `--soft` keeps changes in the staging area
-- `--hard` discards all changes after the specified commit
+- `--soft` keeps your changes staged
+- `--mixed` (the default) keeps them, but unstaged
+- `--hard` throws them away entirely
 - [Use with caution too!]{.alert} Hard reset will delete uncommitted changes
 
 :::{style="text-align: center; margin-top: -20px;"}
@@ -224,7 +224,7 @@ git reset --hard HEAD~1
 :::
 :::
 
-# Cherry-picking commits 🍒 {background-color="#2d4563"}
+# Cherry-picking commits {background-color="#1B3A6B"}
 
 ## What is `git cherry-pick`?
 
@@ -288,7 +288,7 @@ git cherry-pick --skip      # Skip the current commit
 :::
 :::
 
-# Understanding git rebase 🔄 {background-color="#2d4563"}
+# Understanding git rebase {background-color="#1B3A6B"}
 
 ## Understanding `git rebase`
 
@@ -304,7 +304,7 @@ git cherry-pick --skip      # Skip the current commit
 
 :::{.column width="60%"}
 :::{style="text-align: center; margin-top: -20px;"}
-[![](figures/rebase.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/rebase.png"}
+[![](figures/rebase.png){width="70%"}](#){data-modal-type="image" data-modal-url="figures/rebase.png"}
 :::
 :::
 :::
@@ -341,32 +341,30 @@ git rebase main
 - `pick`: use the commit as-is
 - `reword`: change the commit message
 - `edit`: modify the commit contents
-- `squash`: combine with previous commit
+- `squash`: combine with the previous commit
 - `drop`: remove the commit entirely
-- `reorder`: change commit order
+- To reorder commits, move the lines themselves
 :::
 :::
 :::
 
-# Saving work with git stash 📦 {background-color="#2d4563"}
+# Saving work with git stash {background-color="#1B3A6B"}
 
 ## What is `git stash`?
 
-:::{style="margin-top: 30px; font-size: 21px;"}
+:::{style="margin-top: 30px; font-size: 23px;"}
 :::{.columns}
 :::{.column width="50%"}
-- `git stash` temporarily [saves your uncommitted changes]{.alert} without committing them
-- Think of it as a "clipboard" for your work-in-progress
-- Useful when you need to switch branches but aren't ready to commit
-- Keeps your working directory clean without losing work
-- Stashes are stored in a stack (last in, first out)
+- `git stash` [puts your uncommitted changes aside]{.alert}, leaving a clean working directory
+- Think of it as a clipboard for work in progress
+- Stashes pile up in a stack, so the last one you saved is the first one back
 
-**When to use `git stash`:**
+**Use it when:**
 
-- You need to switch branches urgently (e.g., hotfix)
-- You want to pull changes but have local modifications
-- You're experimenting and want to save your current state
-- You accidentally started work on the wrong branch
+- An urgent fix arrives and you are mid-way through something else
+- You want to `pull` but have local changes in the way
+- You are experimenting and want to park the experiment
+- You started work on the wrong branch
 :::
 
 :::{.column width="50%"}
@@ -393,7 +391,7 @@ git stash pop  # Restore your changes
 
 ## Basic `git stash` commands
 
-:::{style="margin-top: 30px; font-size: 20px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
 **Saving and restoring stashes:**
@@ -402,7 +400,7 @@ git stash pop  # Restore your changes
 git stash
 
 # Stash with a descriptive message
-git stash save "WIP: adding user authentication"
+git stash push -m "WIP: adding user authentication"
 
 # Stash including untracked files
 git stash -u
@@ -443,7 +441,7 @@ git stash show -p stash@{0}
 :::
 :::
 
-## Moving changes to another branch with `git stash` 🔀
+## Moving changes to another branch with `git stash`
 
 :::{style="margin-top: 30px; font-size: 20px;"}
 :::{.columns}
@@ -457,7 +455,7 @@ You've been coding away, only to realise you're on the [wrong branch]{.alert}! �
 ```bash
 # You're on main but should be on feature-x
 # First, stash your changes
-git stash save "Move to feature-x branch"
+git stash push -m "Move to feature-x branch"
 
 # Switch to the correct branch
 git checkout feature-x
@@ -494,18 +492,22 @@ This command:
 :::
 :::
 
-# GitHub CLI - Installation 🖥️ {background-color="#2d4563"}
+# GitHub CLI - Installation 🖥️ {background-color="#1B3A6B"}
 
 ## GitHub in the terminal
 
-:::{style="margin-top: 30px; font-size: 17px;"}
+:::{style="margin-top: 30px; font-size: 20px;"}
 :::{.columns}
 :::{.column width="50%"}
 - GitHub CLI (`gh`) is the [official command-line tool]{.alert} for GitHub
-- Allows you to work with GitHub directly from your terminal
-- No need to open a web browser for common tasks
-- Works seamlessly with Git workflows
-- Supports authentication and works with your GitHub account
+- It does from the terminal what you would otherwise do in a browser: repositories, issues, pull requests
+- [Do not type the WSL command below]{.alert}. Copy it from <https://cli.github.com/>
+
+**macOS (using Homebrew):**
+```bash
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install gh
+```
 
 **WSL/Ubuntu:**
 ```bash
@@ -522,12 +524,6 @@ This command:
 
 # Update (if already installed)
 sudo apt update && sudo apt install gh -y
-```
-
-**macOS (using Homebrew):**
-```bash
-# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install gh
 ```
 :::
 
@@ -548,7 +544,7 @@ gh --version
 
 ## How to connect your terminal to GitHub
 
-:::{style="margin-top: 30px; font-size: 21px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 **Authenticate with GitHub:**
 ```bash
 gh auth login
@@ -560,7 +556,7 @@ gh auth login
 - Press `Enter` to open the link in your browser and copy the one-time code
 
 :::{style="text-align: center; margin-top: -20px;"}
-[![](figures/auth.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/auth.png"}
+[![](figures/auth.png){width="90%"}](#){data-modal-type="image" data-modal-url="figures/auth.png"}
 :::
 
 - And you're all set to use GitHub CLI! 🎉
@@ -622,7 +618,7 @@ gh issue view 456 --web
 :::
 :::
 
-# GitHub CLI - Practical Examples 💡 {background-color="#2d4563"}
+# GitHub CLI - Practical Examples 💡 {background-color="#1B3A6B"}
 
 ## Real-world GitHub CLI usage
 
@@ -660,34 +656,47 @@ gh repo view --web
 [![](figures/gh-repo.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/gh-repo.png"}
 :::
 
-# Practice Time! ⏱️ {background-color="#2d4563"}
+# Practice Time! ⏱️ {background-color="#1B3A6B"}
 
 ## Git practice quiz
 
-:::{style="margin-top: 30px; font-size: 21px;"}
-Please complete the following tasks:
+:::{style="margin-top: 30px; font-size: 23px;"}
+:::{.columns}
+:::{.column width="50%"}
+[Set up the repository]{.alert}
 
-1. Create a new directory called `git-practice` and initialise it as a Git repository
-2. Create a file named `README.md` with the content "# Git Practice Repository"
-3. Create a subdirectory called `src` and inside it create an empty file named `main.py`
-4. Stage and commit all changes with the message "Initial commit with README and main.py"
-5. Create and switch to a new branch called `hotfix`
-6. In the `src` directory, create three files using brace expansion: `utils.js`, `utils.css`, `utils.html`
-7. Create a `.gitignore` file and add `temp/` to it, then stage and commit with the message "Add hotfix files and gitignore"
-8. Rename `src/main.py` to `src/app.py`
-9. Stage and commit all changes with the message "Complete hotfix development"
-10. Switch back to the `main` branch and merge the `hotfix` branch, then view the commit history in a compact format
+1. Create a `git-practice` directory and initialise it
+2. Add a `README.md` containing `# Git Practice Repository`
+3. Create `src/main.py`, empty
+4. Commit everything: "Initial commit with README and main.py"
 
-After completing these tasks, verify your work by checking the commit history and file structure.
+[Work on a branch]{.alert}
+
+5. Create and switch to a branch called `hotfix`
 :::
 
-# And that's a wrap! 🎉 {background-color="#2d4563"}
+:::{.column width="50%"}
+6. In `src`, use brace expansion to create `utils.js`, `utils.css`, and `utils.html` in one command
+7. Add a `.gitignore` containing `temp/`, then commit: "Add hotfix files and gitignore"
+8. Rename `src/main.py` to `src/app.py`
+9. Commit: "Complete hotfix development"
 
-# Appendix: Quiz answers {background-color="#2d4563"}
+[Bring it back]{.alert}
+
+10. Switch back to your default branch, merge `hotfix`, and show the history in compact form
+:::
+:::
+
+Check your work with `git log --oneline` and `git branch`
+:::
+
+# And that's a wrap! 🎉 {background-color="#1B3A6B"}
+
+# Appendix: Quiz answers {background-color="#1B3A6B"}
 
 ## Solutions to practice quiz
 
-:::{style="margin-top: 30px; font-size: 20px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 Here are the answers to the practice quiz. Try to complete the quiz first before checking these answers!
 
 1. `mkdir git-practice && cd git-practice && git init`
@@ -698,8 +707,10 @@ Here are the answers to the practice quiz. Try to complete the quiz first before
 6. `touch src/utils.{js,css,html}`
 7. `echo "temp/" > .gitignore && git add . && git commit -m "Add hotfix files and gitignore"`
 8. `mv src/main.py src/app.py`
+    - `git mv src/main.py src/app.py` does the same and stages it in one step
 9. `git add . && git commit -m "Complete hotfix development"`
 10. `git checkout main && git merge hotfix && git log --oneline`
+    - If `git init` gave you a branch called `master`, use that name instead. Check with `git branch`
 
 **Additional verification commands:**
 

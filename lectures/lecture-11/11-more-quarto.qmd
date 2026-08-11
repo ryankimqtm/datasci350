@@ -1,6 +1,6 @@
 ---
 title: DATASCI 350 - Data Science Computing
-subtitle: Lecture 11 - More Quarto
+subtitle: Lecture 11 - Quarto in Practice
 author:
   - name: Danilo Freire
     email: danilo.freire@emory.edu
@@ -8,35 +8,31 @@ author:
 format:
   clean-revealjs:
     self-contained: true
-    footer: "[More Quarto](https://danilofreire.github.io/datasci350/lectures/lecture-11/11-more-quarto.html)"
+    footer: "[Quarto in Practice](https://danilofreire.github.io/datasci350/lectures/lecture-11/11-more-quarto.html)"
 transition: slide
 transition-speed: default
 scrollable: true
 revealjs-plugins:
   - multimodal
-engine: python3
+jupyter: python3
 editor:
   render-on-save: true
 ---
 
-# Nice to see you all again! 😊 {background-color="#2d4563"}
+# Hello, everyone! 😊 {background-color="#1B3A6B"}
 
-# Brief recap 📚 {background-color="#2d4563"}
+## Recap of our last lecture
+### In our last class, we covered
 
-## Quarto and literate programming
-
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- [Literate programming]{.alert} is a paradigm introduced by Donald Knuth in 1984
-- The main idea is to treat [code as a narrative](https://en.wikipedia.org/wiki/Literate_programming), where code and documentation are interwoven
-- [Quarto](https://quarto.org/) allows us to easily write documents that mix code and text
-- It supports multiple programming languages, and can be used to create reports, slides, and websites
-- Quarto is very similar to [R Markdown](https://rmarkdown.rstudio.com/)
-- All documents have three main components:
-  - YAML header with metadata
-  - Markdown content (text)
-  - Code chunks
+- The [reproducibility crisis]{.alert}, and the mundane reason most results fail: the code does not run
+- The habits that fix it: project structure, raw data left alone, relative paths, seeds, recorded versions
+- [Quarto]{.alert} and its three parts: [YAML header]{.alert}, [Markdown]{.alert}, and [code chunks]{.alert}
+- `quarto render` builds a document; `quarto preview` keeps a live one open
+- Every render is a [restart-and-run-all]{.alert} test of your analysis
+- You wrote and rendered your first document. Today [we put Quarto to work]{.alert}
 :::
 
 :::{.column width="50%"}
@@ -45,13 +41,11 @@ editor:
 title: My Quarto Document
 subtitle: A simple example
 author: Danilo Freire
-date: 2026-02-18
-format: 
+date: 2026-09-18
+format:
   html:
     theme: cosmo
     embed-resources: true
-editor:
-  render-on-save: true
 ---
 
 # Introduction
@@ -70,42 +64,69 @@ print("Hello, world!")
 :::
 :::
 
-## A little more on Markdown
+## Today's lecture
 
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 24px;"}
 :::{.columns}
 :::{.column width="50%"}
-- Headings: `#`, `##`, `###`, etc.
-- Emphasis: `*italic*`, `**bold**`, `~~strikethrough~~`
-- Lists: `*`, `1.`, `-`
-- Links: `[text](url)`
-- Images: `![alt text](url)`
-- Code: \`code\`, \`\`\`code\`\`\`
-- Tables:
+Last class you rendered one HTML page. Today that same skill fans out:
 
+- [Markdown]{.alert} beyond the basics: tables, footnotes, maths
+- [PDFs]{.alert} and [citations]{.alert} that format themselves from a `.bib` file
+- `freeze`: rendering documents [without re-running the world]{.alert}
+- [Slides]{.alert} (like these) and [websites]{.alert}, published free from GitHub
+- [Parameterised reports]{.alert}: one file that writes a report for every country in your dataset
+- Two exercises along the way, so bring your laptop battery
+:::
+
+:::{.column width="50%"}
+:::{style="text-align: center; margin-top: 20px;"}
+[![A Quarto website, minutes after `quarto publish`. You build one today](figures/voila.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/voila.png"}
+:::
+:::
+:::
+:::
+
+# Markdown, PDFs, and citations 🛠️ {background-color="#1B3A6B"}
+
+## Markdown you will use every week
+
+:::{style="margin-top: 30px; font-size: 24px;"}
+:::{.columns}
+:::{.column width="50%"}
+:::{style="text-align: center;"}
+| You type | You get |
+|:---------|:--------|
+| `**bold**`, `*italic*` | **bold**, *italic* |
+| `~~scratch that~~` | ~~scratch that~~ |
+| `[text](url)` | a [link]{.alert} |
+| `![caption](img.png)` | an image |
+| `` `code` `` | `code` |
+| `> quote` | a blockquote |
+| `2^10^`, `H~2~O` | 2^10^, H~2~O |
+| `footnote[^1]` | a numbered footnote |
+:::
+:::
+
+:::{.column width="50%"}
+- Tables: pipes and dashes, with colons setting the alignment
+
+:::{style="text-align: center; margin-bottom: 30px; margin-top: 30px;"}
 ```markdown
-| Header 1 | Header 2 |
-|----------|----------|
-| Cell 1   | Cell 2   |
+| Left | Centre | Right |
+|:-----|:------:|------:|
+| a    | b      | c     |
 ```
 :::
 
-:::{.column width="50%"}
-- Blockquotes: `> quote`
-- Horizontal rules: `---`
-- Line breaks: `Line 1  ` (two spaces at the end)
-- Footnotes: `[^1]`
-- Superscript: `2^10^`
-- Subscript: `H~2~O`
-- In-line maths: `$\LaTeX$`
-- For equations, use `$$` to create a new line, write the equation in LaTeX, and end with `$$`
-- Check the [LaTeX Wiki](https://en.wikibooks.org/wiki/LaTeX/Mathematics) for math symbols
-- More at [Markdown Guide](https://www.markdownguide.org/)
+- Maths is LaTeX between dollar signs: `$\mu = \frac{1}{n}\sum x_i$` inline, `$$ ... $$` for display equations
+- The [LaTeX Wiki](https://en.wikibooks.org/wiki/LaTeX/Mathematics) lists the symbols; the [Markdown Guide](https://www.markdownguide.org/) covers the rest
+- That is most of the language. [Markdown is small on purpose]{.alert}
 :::
 :::
 :::
 
-## Example
+## Markdown, raw and rendered
 
 :::{style="margin-top: 30px; font-size: 21px;"}
 :::{.columns}
@@ -117,7 +138,7 @@ This is a paragraph[^1].
 
 ## Heading 2
 
-This is *italic*, this is `code`, 
+This is *italic*, this is `code`,
 this is ~~strikethrough~~.
 
 This is a [link](https://www.emory.edu).
@@ -138,16 +159,16 @@ List:
 :::
 
 :::{.column width="50%"}
-# Heading 1
+[Heading 1]{style="font-size: 1.5em; font-weight: 700; display: block; margin-bottom: 12px;"}
 
 This is a paragraph[^1].
 
-## Heading 2
+[Heading 2]{style="font-size: 1.2em; font-weight: 700; display: block; margin: 12px 0;"}
 
-This is *italic*, this is `code`, 
+This is *italic*, this is `code`,
 this is ~~strikethrough~~.
 
-This is a [link](https://www.emory.edu). 
+This is a [link](https://www.emory.edu).
 Equation: $\mu = \frac{1}{n} \sum_{i=1}^{n} x_i$
 
 List:
@@ -165,162 +186,83 @@ List:
 :::
 :::
 
-# Quarto formats 🛠️ {background-color="#2d4563"}
+## Rendering Jupyter notebooks
 
-## Jupyter notebooks
-
-:::{style="margin-top: 30px; font-size: 20px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="40%"}
-- Jupyter notebooks are a popular format for data science and scientific computing (you probably know them already!)
-- It's easy to use Quarto to create and convert Jupyter notebooks
-- First, you should check if you have `jupyter` installed
+- Quarto renders existing `.ipynb` notebooks directly. [No rewriting needed]{.alert}
+- Add a YAML header in the first cell (as raw text) and run:
 
-```bash
-# Install jupyter if you don't have it
-pip install jupyterlab
+```{.bash filename="Terminal"}
+quarto render notebook.ipynb --to html
 ```
 
-- Check if jupyter is installed
-
-```bash
-jupyter --version
-```
+- By default Quarto uses the outputs [already stored]{.alert} in the notebook. Add `--execute` to re-run the code first
+- If Quarto cannot find your Python, `quarto check jupyter` diagnoses it, and the [`QUARTO_PYTHON` variable](https://quarto.org/docs/computations/python.html) fixes it
+- Writing `.qmd` from the start is still nicer for long documents, but old notebooks convert as they are
 :::
 
 :::{.column width="60%"}
-- Then, you can check if Quarto recognises Jupyter:
+:::{style="text-align: center;"}
+[![](figures/jupyter-notebook.png){width="95%"}](#){data-modal-type="image" data-modal-url="figures/jupyter-notebook.png"}
 
-```bash
-quarto check jupyter
-```
-
-- If Quarto does not find Jupyter, you can specify the path to the executable:
-
-```bash
-which python
-```
-- So you can set the path to Jupyter with:
-
-```bash
-# On macOS or Linux (WSL)
-export QUARTO_PYTHON=/path/to/your/python
-```
-
-- If you want to permanently set the path, add the line below to your `.bashrc` or `.zshrc` file (it depends on your shell)
-
-```bash
-# For example, if you use zsh (shell on macOS)
-echo 'export QUARTO_PYTHON=/path/to/your/python' >> ~/.zshrc
-
-# Reload the shell configuration
-source ~/.zshrc
-
-# If you use bash (default shell on Linux)
-echo 'export QUARTO_PYTHON=/path/to/your/python' >> ~/.bashrc
-
-# Reload the shell configuration
-source ~/.bashrc
-```
+:::{style="font-size: 17px;"}
+The same notebook, rendered. [More details here](https://quarto.org/docs/get-started/hello/jupyter.html)
 :::
 :::
-:::
-
-## Jupyter notebooks
-
-:::{style="margin-top: 30px; font-size: 20px;"}
-:::{.columns}
-:::{.column width="30%"}
-- [You just have to add a YAML header to your notebook!](https://quarto.org/docs/get-started/hello/jupyter.html)
-- Quarto will convert it to HTML, PDF, or other formats
-- `quarto render notebook.ipynb --to html` will convert a notebook to HTML
-- You can add `--execute` to run the code
-- Benefits: 
-  - Easy to host
-  - Easy to convert
-  - More formatting options
-:::
-
-:::{.column width="70%"}
-[![](figures/jupyter-notebook.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/jupyter-notebook.png"}
 :::
 :::
 :::
 
 ## PDFs
 
-:::{style="margin-top: 30px; font-size: 21px;"}
-:::{.columns}
-:::{.column width="30%"}
-- Most articles and reports are in PDF format
-- You will need a [LaTeX distribution](https://www.latex-project.org/get) to create PDFs
-- You can install it with `quarto`:
-  - `quarto install tinytex`
-- If you use `R`, you can use [`tinytex`](https://yihui.org/tinytex/) with: 
-  - `install.packages("tinytex")`
-  - `tinytex::install_tinytex()`
-- This is [strongly recommended]{.alert} as a LaTeX distribution is huge and takes a long time to install
-- More information [here](https://quarto.org/docs/output-formats/pdf-basics.html)
-:::
-
-:::{.column width="70%"}
-:::{style="text-align: right;"}
-[![](figures/pdf.png){width="85%"}](#){data-modal-type="image" data-modal-url="figures/pdf.png"}
-:::
-:::
-:::
-:::
-
-## PDFs from Jupyter notebooks
-
-:::{style="margin-top: 30px; font-size: 21px;"}
-:::{.columns}
-:::{.column width="30%"}
-- You can convert Jupyter notebooks to PDFs using `tinytex` and `quarto`
-- Add `--to pdf` to the command and `--execute` to run the code
-- `quarto render notebook.ipynb --to pdf --execute`
-- It is the same as using the `.qmd` format (which is preferred), but it works with your existing notebooks
-:::
-
-:::{.column width="70%"}
-:::{style="text-align: right;"}
-[![](figures/pdf-jupyter.png){width="85%"}](#){data-modal-type="image" data-modal-url="figures/pdf-jupyter.png"}
-:::
-:::
-:::
-:::
-
-## Adding references
-
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- You can add academic references to your documents using `bibtex`
-- `BibTeX` is a reference management software developed for LaTeX
-- A `bibtex` file is a plain text file with `.bib` extension
-- You can add the `.bib` file to your YAML header
-- Use `@key` to cite a reference, `[@key]` to cite in parentheses
-- The key is the first line of the reference in the `.bib` file (e.g., `@article{nash1950equilibrium}`)
-- More information [here](https://quarto.org/docs/authoring/references.html)
+- Most journals, agencies, and employers still want [PDF]{.alert}
+- PDF rendering goes through LaTeX, and you installed [TinyTeX](https://yihui.org/tinytex/) last class (`quarto install tinytex`)
+- After that, PDF is one flag:
+
+```{.bash filename="Terminal"}
+quarto render report.qmd --to pdf
+```
+
+- The same works on a notebook, and `--execute` re-runs it first:
+
+```{.bash filename="Terminal"}
+quarto render notebook.ipynb --to pdf --execute
+```
+
+- Fonts, margins, and page geometry are all YAML options: see the [PDF basics guide](https://quarto.org/docs/output-formats/pdf-basics.html)
 :::
 
 :::{.column width="50%"}
-- The easiest way to manage references is with a reference manager like [Zotero](https://www.zotero.org/) or download a BibTeX reference from Google Scholar
-- Just search for a paper and click on the `cite` button
-- Then click on `BibTeX` and copy the reference to your `.bib` file
+:::{style="text-align: center;"}
+[![Rendering a PDF](figures/pdf.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/pdf.png"}
+:::
 :::
 :::
 :::
 
-## Example
+## Citations with BibTeX
 
-:::{style="margin-top: 30px; font-size: 21px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-[![](figures/scholar.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/scholar.png"}
+- Formatting references by hand is slow, and updating them by hand is how errors creep in. [BibTeX]{.alert} automates both
+- A `.bib` file is plain text: one entry per source, each with a [citation key]{.alert} (here, `nash1950equilibrium`)
+- Point your YAML at the file:
 
-[![](figures/citation.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/citation.png"}
+```yaml
+bibliography: references.bib
+```
 
+- Then cite by key in your prose:
+  - `@nash1950equilibrium` → Nash (1950)
+  - `[@nash1950equilibrium]` → (Nash 1950)
+  - `[@nash1950equilibrium, p. 48]` → (Nash 1950, p. 48)
+- Quarto formats the citations [and]{.alert} appends the reference list. Change the style with one line: `csl: apa.csl` (thousands of styles [here](https://github.com/citation-style-language/styles))
 :::
 
 :::{.column width="50%"}
@@ -328,7 +270,8 @@ source ~/.bashrc
 @article{nash1950equilibrium,
   title={Equilibrium points in n-person games},
   author={Nash Jr, John F},
-  journal={Proceedings of the national academy of sciences},
+  journal={Proceedings of the national
+           academy of sciences},
   volume={36},
   number={1},
   pages={48--49},
@@ -337,109 +280,278 @@ source ~/.bashrc
 }
 ```
 
-- Save it on your `references.bib` file (or any other name)
-- Quarto will automatically format the references
-- More information about BibTeX [here](https://www.overleaf.com/learn/latex/Bibliography_management_with_bibtex)
+:::{style="margin-top: 15px;"}
+- Cite it once or fifty times: the entry lives in [one place]{.alert}
+- Delete the citation and the reference list updates itself on the next render
+- More at the [Quarto citations guide](https://quarto.org/docs/authoring/footnotes-and-citations.html)
+:::
 :::
 :::
 :::
 
-## Example
+## Where BibTeX entries come from
 
-:::{style="margin-top: 30px; font-size: 21px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
-:::{.column width="30%"}
-Then you add the references to your YAML header:
+:::{.column width="50%"}
+- You almost never type an entry by hand
+- On [Google Scholar](https://scholar.google.com/), click [Cite]{.alert}, then [BibTeX]{.alert}, and copy the result into your `.bib` file
+- For anything bigger than a homework, use a reference manager: [Zotero](https://www.zotero.org/) is free, open source, and exports `.bib` files that stay in sync with your library
+- Check the entries you import: Scholar sometimes gets capitalisation and journal names wrong, and the error lands in your reference list
 
+:::{style="margin-top: 10px;"}
+[![](figures/bibtex.png){width="90%"}](#){data-modal-type="image" data-modal-url="figures/bibtex.png"}
+:::
+:::
+
+:::{.column width="50%"}
+:::{style="text-align: center;"}
+[![](figures/scholar.png){width="85%"}](#){data-modal-type="image" data-modal-url="figures/scholar.png"}
+
+[![](figures/citation.png){width="85%"}](#){data-modal-type="image" data-modal-url="figures/citation.png"}
+:::
+:::
+:::
+:::
+
+## Cross-references: the other `@`
+
+:::{style="margin-top: 25px; font-size: 20px;"}
+:::{.columns}
+:::{.column width="50%"}
+A citation points outside your document. A [cross-reference]{.alert} points inside it. Label the chunk, then use the label:
+
+````{verbatim}
+```{{python}}
+#| label: fig-rain
+#| fig-cap: "Monthly rainfall in Atlanta"
+plt.plot(month, rain)
+```
+
+Rainfall peaks in March (@fig-rain).
+````
+
+That last line renders as [Rainfall peaks in March (Figure 1)]{.alert}
+
+Markdown tables take the label underneath, after a colon:
+
+:::{style="text-align: center; margin-top: 30px;"}
 ```markdown
----
-title: "Matplotlib Demo"
-author: "Norah Jones"
-date: "2024-09-30"
-date-format: "MMMM D, YYYY"
-format: 
-  pdf:
-    fig-width: 3
-    fig-height: 2
-    margins: 2in
-bibliography: references.bib
----
+| City     | Population |
+|:---------|-----------:|
+| Atlanta  |    498,715 |
+| Savannah |    147,780 |
+
+: Two cities {#tbl-cities}
 ```
 :::
+:::
 
-:::{.column width="70%"}
-[![](figures/bibtex.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/bibtex.png"}
+:::{.column width="50%"}
+:::{style="margin-top: 20px;"}
+- The prefix tells Quarto [what it is numbering]{.alert}: `fig-`, `tbl-`, `eq-`, `sec-`, `lst-`
+- Write `label: rainfall` with no prefix and the caption still appears, [with no number]{.alert}, while `@rainfall` sits in your text as raw text
+- `@sec-` also needs `number-sections: true` in the YAML
+- `[-@fig-rain]` prints the bare number, for when you are already inside brackets
+- Add a figure halfway through the document and [every number renumbers itself]{.alert}, in the captions and in your prose
+- The same labels work in HTML and PDF, so you write the sentence once
+
+:::{style="margin-top: 12px;"}
+This is why we number nothing by hand. [Hand-typed "Figure 3" is wrong the moment you add Figure 2]{.alert}
+:::
+:::
 :::
 :::
 :::
 
 ## Formatting LaTeX documents
 
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 24px;"}
 :::{.columns}
 :::{.column width="50%"}
-- LaTeX allows you to format your documents in a very detailed way
-- As we discussed in the previous lecture, LaTeX is not very user-friendly
-- But you can use available templates to make your life easier
-- I have some of my own templates here: <https://github.com/danilofreire/quarto-templates>
-- You can save some time by using them, or finding others you like 😅
+- Quarto's default PDF looks fine. Journals, universities, and employers often want [a specific look]{.alert}
+- That is what LaTeX templates are for, and you do not have to write one: you point your YAML at one
 
 ```markdown
-format: 
+format:
   pdf:
     template: your-template.latex
 ```
+
+- I keep my own templates (articles, syllabi, letters, CVs) at <https://github.com/danilofreire/quarto-templates>
+- You can save some time by using them, or finding others you like 😅
 :::
 
 :::{.column width="50%"}
-[![](figures/latex.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/latex.png"}
-
-<https://github.com/danilofreire/quarto-templates>
+:::{style="text-align: center;"}
+[![The template behind the course syllabus](figures/latex.png){width="95%"}](#){data-modal-type="image" data-modal-url="figures/latex.png"}
 :::
 :::
 :::
-
-## Try it yourself! 🚀 {#sec:exercise-01}
-
-:::{style="margin-top: 30px; font-size: 28px;"}
-- Create a new Quarto document (`.qmd`) in VS Code
-- Add a heading and some text (headings, lists, links and a table)
-- Add a Python code chunk with a simple graph and a print statement
-  - Change the chunk options to `echo: true` and `eval: true`
-  - Add a `fig.cap` option to the chunk
-  - Add a caption to the figure
-  - Add a label to the figure and reference it in the text
-- Add a BibTeX reference to your document and render it both to HTML and PDF
-- Use the `quarto` command to render the document
-- [[Example]{.button}](#sec:appendix-01)
 :::
 
-## Presentations!
-### Slides and reveal.js
+## Try it yourself! {#sec-exercise-01}
 
-:::{style="margin-top: 30px; font-size: 25px;"}
+:::{style="margin-top: 30px; font-size: 24px;"}
+:::{.columns}
+:::{.column width="55%"}
+1. Create a file called `practice.qmd` in VS Code
+2. Write a YAML header with `title`, `author`, `format: html`, and `bibliography: references.bib`
+3. Add a `##` heading, a paragraph, a bulleted list, and a small Markdown table
+4. Add a Python chunk that plots something (e.g., `plt.plot`) with these chunk options:
+   - `#| echo: true` and `#| eval: true`
+   - `#| fig-cap: "Your caption here"`
+   - `#| label: fig-myplot`
+5. Reference the figure in your text with `@fig-myplot`
+:::
+
+:::{.column width="45%"}
+6. Create a `references.bib` file with one BibTeX entry (grab one from [Google Scholar](https://scholar.google.com/))
+7. Cite it in your text with `@key`
+8. Render to HTML and to PDF:
+
+```{.bash filename="Terminal"}
+quarto render practice.qmd
+quarto render practice.qmd --to pdf
+```
+
+:::{style="margin-top: 10px; font-size: 20px;"}
+The chunk options are on last week's table: `fig-` labels are what `@fig-` references point at
+:::
+
+:::{style="margin-top: 10px;"}
+[[Example]{.button}](#sec-appendix-01)
+:::
+:::
+:::
+:::
+
+# Renders you can trust {background-color="#1B3A6B"}
+
+## The problem with re-rendering
+
+:::{style="margin-top: 40px; font-size: 23px;"}
+:::{.columns}
+:::{.column width="55%"}
+- You finish a report in October. In November you fix a typo and render it again
+- Between the two dates, `pandas` shipped a new version and one default changed
+- Your edit was one character. [Three numbers in the results table are now different]{.alert}
+- You find out when a colleague asks why their printed copy disagrees with the website
+
+:::{style="margin-top: 15px;"}
+[Rendering and re-computing are the same action]{.alert}. Every render re-runs every chunk, whether the analysis changed or not
+:::
+:::
+
+:::{.column width="45%"}
+:::{style="font-size: 23px;"}
+- [Nothing in your document changed! The ground under it did:]{.alert}
+
+- A package upgrade changes a default
+- An API hands you today's data, not October's
+- A random draw with no seed
+- Anything that reads the clock or today's date
+- A different machine with different versions
+
+:::{style="margin-top: 12px;"}
+What we want is [controlled re-execution]{.alert}: code runs again when the source changes, and stays put otherwise
+:::
+:::
+:::
+:::
+:::
+
+## `freeze`: re-run only when the source changes
+
+:::{style="margin-top: 30px; font-size: 23px;"}
 :::{.columns}
 :::{.column width="50%"}
-- You can also create slides with Quarto! 🎉
-- Quarto has several advantages:
-  - Over R Markdown: more flexibility, more languages, reveal.js support
-  - Over PowerPoint: plain text, easier to share, easier to host, version control
-  - Over Google Slides: version control, offline access, more flexibility
-  - Over Beamer: Oh my God, so much easier! 😅
+Put this in `_quarto.yml` for a project:
+
+```yaml
+project:
+  type: website
+
+execute:
+  freeze: auto
+```
+
+Or in the YAML header of a single document:
+
+```yaml
+---
+title: "Rainfall report"
+format: html
+execute:
+  freeze: auto
+---
+```
+
 :::
 
 :::{.column width="50%"}
-[![](figures/slides.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/slides.png"}
+- Quarto runs the code once and stores the results in a folder called `_freeze/`
+- After that, a document re-runs [only when its own source changes]{.alert}
+- `freeze: auto`: change the code, get new results. Change nothing, get the same results
+- `freeze: true`: never re-run. For [archival]{.alert} work, a submitted paper or a signed-off report
+- `freeze: false`: the default, always re-run
+
+:::{style="margin-top: 12px;"}
+- [Commit `_freeze/`]{.alert}. It travels with the project, so whoever clones your repository gets your numbers
+- Your site also rebuilds in seconds, because only the pages you edited run again
+:::
 :::
 :::
 :::
 
-## How to create slides
+## What `freeze` does and does not do
 
-:::{style="margin-top: 30px; font-size: 20px;"}
-- Create a new Quarto document with `format: revealjs`
-- Add a YAML header with the metadata, as usual
-- It's a good idea to add `embed-resources: true` to the YAML header, so that all images and tables are included in the HTML file. More options here: <https://quarto.org/docs/reference/formats/presentations/revealjs.html>
+:::{style="margin-top: 30px; font-size: 24px;"}
+:::{.columns}
+:::{.column width="50%"}
+[What it does]{.alert}
+
+- Controls [when]{.alert} your code runs again
+- Keeps October's results until you touch the source
+- Stops accidental re-computation
+- Makes a render fast and predictable
+:::
+
+:::{.column width="50%"}
+[What it does not do]{.alert}
+
+- Control [what your code runs with]{.alert}
+- Survive deleting `_freeze/`
+- Protect a machine with other package versions
+- Pin `pandas` to the version you tested
+:::
+:::
+
+:::{style="margin-top: 18px;"}
+So `freeze` postpones the problem. The rest of the answer is to pin the environment, which is [module 08]{.alert}: `uv` and containers. Until then, use `freeze: auto`, commit `_freeze/`, and write your versions in the README
+:::
+:::
+
+# Presentations and websites {background-color="#1B3A6B"}
+
+## Slides with reveal.js
+
+:::{style="margin-top: 30px; font-size: 23px;"}
+:::{.columns}
+:::{.column width="50%"}
+- Quarto renders slides with [reveal.js](https://revealjs.com/), an HTML presentation framework
+- These very slides are Quarto + reveal.js! 
+- Why bother, when PowerPoint exists?
+  - [Plain text]{.alert}: diffs, version control, merge conflicts that make sense
+  - [Code runs inside the slides]{.alert}: charts update when the data changes
+  - [One source, many formats]{.alert}: the same `.qmd` can also become a PDF handout
+  - [Free hosting]{.alert}: push to GitHub, share a link
+- Fair warning: the first deck takes longer than dragging boxes. The payoff is that your 50th deck is no harder than your 2nd
+:::
+
+:::{.column width="50%"}
+:::{style="margin-top: -20px;"}
+The YAML picks the format, and the headings do the rest:
 
 ```yaml
 title: "My Presentation"
@@ -449,56 +561,67 @@ format:
     embed-resources: true
 ```
 
-- Add your content in Markdown
-- `#` creates a new section, `##` a new slide
-- Quarto uses `:::` to create and end a new "element" in the slides. For instance, to create columns, change font size, centre text, etc.
-  - If you know HTML, this is the same as creating `div` elements (e.g., `<div class="columns"> </div>`)
-- You can add code chunks, images, tables, and references
-- To render the slides, use the `quarto` command:
-  - `quarto render slides.qmd --to revealjs`
+- `#` starts a [section]{.alert}, `##` starts a [new slide]{.alert}
+- `embed-resources: true` bakes images and fonts into one self-contained file
+- `:::` fenced divs handle layout: columns, centred text, font sizes
+- Chunks, images, tables, and citations work exactly as in a report
+- Full reference: [Quarto reveal.js docs](https://quarto.org/docs/presentations/revealjs/)
+:::
+:::
+:::
 :::
 
-## Example
-### Simple slides
+## Two decks to learn from
 
 :::{style="margin-top: 30px; font-size: 24px;"}
-- Let's see together two examples of slides created with Quarto
+:::{.columns}
+:::{.column width="55%"}
+1. [A minimal deck]{.alert} with text and images: [simple-slides.html](https://danilofreire.github.io/datasci350/lectures/lecture-11/simple-slides.html), with its source in [simple-slides.qmd](https://github.com/danilofreire/datasci350/blob/main/lectures/lecture-11/simple-slides.qmd), in this lecture's folder (click on the links above)
+2. [The template behind this course]{.alert}, with custom theme, columns, and modal images: [quarto-presentation](https://github.com/danilofreire/quarto-presentation)
 
-- First, a simple example with text and images: <https://rawcdn.githack.com/danilofreire/datasci350/545939d5b14a7596fa6b726dc00ea6825bad321d/lectures/lecture-09/simple-slides.html>
-- The code is available here: <https://raw.githubusercontent.com/danilofreire/datasci350/main/lectures/lecture-10/simple-slides.qmd>
+Install the course template with:
 
-- I have also created a template with a more complex layout (it's the one I use for this class): <https://github.com/danilofreire/quarto-presentation>
-- You need to download the folder or install the template with 
-  - `quarto install danilofreire/quarto-presentation`
+```{.bash filename="Terminal"}
+quarto install danilofreire/quarto-presentation
+```
+:::
 
-- Take a look at them, download the `.qmd` file of the simple slides, and create your own! 🚀
+:::{.column width="45%"}
+:::{style="margin-top: -20px;"}
+Things to try on your own:
 
-- Change the theme, add more content, change the font size, create columns, etc
-
-- Let me know if you have any questions! 😊
+- Download the simple slides `.qmd` and render it locally
+- Change the theme (e.g., `theme: moon`, `theme: serif`)
+- Add a two-column layout with `:::{.columns}`
+- Add a code chunk that produces a plot
+- Add a `{.smaller}` class to a slide with a lot of text
+:::
+:::
+:::
 :::
 
 ## Where to host slides
 
-:::{style="margin-top: 30px; font-size: 22px;"}
+:::{style="margin-top: 30px; font-size: 23px;"}
 :::{.columns}
 :::{.column width="50%"}
-- There are two easy ways to host a presentation:
-  - GitHub: you can create a repository and upload the files
-  - [Githack](https://raw.githack.com/): you can upload the files and get a link to share
+Two options, both free:
 
-- [Githack](https://raw.githack.com/) is the easiest: you just paste the link to the `.html` file in your repository and it will create a link for you
-- On GitHub, you have to publish the repository and go to the settings to enable GitHub Pages (more on this later)
+:::{style="text-align: center; margin-top: 30px; margin-bottom: 30px;"}
+| Method | How it works | When to use |
+|:-------|:-------------|:------------|
+| [GitHub Pages](https://pages.github.com/) | Enable in repo settings, serves from a branch | Permanent hosting, custom domain |
+| [Githack](https://raw.githack.com/) | Paste the GitHub link to any `.html` file | Quick sharing, no setup |
+:::
+
+You met GitHub Pages in module 02. Githack is the fastest path: push your HTML, paste the file URL at [raw.githack.com](https://raw.githack.com/), share the link it returns
 :::
 
 :::{.column width="50%"}
-- Upload your slides to a GitHub repository 
-- Go to <https://raw.githack.com/>
-- Paste the link to the `.html` file
-- For example: <https://github.com/danilofreire/datasci350/blob/main/lectures/lecture-10/simple-slides.html>
-
-:::{style="text-align: center;"}
+:::{style="text-align: center; font-size: 18px;"}
 [![](figures/githack.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/githack.png"}
+
+Paste the raw GitHub link, get a serveable URL back. The "production" link caches permanently; the "development" link always fetches the latest commit
 :::
 :::
 :::
@@ -506,105 +629,48 @@ format:
 
 ## Websites
 
-:::{style="margin-top: 30px; font-size: 26px;"}
+:::{style="margin-top: 30px; font-size: 24px;"}
 :::{.columns}
 :::{.column width="50%"}
-- Finally, you can also create websites with Quarto! 😎
-- Quarto websites are [static]{.alert}, which means they are very fast (although a bit limited in functionality)
-- They are great for blogs, documentation, portfolios, and other simple websites
-- You can also host them for free on GitHub, Netlify, or Vercel
-- More information [here](https://quarto.org/docs/websites/)
+- Quarto websites are [static]{.alert}: pre-rendered HTML, CSS, and images, no server-side code
+- Fast to load, free to host, and trivial to version-control
+- Common uses: course sites, project documentation, portfolios, research blogs
+- Free hosting on [GitHub Pages](https://pages.github.com/), [Netlify](https://www.netlify.com/), or [Vercel](https://vercel.com/)
+- Limitation: no databases, no login pages, no server-side logic. For those you need a web framework (Flask, Django, etc.)
+- More at [quarto.org/docs/websites](https://quarto.org/docs/websites/)
 :::
 
 :::{.column width="50%"}
-- Example website: <https://www.mm218.dev/>
+- Example: <https://www.mm218.dev/>
 
 [![](figures/website.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/website.png"}
 :::
 :::
 :::
 
-## Website structure 
-
-:::{style="margin-top: 30px; font-size: 22px;"}
-:::{.columns}
-:::{.column width="50%"}
-- Quarto compiles the `.qmd` files into separate `.html` files (pages)
-- Quarto websites are highly customisable, and you can create your own themes if you know CSS
-- You can add a navigation bar, a footer, a sidebar, and other elements
-- Websites have the same structure:
-  - `_quarto.yml`: metadata that organises the website
-  - `*.qmd`: content files, which will be displayed as pages
-  - `index.qmd`: the home page
-  - `styles.css`: custom CSS for the website
-
-- Let's see how they work together in the example website 😊
-:::
-
-:::{.column width="50%"}
-[![](figures/website-structure.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/website-structure.png"}
-:::
-:::
-:::
-
-## Create project in VS Code
-
-:::{style="margin-top: 30px; font-size: 23px;"}
-- To create a website in VS Code, execute the `Quarto: Create Project` command from the command-palette
-- Press `Ctrl+Shift+P` and type `Quarto: Create Project`
-
-:::{style="text-align: center;"}
-[![](figures/vscode-create-project-command.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/vscode-create-project-command.png"}
-:::
-:::
-
-## Select website format
-
-:::{style="margin-top: 30px; font-size: 23px;"}
-- Now, you need to select the website format
-
-:::{style="text-align: center;"}
-[![](figures/vscode-create-project-website.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/vscode-create-project-website.png"}
-:::
-:::
-
-## Select a directory
-
-:::{style="margin-top: 30px; font-size: 23px;"}
-- Choose a directory for your project
-- It is a good idea to create a new folder for your website
-
-:::{style="text-align: center;"}
-[![](figures/vscode-create-project-directory.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/vscode-create-project-directory.png"}
-:::
-:::
-
-## Project created!
-
-:::{style="margin-top: 30px; font-size: 23px;"}
-- Your project is now created! 🎉
-- You can see the structure of the website in the sidebar
-- Click the `Preview` button to see the website (first button on the right)
-- You can add new pages, change the theme, and customise the website as you like
-- Let's see how to do that!
-
-:::{style="text-align: center;"}
-[![](figures/vscode-create-project-render.png){width="80%"}](#){data-modal-type="image" data-modal-url="figures/vscode-create-project-render.png"}
-:::
-:::
-
-## Configuration file: `_quarto.yml`
+## The skeleton of a website
 
 :::{style="margin-top: 30px; font-size: 23px;"}
 :::{.columns}
 :::{.column width="50%"}
-- The `_quarto.yml` file contains the metadata for the website
-- In this file, you will see the project type, the website title, the pages that will be included, the theme, and other options
-- The list of themes is available [here](https://quarto.org/docs/websites/website-blog.html#themes)
-- For our newly created project, the file looks like this:
+Every Quarto website is a folder with the same skeleton:
+
+:::{style="text-align: center; margin-top: 30px; margin-bottom: 30px;"}
+| File | Purpose |
+|:-----|:--------|
+| `_quarto.yml` | Site config: title, navigation, theme |
+| `index.qmd` | Home page ([required]{.alert}) |
+| `*.qmd` | Other pages: about, posts, docs |
+| `styles.css` | CSS overrides (optional) |
+:::
+
+- Each `.qmd` becomes one page, with the navigation, footer, and theme inherited from `_quarto.yml`
+- A page's own YAML usually holds just its title
 :::
 
 :::{.column width="50%"}
+The generated `_quarto.yml` for a new site:
+
 ```yaml
 project:
   type: website
@@ -623,45 +689,53 @@ format:
     css: styles.css
     toc: true
 ```
+
+The [theme list](https://quarto.org/docs/websites/website-blog.html#themes) has two dozen options, light and dark
 :::
 :::
 :::
 
-## The `.qmd` files
+## Creating a website in VS Code
 
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 24px;"}
 :::{.columns}
-:::{.column width="50%"}
-- The `.qmd` files are the content of your website
-- They follow the same format as the other Quarto documents, with a YAML header and Markdown content
-- In this case, the YAML header contains (usually) only the title of the page
-- The content can be as simple or as complex as you like, as long as it is static and in Markdown
-:::
+:::{.column width="60%"}
+::: {layout-ncol="2"}
+[![](figures/vscode-create-project-command.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/vscode-create-project-command.png"}
 
-:::{.column width="50%"}
-```markdown
----
-title: "About"
----
+[![](figures/vscode-create-project-website.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/vscode-create-project-website.png"}
 
-# About
+[![](figures/vscode-create-project-directory.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/vscode-create-project-directory.png"}
 
-This is a simple website created with Quarto.
-```
-:::
+[![](figures/vscode-create-project-render.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/vscode-create-project-render.png"}
 :::
 :::
 
-## Our website
+:::{.column width="40%"}
+Four steps, clockwise from top left:
 
-:::{style="margin-top: 30px; font-size: 23px;"}
+1. `Ctrl+Shift+P` (or `Cmd+Shift+P`), then run [Quarto: Create Project]{.alert}
+2. Pick [Website Project]{.alert} from the list
+3. Choose a new, empty folder for it
+4. The project opens with `_quarto.yml`, `index.qmd`, `about.qmd`, and `styles.css`. Click [Preview]{.alert} to see the site
+
+Click any screenshot to zoom in
+:::
+:::
+:::
+
+## Our course website
+
+:::{style="margin-top: 30px; font-size: 24px;"}
 :::{.columns}
-:::{.column width="20%"}
-- Let's see the `_quarto.yml` file for our course website
-- The file is available [here](https://github.com/danilofreire/datasci350/blob/gh-pages/_quarto.yml)
+:::{.column width="35%"}
+- The course site is a Quarto website like the one you just created, plus a longer `_quarto.yml`
+- The abridged config is on the right: navigation bar, GitHub links, a footer, and paired light and dark themes
+- The full file is [on GitHub](https://github.com/danilofreire/datasci350/blob/gh-pages/_quarto.yml), and its `index.qmd` is [here](https://github.com/danilofreire/datasci350/blob/gh-pages/index.qmd)
+- [Steal from it freely!]{.alert} That is why it is public 
 :::
 
-:::{.column width="80%"}
+:::{.column width="65%"}
 ```yaml
 project:
   type: website
@@ -669,155 +743,485 @@ project:
 
 website:
   title: "DATASCI 350"
-  page-navigation: true
-  back-to-top-navigation: true
-  reader-mode: true
   repo-url: https://github.com/danilofreire/datasci350
-  repo-actions: [issue, source]
-  repo-branch: gh-pages
   navbar:
-    pinned: true
-    tools:
-      - icon: github
-        href: https://github.com/danilofreire/datasci350
     left:
       - href: syllabus.qmd
         text: Syllabus
       - href: lectures/lectures.qmd
         text: Lectures
-      - href: tutorials/tutorials.qmd
-        text: Tutorials
       - href: assignments/assignments.qmd
         text: Assignments
-      - href: LICENSE.html
-        text: " "
-  page-footer: 
-    left: "Copyright 2026, Danilo Freire. The content of this site is licensed under the [MIT License](LICENSE.qmd)." 
-    right: 
-      - icon: github
-        href: https://github.com/danilofreire/datasci350
+  page-footer:
+    left: "Copyright 2026, Danilo Freire."
 
 format:
   html:
-    theme: 
+    theme:
       light: lumen
       dark: solar
-    css: styles.css
     toc: true
 ```
-
-- [Website](https://danilofreire.github.io/datasci350/)
 :::
 :::
 :::
 
-## The `index.qmd` file
+## Publishing with one command
 
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 24px;"}
 :::{.columns}
 :::{.column width="50%"}
-- The `index.qmd` file is the home page of your website
-- This is a special file that will be displayed when you access the root of your website
-- While all other `.qmd` files are optional, this one is required
-:::
+Quarto has a built-in publish command for GitHub Pages:
 
-:::{.column width="50%"}
-- The `index.qmd` for our course website is very simple:
-
-```markdown
----
-title: "DATASCI 350 - Data Science Computing"
----
-
-Welcome to [DATASCI 350](https://github.com/danilofreire/datasci350)! [...]
-
-We will meet every Monday and Wednesday [...]
-
-## Contact Information
-
-- **Name**: [Danilo Freire](https://danilofreire.github.io/)
-- **Email**: [`danilo.freire@emory.edu`](mailto:danilo.freire@emory.edu)
-- **Office Hours**: By appointment at your convenience, please email me to schedule a meeting
-
-[...]
+```{.bash filename="Terminal"}
+quarto publish gh-pages
 ```
 
-- The full file is available [here](https://github.com/danilofreire/datasci350/blob/gh-pages/index.qmd)
+- It renders the site, creates or updates a `gh-pages` branch, pushes it, and GitHub serves the result at `https://username.github.io/repo-name/`
+- The manual alternative: `quarto render`, commit the output folder, push, and point Pages at it in the repository settings
+- After the first publish, updating the site is: edit the `.qmd`, run the command again
+
+:::{style="margin-top: 10px;"}
+[Plain text in, public website out!]{.alert}
+:::
+:::
+
+:::{.column width="50%"}
+:::{style="text-align: center; margin-top: 20px;"}
+[![The freshly published site, straight from `quarto publish`](figures/voila.png){width="95%"}](#){data-modal-type="image" data-modal-url="figures/voila.png"}
+:::
 :::
 :::
 :::
 
-## How to publish a website
+# One report, many inputs {background-color="#1B3A6B"}
+
+## Parameterised reports
 
 :::{style="margin-top: 30px; font-size: 21px;"}
 :::{.columns}
-:::{.column width="50%"}
-- To publish a website on GitHub, you need to create a repository with your website files
-- The repository will be hosted on [GitHub Pages](https://pages.github.com/), which is a free service
-- Each repository can have a website, and you can choose the branch where the website files are stored
-- For our course website, the files are stored in a `docs` folder in the `gh-pages` branch
-- This is because I did not want to mix the website files with the course files
-- You can create your website with `quarto preview` (run inside the project folder) 
-- Or with `quarto render` (to render the website to the output directory)
-- In my case, I use `quarto render docs/`
-- Then you just add, commit, and push the files to your repository! 😊
+:::{.column width="52%"}
+- You need the same report for ten countries. Or every month. Or for each of thirty students
+- The tempting move is to copy the file ten times and edit each copy. [Do not]{.alert}. One mistake now means ten files to fix
+- Write [one]{.alert} report with a [parameter]{.alert} instead: a value you set from outside the document
+- In Python, a parameter is an ordinary variable in a cell tagged `parameters`
+
+```{.python}
+#| tags: [parameters]
+country = "Brazil"
+```
+
+- That value is the [default]{.alert}. Render the file normally and you get Brazil
 :::
 
-:::{.column width="50%"}
-- To create a repository with GitHub Pages:
-  - Create a new repository on GitHub
-  - Go to the repository settings
-  - Scroll down to the GitHub Pages section
-  - Choose the branch where the website files are stored
-  - Choose the folder where the website files are stored
-  - Click on `Save`
-  - You will get a link to your website 🎉
+:::{.column width="48%"}
+- To override it, pass `-P` in the terminal:
+
+```{.bash filename="Terminal"}
+quarto render report.qmd -P country:Uruguay
+```
+
+- The tag is how Quarto finds the cell to replace. Forget it and `-P` does nothing
+- Put the tagged cell [first]{.alert}, above any code that uses the parameter
+- One extra package makes this work, installed once:
+
+```{.bash filename="Terminal"}
+pip install papermill
+```
+
+:::{.fragment style="margin-top: 12px;"}
+If a country name contains a space, quote it:
+
+```{.bash filename="Terminal"}
+quarto render report.qmd -P country:"United States"
+```
 :::
 :::
 :::
-
-## On GitHub 🐙
-
-:::{style="margin-top: 30px; font-size: 23px;"}
-[![](figures/website-qtm350.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/website-qtm350.png"}
 :::
 
-## Et voilà! 🎉
+## A worked example: `report.qmd`
 
-:::{style="margin-top: 30px; font-size: 23px;"}
-[![](figures/voila.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/voila.png"}
-:::
-
-# And now you know what Quarto can do! 😎 {background-color="#2d4563"}
-
-# That's all for today! 🎉 {background-color="#2d4563"}
-
-## Appendix 01 {#sec:appendix-01}
-
-:::{style="margin-top: 30px; font-size: 21px;"}
+:::{style="margin-top: 30px; font-size: 18px;"}
 :::{.columns}
 :::{.column width="50%"}
+````{verbatim}
+---
+title: "Country profile"
+format: html
+jupyter: python3
+---
+
+```{{python}}
+#| tags: [parameters]
+country = "Brazil"
+```
+
+```{{python}}
+#| echo: false
+import pandas as pd
+import matplotlib.pyplot as plt
+
+profiles = pd.read_csv("data/country_profiles.csv")
+one = profiles[profiles["country"] == country]
+one = one.sort_values("year")
+```
+
+# `{{python}} country`
+
+This report uses indicators for `{{python}} country`.
+
+## Life expectancy over time
+
+```{{python}}
+#| echo: false
+fig, ax = plt.subplots(figsize=(7, 3.5))
+ax.plot(one["year"], one["life_expectancy"])
+plt.show()
+```
+````
+:::
+
+:::{.column width="50%"}
+- The data is real: World Bank indicators for ten countries, 2000 to 2023, in `data/country_profiles.csv`
+- The parameter does its work in [three places]{.alert}: it filters the data, titles the report, and appears in the sentence
+- `` `{{python}} country` `` is [inline code]{.alert}. It drops the value of a Python expression straight into your prose
+- So the words change with the data. No heading spells out "Brazil" by hand
+- Only the default names a country. Change it, or pass `-P`, and the whole document follows
+- The full file is in the lecture folder, a little longer than this extract because it also builds a table
+
+:::{.fragment style="margin-top: 15px;"}
+[This is the whole trick]{.alert}. One file, one source of truth, many outputs
+:::
+:::
+:::
+:::
+
+## What it produces
+
+:::{style="margin-top: 20px; font-size: 23px;"}
+:::{.columns}
+:::{.column width="45%"}
+Rendered with the default, `country = "Brazil"`:
+
 ```{python}
-#| echo: true
-#| eval: false
+#| echo: false
+import pandas as pd
+
+profiles = pd.read_csv("data/country_profiles.csv")
+one = profiles[profiles["country"] == "Brazil"].sort_values("year")
+
+(one.tail(5)
+    .loc[:, ["year", "gdp_per_capita", "life_expectancy"]]
+    .rename(columns={"year": "Year",
+                     "gdp_per_capita": "GDP per capita (US$)",
+                     "life_expectancy": "Life expectancy"})
+    .style.format({"GDP per capita (US$)": "{:,.0f}",
+                   "Life expectancy": "{:.1f}"})
+    .hide(axis="index"))
+```
+:::
+
+:::{.column width="55%"}
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(6, 3.4))
+for name, colour in [("Brazil", "#1B3A6B"), ("Uruguay", "#B25A3A")]:
+    sub = profiles[profiles["country"] == name].sort_values("year")
+    ax.plot(sub["year"], sub["life_expectancy"], label=name,
+            color=colour, linewidth=2)
+ax.set_xlabel("Year")
+ax.set_ylabel("Life expectancy (years)")
+ax.legend(frameon=False)
+ax.spines[["top", "right"]].set_visible(False)
+plt.tight_layout()
+plt.show()
+```
+
+:::{style="font-size: 18px; text-align: center;"}
+Two of the ten countries in the file. The report draws one at a time, and the parameter decides which
+:::
+:::
+:::
+:::
+
+## From one report to a pipeline
+
+:::{style="margin-top: 30px; font-size: 21px;"}
+:::{.columns}
+:::{.column width="52%"}
+One country at a time, each with its own file name:
+
+```{.bash filename="Terminal"}
+quarto render report.qmd -P country:Uruguay \
+  --output profile-Uruguay.html
+```
+
+Or let the shell do all of them, with the loop you met in module 02:
+
+```{.bash filename="Terminal"}
+for c in Brazil Mexico Uruguay; do
+  quarto render report.qmd \
+    -P country:$c \
+    --output profile-$c.html
+done
+```
+
+Three commands you did not have to type, and three files:
+
+```{verbatim}
+profile-Brazil.html
+profile-Mexico.html
+profile-Uruguay.html
+```
+:::
+
+:::{.column width="48%"}
+:::{style="margin-top: 20px;"}
+- Ten countries is the same loop with a longer list. So is a hundred
+- `--output` matters. Without it, every render writes over `report.html`
+- Find a mistake, fix [one]{.alert} file, run the loop again
+- Industry does exactly this. The only difference is that the loop runs on a schedule instead of on your laptop
+
+:::{style="margin-top: 20px;"}
+[This is how one analysis becomes a pipeline!]{.alert}
+
+And it is the shape of your final project: one repository, one analysis, many countries
+:::
+:::
+:::
+:::
+:::
+
+## Try it yourself, again! {#sec-exercise-02}
+
+:::{style="margin-top: 25px; font-size: 21px;"}
+:::{.columns}
+:::{.column width="55%"}
+You do not have to write the report. Download it and drive it from the terminal.
+
+1. Download [`report.qmd`](https://raw.githubusercontent.com/danilofreire/datasci350/main/lectures/lecture-11/report.qmd) and [`country_profiles.csv`](https://raw.githubusercontent.com/danilofreire/datasci350/main/lectures/lecture-11/data/country_profiles.csv) (click on the links to get the files)
+2. Put `report.qmd` in a new folder. Put the CSV in a `data` folder beside it
+3. Render the file with no options. You get Brazil
+4. Render it again for Japan. Give the output its own file name
+5. Open both HTML files. The heading, the table, and the chart all changed
+6. Render one more country whose name contains a space
+:::
+
+:::{.column width="45%"}
+:::{style="font-size: 19px;"}
+Or download both from the terminal:
+
+```{.bash filename="Terminal"}
+BASE=https://raw.githubusercontent.com/danilofreire/datasci350/main/lectures/lecture-11
+
+curl -O $BASE/report.qmd
+mkdir data
+curl -o data/country_profiles.csv \
+  $BASE/data/country_profiles.csv
+```
+
+Hints:
+
+- The flag is `-P`, and it takes `name:value`
+- Without `--output`, your second render writes over the first
+- The CSV lists all ten countries. Two of the names contain a space
+:::
+
+[[Solution]{.button}](#sec-appendix-02)
+:::
+:::
+:::
+
+## When the render fails
+
+:::{style="margin-top: 25px; font-size: 22px;"}
+:::{.columns}
+:::{.column width="48%"}
+Three failures you will meet this term, as they appear on screen:
+
+```{.bash filename="Terminal"}
+  Cell 1/1: ''...ERROR
+ModuleNotFoundError: No module named 'geopandas'
+```
+
+```{.bash filename="Terminal"}
+ERROR: YAMLException: bad indentation of
+a mapping entry (2:14)
+ 2 | title: Quarto: a first look
+------------------^
+```
+
+```{.bash filename="Terminal"}
+compilation failed- error
+Undefined control sequence.
+l.172 ...bad command: \(\notarealcommand
+```
+:::
+
+:::{.column width="52%"}
+- [Python errors read from the bottom]{.alert}. The last line names the problem. The traceback above it only shows how the code got there
+- Quarto tells you which cell broke, so you know where to look first
+- A missing module usually means the package is fine, and Quarto is running [a different Python]{.alert}
+- [YAML errors read from the top]{.alert}. Trust the caret: line 2, column 14 is the unquoted colon
+- The stack trace printed underneath is noise. Ignore it
+- [In LaTeX errors, `l.172` is a line in the generated `.tex`]{.alert}, not in your `.qmd`
+- The text beside it is yours, though, so search your file for that
+- And [render often]{.alert}, so the only new thing is also the broken thing
+:::
+:::
+:::
+
+## When Quarto uses the wrong Python
+
+:::{style="margin-top: 25px; font-size: 21px;"}
+:::{.columns}
+:::{.column width="48%"}
+[Which Python is Quarto actually running?]{.alert} Ask it:
+
+```{.bash filename="Terminal"}
+quarto check jupyter
+
+[✓] Checking Python 3 installation....OK
+      Version: 3.13.13 (Conda)
+      Path: /Users/danilo/miniconda3/bin/python3
+      Kernels: ds350, python3
+```
+
+Compare that path with `which python3`. If they differ, you have found your error. Three fixes:
+
+```{.bash filename="Terminal"}
+# 1. activate first, render in the same terminal
+source .venv/bin/activate
+quarto render report.qmd
+
+# 2. point Quarto at one interpreter
+QUARTO_PYTHON=~/.venv/bin/python \
+  quarto render report.qmd
+```
+
+```yaml
+# 3. name a kernel in the document itself
+jupyter: ds350
+```
+:::
+
+:::{.column width="52%"}
+:::{style="margin-top: 20px;"}
+- The symptom never changes: `ModuleNotFoundError` for a package you know you installed
+- Quarto does not inherit your Python. It picks one, in a [fixed order]{.alert}
+- `QUARTO_PYTHON` first, if it is set. Otherwise whatever `python3` means on your `PATH`
+- Fix 3 is the most reproducible. The choice lives [in the document]{.alert}, so it travels with the file
+- `jupyter kernelspec list` shows your kernels. Add the current environment with:
+
+```{.bash filename="Terminal"}
+python -m ipykernel install --user --name ds350
+```
+
+:::{style="margin-top: 12px;"}
+In VS Code, the Render button runs in [its]{.alert} terminal, not yours. The kernel you picked in a notebook does not follow it there
+:::
+:::
+:::
+:::
+:::
+
+## Summary: where this leaves you
+
+:::{style="margin-top: 30px; font-size: 23px;"}
+:::{.columns}
+:::{.column width="50%"}
+Take stock for a moment. As of today, you can build:
+
+- An article with formatted citations and numbered figures, in HTML and PDF, from [one plain-text file]{.alert}
+- A `_freeze/` folder that pins your results until [you]{.alert} decide to change them
+- Slides and a [public website]{.alert}, online with `quarto publish gh-pages`
+- One parameterised report that a shell loop turns into [ten reports]{.alert}
+:::
+
+:::{.column width="50%"}
+And you know why each one earns its place:
+
+- `freeze: auto` separates "I changed the code" from "the world changed"
+- Labels and `@` references mean nothing is numbered by hand
+- A website is just a folder with a `_quarto.yml` in it
+- Everything today was plain text, so [everything today lives in Git]{.alert}
+:::
+:::
+
+:::{style="margin-top: 20px;"}
+That is the toolkit your [final project]{.alert} is built with. Module 06 adds scripted data collection, and module 08 pins the environment underneath. [You're ready to go!]{.alert}
+:::
+:::
+
+## Next class
+
+:::{style="margin-top: 30px; font-size: 25px;"}
+:::{.columns}
+:::{.column width="50%"}
+- We change gears: [AI and prompt engineering]{.alert}
+- How large language models actually work, in enough depth to predict their failures
+- Writing prompts that get useful answers, and spotting the confident wrong ones
+- Using AI to write, explain, and debug code [without letting it replace your judgement]{.alert}
+- Bring the scepticism you built this week: it transfers
+:::
+
+:::{.column width="50%"}
+:::{style="text-align: center; margin-top: 10px;"}
+[![Everything a language model does, in one picture: guess the next word, then guess again](figures/llm-prediction-word.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/llm-prediction-word.png"}
+:::
+:::
+:::
+:::
+
+## Additional materials
+
+:::{style="margin-top: 30px; font-size: 26px;"}
+- [Quarto: citations and footnotes](https://quarto.org/docs/authoring/footnotes-and-citations.html)
+- [Quarto: presentations](https://quarto.org/docs/presentations/)
+- [Quarto: websites](https://quarto.org/docs/websites/)
+- [Quarto: parameterised documents](https://quarto.org/docs/computations/parameters.html)
+- [papermill documentation](https://papermill.readthedocs.io/), the engine behind `-P`
+- [CSL style repository](https://github.com/citation-style-language/styles), thousands of citation styles
+- [Zotero](https://www.zotero.org/), the reference manager worth learning before your thesis
+- [Markdown Guide](https://www.markdownguide.org/)
+- [reveal.js demo](https://revealjs.com/demo/), what HTML slides can do at full stretch
+:::
+
+# And now you know what Quarto can do! 😎 {background-color="#1B3A6B"}
+
+# That's all for today! 🎉 {background-color="#1B3A6B"}
+
+## Appendix 01: Solution to the first exercise {#sec-appendix-01}
+
+:::{style="margin-top: 30px; font-size: 18px;"}
+:::{.columns}
+:::{.column width="50%"}
+The complete `practice.qmd`:
+
+````{verbatim}
 ---
 title: "My Quarto Document"
 subtitle: "A simple example"
 author: "Danilo Freire"
-date: "2024-09-30"
+date: "2026-09-30"
 format: html
 bibliography: references.bib
 ---
 
 # Introduction
 
-This is a simple Quarto document. This is @fig-sine.
+This is a simple Quarto document.
+This is @fig-sine.
 
-```{python}
+```{{python}}
 #| echo: true
 #| eval: true
 #| fig-cap: "Sine function"
-#| label: fig-sine 
+#| label: fig-sine
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -831,14 +1235,80 @@ plt.ylabel("sin(x)")
 plt.title("Figure 01")
 plt.show()
 ```
+````
+
+Render with:
+
+```{.bash filename="Terminal"}
+quarto render practice.qmd
+quarto render practice.qmd --to pdf
+```
 :::
 
 :::{.column width="50%"}
+The rendered output:
+
 :::{style="text-align: right;"}
 [![](figures/fig-sine.png){width="75%"}](#){data-modal-type="image" data-modal-url="figures/fig-sine.png"}
+:::
+
+:::{style="margin-top: 20px;"}
+Key points:
+
+- `#| label: fig-sine` gives the figure a cross-reference label
+- `@fig-sine` in the text creates a clickable link to it
+- `bibliography: references.bib` tells Quarto where to find BibTeX entries
+- `@key` cites from the `.bib` file; the reference list is added automatically at the end
 :::
 :::
 :::
 
-[[Back to main text]{.button}](#sec:exercise-01)
+[[Back to main text]{.button}](#sec-exercise-01)
+:::
+
+## Appendix 02: Solution to the second exercise {#sec-appendix-02}
+
+:::{style="margin-top: 30px; font-size: 19px;"}
+:::{.columns}
+:::{.column width="50%"}
+Your folder should look like this before you render anything:
+
+```{verbatim}
+country-report/
+├── report.qmd
+└── data/
+    └── country_profiles.csv
+```
+
+Steps 3 to 6, in order:
+
+```{.bash filename="Terminal"}
+quarto render report.qmd
+
+quarto render report.qmd \
+  -P country:Japan \
+  --output profile-Japan.html
+
+quarto render report.qmd \
+  -P country:"South Africa" \
+  --output profile-South-Africa.html
+```
+:::
+
+:::{.column width="50%"}
+Three things worth noticing:
+
+- The first render writes `report.html`, and it says Brazil, because that is the default in the tagged cell
+- Without `--output`, every render writes over `report.html`. The Japan version would have replaced the Brazil one
+- `South Africa` needs quotes. Without them the shell splits the name in two, the filter matches nothing, and the render stops with a `ValueError`
+
+:::{style="margin-top: 20px;"}
+Nothing above edits the report. You changed the output by changing the [input]{.alert}, which is the point of a parameter
+
+If you want to go further, change the default from `Brazil` to `India`, render with no options, and watch the same file rebuild for a different country
+:::
+
+[[Back to main text]{.button}](#sec-exercise-02)
+:::
+:::
 :::

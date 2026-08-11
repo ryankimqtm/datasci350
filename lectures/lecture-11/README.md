@@ -1,77 +1,64 @@
-# QTM 350 - Data Science Computing
+# Lecture 11 - Quarto in Practice
 
-## Quiz 02: Creating a Website with Quarto and GitHub Pages
+Everything Quarto builds once you know the basics: articles with citations, PDFs, slides, websites, and one report that becomes ten.
 
-### Instructions
+[View the slides](https://danilofreire.github.io/datasci350/lectures/lecture-11/11-more-quarto.html)
 
-In this quiz, you will create a website using Quarto and GitHub Pages as shown in our previous lectures. The website will contain four pages:
+## What we cover
 
-- An index (home) page with a title, one sentence about the Gapminder dataset, and links to the other three pages.
-- A page with a graph showing the relationship between life expectancy and GDP per capita over time.
-- A page analysing the relationship between life expectancy and population.
-- A page analysing changes in life expectancy, GDP per capita, and population for a specific country over time.
+- Markdown beyond the basics: tables, footnotes, maths, and the bits you will use every week
+- Rendering existing Jupyter notebooks without rewriting them
+- PDFs through LaTeX, and templates for when a journal wants a particular look
+- Citations from a `.bib` file, and where BibTeX entries come from
+- Cross-references: label a figure `fig-rain`, write `@fig-rain`, get "Figure 1"
+- `freeze`, so that rendering a document does not quietly recompute your results
+- Slides with reveal.js, and where to host them
+- Websites: a folder, a `_quarto.yml`, and `quarto publish gh-pages`
+- Parameterised reports, and the shell loop that turns one report into ten
 
-The website should be published on GitHub Pages and the link to the website should be submitted on Canvas. You can use either R or Python to create the graphs and the analysis. A short description of the dataset is provided here: <https://cran.r-project.org/web/packages/gapminder/index.html>.
+## The two exercises
 
-The dataset is available in this repository as `gapminder.csv`, and it contains 6 columns and 1,704 rows. The columns are: `country`, `continent`, `year`, `life_expectancy`, `population_millions`, and `gdp_per_capita`. The dataset contains information about these variables in 142 countries over the years 1952 to 2007, with a 5-year interval. If you would like to create the dataset yourself, you can run the code below.
+The first asks you to write a `practice.qmd` from scratch: a YAML header, a figure with a label, a cross-reference to it, and one citation from a `.bib` file. Render it to HTML and to PDF.
 
-```python
-# Install packages
-# !pip install pandas gapminder
+The second needs no writing at all. Download [`report.qmd`](report.qmd) and [`country_profiles.csv`](data/country_profiles.csv), put the CSV in a `data` folder beside the report, and drive the same file from the terminal:
 
-# Import necessary libraries
-import pandas as pd
-from gapminder import gapminder
-
-# Rename 'lifeExp' to 'life_expectancy' and 'gdpPercap' to 'gdp_per_capita'
-gapminder = gapminder.rename(columns={'lifeExp': 'life_expectancy',
-                                      'pop': 'population_millions', 
-                                      'gdpPercap': 'gdp_per_capita'})
-
-# Convert population to millions
-gapminder['population_millions'] = gapminder['population_millions'] / 1_000_000
-
-# Create a new pandas DataFrame from the modified gapminder data
-gapminder_df = pd.DataFrame(gapminder)
-
-# Save the DataFrame as a CSV file
-gapminder_df.to_csv('gapminder.csv', index=False)
+```bash
+quarto render report.qmd
+quarto render report.qmd -P country:Japan --output profile-Japan.html
 ```
 
-### Tasks
+The first command gives you Brazil, because that is the default in the tagged cell. The second gives you Japan without editing a single line. Solutions to both exercises are in the appendix slides.
 
-1. Fork this repository to your GitHub account and clone it to your computer.
+## What freeze is for
 
-2. Create a new Quarto website project in your local cloned folder (use `.`).
+`freeze: auto` tells Quarto to re-run a document only when that document's source changes. Without it, every render recomputes everything, so a typo fix in November can change your results because a package was updated in October.
 
-3. In your local folder, create another folder named `docs` to store the rendered website. This is the folder that will be published on GitHub Pages.
+Commit the `_freeze/` folder. It travels with the project, so whoever clones your repository gets your numbers rather than their own.
 
-4. Modify the `_quarto.yml` file to include navigation links to your pages and direct the output to the `docs` folder.
+`freeze` controls when your code runs, not what it runs with. Pinning the packages themselves is module 08.
 
-5. Modify the `index.qmd` file to include a title, a one-line description of the Gapminder dataset, and links to the
+## When the render fails
 
-6. Create a page entitled `life-gdp.qmd` analysing the relationship between life expectancy and GDP per capita. Give it a title, a brief introduction, and a graph. Show your code. Also give it a link in the index page with the text "Life Expectancy and GDP per Capita".
+Python errors read from the bottom. The last line names the problem, and Quarto tells you which cell broke.
 
-7. Create a page entitled `life-population.qmd` analysing the relationship between life expectancy and population. Do the same as in the previous task, but change the title and the link text to "Life Expectancy and Population".
+YAML errors read from the top. Trust the caret: it points at the character that broke the header, and the stack trace underneath is noise.
 
-8. Create a page entitled `country.qmd` analysing changes in life expectancy, GDP per capita, and population for a specific country over time. Give it a title, a brief introduction, and a graph. Show your code. Also give it a link in the index page with the text "Country Analysis".
+In a LaTeX error, `l.172` counts lines in the generated `.tex` file, not in your `.qmd`. The text printed beside it is yours, so search your file for that instead.
 
-9. Ensure the `_quarto.yml` file includes navigation links with custom names.
+## When Quarto uses the wrong Python
 
-10. Change the theme of the website to one of Quarto's available themes. You can find the list of themes here: <https://quarto.org/docs/output-formats/html-themes.html>.
+A `ModuleNotFoundError` for a package you know you installed means Quarto is running a different Python from the one you installed it into. Run `quarto check jupyter` to see which one it is, and compare it with `which python3`.
 
-11. Render the website and output the files to the `docs` folder.
+Warning: `QUARTO_PYTHON` overrides an activated environment. If that variable is set in your shell profile, option 1 below will not work until you unset it.
 
-12. Add, commit, and push the changes to your forked repository.
+1. Activate your environment. Render from that same terminal.
+2. Or set the interpreter for one render: `QUARTO_PYTHON=~/.venv/bin/python quarto render report.qmd`.
+3. Or register your environment as a Jupyter kernel. Name it in the YAML with `jupyter: ds350`. This is the option that travels with the file, so use it for work you share.
 
-13. Go the repository settings on GitHub and enable GitHub Pages to publish the website. Remember to select the `docs` folder as the source.
+## Before the next class
 
-14. Check that the website is live and all pages are accessible.
+1. Complete both exercises.
+2. Publish something with `quarto publish gh-pages`. One page is enough.
+3. Fix any render that failed today. Do not leave it until the week of the final project.
 
-15. Copy the GitHub Pages link and submit it on Canvas as instructed.
-
-### Bonus Question
-
-16. Enhance the website's appearance by adding a custom CSS file.
-
-17. Include an interactive map showing countries' life expectancy or GDP per capita. For this task, you can use the `plotly` library in Python, the `leaflet` library in R, or any other library you prefer.
+Next class we change subject: AI and prompt engineering. We look at how large language models work, in enough detail to predict where they fail, and at how to use them for writing and debugging code without handing over your judgement.

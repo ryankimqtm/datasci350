@@ -61,4 +61,19 @@ Warning: `QUARTO_PYTHON` overrides an activated environment. If that variable is
 2. Publish something with `quarto publish gh-pages`. One page is enough.
 3. Fix any render that failed today. Do not leave it until the week of the final project.
 
-Next class we change subject: AI and prompt engineering. We look at how large language models work, in enough detail to predict where they fail, and at how to use them for writing and debugging code without handing over your judgement.
+### Install Ollama at home
+
+Next class you run a language model on your own laptop. That needs a 1.3 GB download, which the classroom wifi cannot deliver twenty-five times at once. Do these steps before you arrive.
+
+1. Open <https://ollama.com/download>.
+2. Download the installer for your operating system.
+3. Install Ollama as you would any other application.
+4. Open a new terminal window. An older window will not know where Ollama is.
+5. Run `ollama --version`. A version number appears.
+6. Run `ollama pull llama3.2:1b`. The download takes a few minutes.
+7. Run `ollama run llama3.2:1b`. A `>>>` prompt appears.
+8. Ask it any question, then type `/bye` to leave.
+
+If step 5 says `command not found`, close the terminal and open a new one. That fixes it almost every time. If your laptop cannot run the model, tell me before class and we will arrange a lab machine.
+
+Next class we change subject: local language models. A trained model turns out to be a file you can download, and we take one apart, read every setting inside it, and then build a chatbot with a personality of your own choosing.

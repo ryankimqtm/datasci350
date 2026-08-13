@@ -1162,10 +1162,11 @@ That is the toolkit your [final project]{.alert} is built with. Module 06 adds s
 :::{style="margin-top: 30px; font-size: 25px;"}
 :::{.columns}
 :::{.column width="50%"}
-- We change gears: [AI and prompt engineering]{.alert}
+- We change gears: [local language models]{.alert}
 - How large language models actually work, in enough depth to predict their failures
-- Writing prompts that get useful answers, and spotting the confident wrong ones
-- Using AI to write, explain, and debug code [without letting it replace your judgement]{.alert}
+- A trained model turns out to be [a file you can download]{.alert}, so we take one apart and read every setting inside it
+- Then you build a chatbot with a personality of your own choosing
+- [Install Ollama before class]{.alert} and run `ollama pull llama3.2:1b`. The download is 1.3 GB, and the classroom wifi cannot do that twenty-five times at once
 - Bring the scepticism you built this week: it transfers
 :::
 

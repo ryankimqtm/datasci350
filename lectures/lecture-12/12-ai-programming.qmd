@@ -1,6 +1,6 @@
 ---
 title: DATASCI 350 - Data Science Computing
-subtitle: "Lecture 12 - AI & Prompt Engineering"
+subtitle: "Lecture 12 - AI, Prompting, and Local Models"
 author:
   - name: Danilo Freire
     email: danilo.freire@emory.edu
@@ -8,7 +8,7 @@ author:
 format:
   clean-revealjs:
     self-contained: true
-    footer: "[AI & Prompt Engineering](https://danilofreire.github.io/datasci350/lectures/lecture-12/12-ai-programming.html)"
+    footer: "[AI, Prompting, and Local Models](https://danilofreire.github.io/datasci350/lectures/lecture-12/12-ai-programming.html)"
 transition: slide
 transition-speed: default
 scrollable: true
@@ -56,30 +56,31 @@ Source: [r/ProgrammerHumor](https://www.reddit.com/r/ProgrammerHumor/comments/1d
 - How models "see" text, which is not as text
 - Tokens and embeddings, and why both cost you money
 
-[2. How to ask]{.alert}
+[2. Run one on your own laptop]{.alert}
+
+- A model is a file. You download it and run it in the terminal
+- Ollama, and what your machine can hold
+
+[3. How to ask]{.alert}
 
 - Persona, Task, Context, Format
-- Temperature, and the settings the chat apps hide from you
-
-[3. System prompts]{.alert}
-
-- The instructions you never see, and what they do to the answers
+- Temperature, live, on the model you just installed
 :::
 
 :::{.column width="50%"}
-[4. Prompting techniques]{.alert}
+[4. System prompts]{.alert}
+
+- The instructions you never see, and how to write your own
+
+[5. Prompting techniques]{.alert}
 
 - Zero-shot, one-shot, and few-shot
 - Chain-of-thought, and the phrase that triggers it
 
-[5. Agents]{.alert}
+[6. Agents, and where it breaks]{.alert}
 
 - Models that take actions, not just answer questions
-- Prompt injection, and why an agent with your inbox is a risk
-
-[6. Where it breaks]{.alert}
-
-- Hallucination, bias, and performance that is uneven for no visible reason
+- Hallucination, bias, and prompt injection
 :::
 :::
 :::
@@ -258,9 +259,9 @@ Source: [OpenAI Platform](https://platform.openai.com/tokenizer)
 | Model | Context window | Max output |
 |-------|---------------|------------|
 | Claude Haiku 4.5 | 200,000 tokens | 64,000 |
-| GPT-5.5 | 272,000 tokens | 128,000 |
-| Gemini 3.5 Flash | 1,000,000 tokens | 65,000 |
+| Gemini 3.6 Flash | 1,000,000 tokens | 65,000 |
 | Claude Opus 5 | 1,000,000 tokens | 128,000 |
+| GPT-5.6 | 1,050,000 tokens | 128,000 |
 :::
 
 :::{style="font-size: 17px; margin-top: 10px;"}
@@ -293,9 +294,9 @@ Source: [Anthropic](https://platform.claude.com/docs/en/build-with-claude/contex
 | Model | Input | Output |
 |-------|-------|--------|
 | Claude Haiku 4.5 | \$1 | \$5 |
-| Gemini 3.5 Flash | \$1.50 | \$9 |
+| Gemini 3.6 Flash | \$1.50 | \$7.50 |
 | Claude Opus 5 | \$5 | \$25 |
-| GPT-5.5 | \$5 | \$30 |
+| GPT-5.6 | \$5 | \$30 |
 :::
 
 :::{style="font-size: 18px; margin-top: 10px;"}
@@ -309,7 +310,7 @@ A worked example, from Anthropic's own documentation:
 
 Ten thousand customer support conversations, averaging about 3,700 tokens each, cost roughly [\$37]{.alert} on Claude Haiku 4.5
 
-The same job on GPT-5.5 costs about [six times more]{.alert}, for work that a cheap model probably handles well
+The same job on GPT-5.6 costs about [six times more]{.alert}, for work that a cheap model probably handles well
 :::
 
 :::{style="background: rgba(230, 57, 70, 0.1); padding: 18px; border-radius: 10px; font-size: 19px; margin-top: 20px;"}
@@ -421,6 +422,118 @@ The same greeting costs different amounts in different languages:
 :::
 :::
 
+# Run one on your own laptop 💻 {background-color="#1B3A6B"}
+
+## A model is a file
+
+:::{style="margin-top: 20px; font-size: 21px;"}
+:::{.columns}
+:::{.column width="52%"}
+- Everything so far sounds abstract, so let's make it physical. [A language model is a file]{.alert}: the weights are exactly the numbers from the embedding slides, saved to disk
+- [Ollama](https://ollama.com/) downloads those files and runs them from the command line. Install it from [ollama.com](https://ollama.com/), then:
+
+```bash
+ollama pull llama3.2:1b
+ollama run llama3.2:1b
+```
+
+- The first command downloads ~1.3 GB, the second starts a chat [in your terminal]{.alert}. Type `/bye` to leave
+- No account, no API, no internet needed after the download
+
+Useful commands:
+
+```bash
+ollama ls      # models you have downloaded
+ollama ps      # models currently running
+ollama rm      # delete a model
+```
+:::
+
+:::{.column width="48%"}
+:::{style="text-align: center;"}
+[![](figures/ollama.png){width="30%"}](#){data-modal-type="image" data-modal-url="figures/ollama.png"}
+:::
+
+**Small models worth trying, August 2026**
+
+| Model | Size | Good for |
+|-------|------|----------|
+| `llama3.2:1b` | ~1.3 GB | Lightest sensible start |
+| `llama3.2:3b` | ~2 GB | General chat, summarising |
+| `gemma3:4b` | ~3.3 GB | General use, fast |
+| `qwen3:4b` | ~2.5 GB | Code |
+| `phi4-mini` | ~2.5 GB | Reasoning for its size |
+
+:::{style="font-size: 19px; margin-top: 10px;"}
+Browse the full library at [ollama.com/library](https://ollama.com/library)
+:::
+:::
+:::
+:::
+
+## How much RAM do you need?
+
+:::{style="margin-top: 20px; font-size: 22px;"}
+:::{.columns}
+:::{.column width="52%"}
+A rough rule that will not embarrass you:
+
+| Model size | RAM you want |
+|------------|--------------|
+| 1B to 4B | 8 GB |
+| 7B to 8B | 16 GB |
+| 13B to 14B | 16 to 32 GB |
+| 30B and up | 32 GB or more |
+
+- Those numbers are for the quantised versions Ollama downloads by default
+- If your machine starts swapping, the model still runs but becomes unusably slow
+- On Apple Silicon, memory is shared with the GPU, which is why those machines do well here
+:::
+
+:::{.column width="48%"}
+:::{style="background: rgba(27, 58, 107, 0.08); padding: 16px; border-radius: 10px; font-size: 21px;"}
+**Start smaller than you think**
+
+Pull `llama3.2:1b` first and confirm the whole thing works end to end.
+
+A 1B model answering badly in two seconds teaches you more than a 14B model that never finishes downloading during a 75-minute class
+:::
+
+:::{style="font-size: 20px; margin-top: 15px;"}
+If your laptop cannot run any of these, that is fine. [Google AI Studio](https://aistudio.google.com/) exposes the same settings in the browser, and every exercise today has that fallback
+:::
+:::
+:::
+:::
+
+## Why bother, when the chatbots exist?
+
+:::{style="margin-top: 20px; font-size: 22px;"}
+:::{.columns}
+:::{.column width="50%"}
+**Good reasons**
+
+- [Privacy]{.alert}: data never leaves your laptop. This matters for medical records, student data, unpublished work, anything under ethics approval
+- [Cost]{.alert}: no bill, however many times you run it
+- [Offline]{.alert}: works on a plane, at a field site, behind a firewall
+- [Control]{.alert}: the model does not change under you overnight
+- [Honesty]{.alert}: for us, today, it is also the best classroom. Every setting the chat apps hide is exposed here
+:::
+
+:::{.column width="50%"}
+**Honest limits**
+
+- [Quality]{.alert}: a 1B model on your laptop is not a frontier model, and you will notice quickly
+- [Hardware]{.alert}: you need the RAM, and generation is slower
+- [Effort]{.alert}: you manage updates yourself
+
+:::{style="background: rgba(27, 58, 107, 0.08); padding: 14px; border-radius: 10px; font-size: 20px; margin-top: 12px;"}
+A good rule: use a local model when the [data]{.alert} is the sensitive part, and a hosted model when the [reasoning]{.alert} is the hard part. Lecture 14 covers the hosted side
+:::
+:::
+:::
+:::
+
 # How to talk to AI 💬 {background-color="#1B3A6B"}
 
 ## Let's start with an example
@@ -525,7 +638,17 @@ At temperature 0 the model always takes the most likely token, so the same promp
 | Brainstorming | 0.8 and above |
 :::
 
-- The chat apps [hide all of this]{.alert}. The developer playgrounds do not: try [Google AI Studio](https://aistudio.google.com/) or [OpenAI's playground](https://platform.openai.com/playground)
+- The chat apps [hide all of this]{.alert}. Your terminal does not:
+
+```bash
+ollama run llama3.2:1b
+>>> /set parameter temperature 0
+>>> Write a slogan for a coffee shop in Decatur
+>>> /set parameter temperature 1
+>>> Write a slogan for a coffee shop in Decatur
+```
+
+- Run each prompt [twice]{.alert} and compare the four answers. In the browser, [Google AI Studio](https://aistudio.google.com/) exposes the same sliders
 :::
 
 :::{.column width="45%"}
@@ -669,6 +792,45 @@ Read that list again as a prompting lesson. Those five jobs are worth doing in [
 Source: [Anthropic Documentation](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering)
 
 More here: <https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools>
+:::
+:::
+:::
+:::
+
+## Write your own system prompt
+
+:::{style="margin-top: 30px; font-size: 20px;"}
+:::{.columns}
+:::{.column width="55%"}
+The companies write system prompts for their chatbots. [With a local model, you write them]{.alert}, using a file Ollama calls a `Modelfile`:
+
+```text
+FROM llama3.2:1b
+PARAMETER temperature 0.3
+SYSTEM """You are Jeeves, an impeccably polite English
+butler. Answer in three sentences at most, and always
+address the user as 'sir or madam'."""
+```
+
+Save that as `Modelfile`, then:
+
+```bash
+ollama create jeeves -f Modelfile
+ollama run jeeves
+```
+
+The persona now [travels with the model]{.alert}. Quit, restart, run it next week: still a butler. That is exactly what a system prompt is, made visible
+:::
+
+:::{.column width="45%"}
+:::{style="text-align: center;"}
+[![](figures/ollama-jeeves.png){width="90%"}](#){data-modal-type="image" data-modal-url="figures/ollama-jeeves.png"}
+:::
+
+:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 18px; margin-top: 15px;"}
+Compare with the API snippet two slides back: `FROM` picks the model, `SYSTEM` is the system role, and your chat is the user role. [Same three parts, different notation]{.alert}
+
+A longer worked example (Ironic Jeeves) is in the Lecture 14 appendix, and Quiz 03 expects you to be able to write a `Modelfile` yourself
 :::
 :::
 :::
@@ -1089,14 +1251,13 @@ This has been used to leak system prompts, run code through plugins, extract pri
 :::{style="margin-top: 30px; font-size: 20px;"}
 :::{.columns}
 :::{.column width="55%"}
-Today was about [how to talk to models]{.alert}, and what an agent is in principle.
+Today you learnt [how to talk to models]{.alert}, what an agent is in principle, and you ran a model on your own laptop.
 
-In [lecture 14]{.alert} you do it for real:
+The module continues from there:
 
-- Install a [coding agent]{.alert} in your terminal and let it read, edit, and run files in a project folder
-- Call a model [from your own Python script]{.alert}, with your own API key
-- Run a model [on your own laptop]{.alert}, with the internet switched off
-- Work out which of those fits a given job, and when an agent should not be trusted with it
+- In [lecture 14]{.alert}, install a [coding agent]{.alert} in your terminal and let it read, edit, and run files in a project folder
+- Call a model [from your own Python script]{.alert}, with your own API key, reaching models far larger than your laptop can hold
+- In [lecture 15]{.alert}, teach a model to answer questions about [documents it has never read]{.alert}, using the embeddings from today
 
 A coding agent is a program that writes prompts on your behalf. Everything today still applies, because [a bad prompt is still a bad prompt]{.alert} with an agent in between.
 
@@ -1247,31 +1408,33 @@ So build your own [reliability map]{.alert}:
 
 ## Try it yourself! {#sec-exercise}
 
-:::{style="margin-top: 25px; font-size: 21px;"}
+:::{style="margin-top: 25px; font-size: 20px;"}
 :::{.columns}
 :::{.column width="55%"}
-Open [Google AI Studio](https://aistudio.google.com/), which is free and shows you the temperature slider.
+Everything below runs on the model you installed earlier.
 
-1. Paste this prompt: "Tell me about machine learning in healthcare"
-2. Set the temperature to 0. Run it twice. Compare the two answers
-3. Set the temperature to 0.9. Run it twice more. Compare again
-4. Rewrite the prompt with all four parts of PTCF. Name a reader, a task, some context, and an exact format
-5. Run your version at temperature 0
-6. Count how many of your format instructions the model actually followed
+1. Run `ollama run llama3.2:1b`
+2. Type `/set parameter temperature 0`
+3. Ask: "Tell me about machine learning in healthcare". Ask it twice. Compare the two answers
+4. Type `/set parameter temperature 1`. Ask twice more. Compare again
+5. Rewrite the prompt with all four parts of PTCF. Name a reader, a task, some context, and an exact format
+6. Set the temperature back to 0. Run your version
+7. Count how many of your format instructions the model actually followed
+8. If time allows: write a two-line `Modelfile` persona, create it with `ollama create`, and repeat step 6 on it
 :::
 
 :::{.column width="45%"}
-:::{style="font-size: 20px;"}
+:::{style="font-size: 19px;"}
 What to look for:
 
 - At temperature 0 the two answers should be [almost identical]{.alert}. That is the whole point of it
-- At 0.9 they will not be, and neither is more correct than the other
+- At 1 they will not be, and neither is more correct than the other
 - The vague prompt gives you an essay. Yours should give you something you could paste into a document
-- Step 6 is the real test. If the model ignored an instruction, [it was probably ambiguous]{.alert} rather than disobeyed
+- Step 7 is the real test. If the model ignored an instruction, [it was probably ambiguous]{.alert} rather than disobeyed. A 1B model also follows less well than a frontier one, which is worth seeing for yourself
 :::
 
-:::{style="background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 15px;"}
-Bring your rewritten prompt to the next class. We compare a few of them, and the disagreements are the interesting part
+:::{style="background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 18px; margin-top: 15px;"}
+No laptop that can run it? [Google AI Studio](https://aistudio.google.com/) has the same temperature setting in the browser. Bring your rewritten prompt to the next class either way; the disagreements are the interesting part
 :::
 :::
 :::
@@ -1285,6 +1448,8 @@ Bring your rewritten prompt to the next class. We compare a few of them, and the
 - Models read [tokens, not words]{.alert}. One fact that explains your bill, your context limit, and why "ChatGPT" costs three of them
 
 - Meaning lives in [geometry]{.alert}. Similar words sit close together, and so do our biases
+
+- [A model is a file]{.alert}. You pulled one, ran it in your terminal, and gave it a persona with a `Modelfile`
 
 - [Persona, Task, Context, Format]{.alert}. Four questions that turn a vague request into an answerable one
 
@@ -1312,7 +1477,8 @@ Bring your rewritten prompt to the next class. We compare a few of them, and the
 :::
 
 :::{.column width="50%"}
-- After the quiz, [lecture 14]{.alert} takes today's material to the keyboard: coding agents, the API, and a model running on your own machine
+- After the quiz, [lecture 14]{.alert} scales today's material up: coding agents in your terminal, and calling models from your own code
+- Keep Ollama installed. Lectures 14 and 15 both build on it
 - Do the exercise on the previous slide before then. Two minutes of it beats reading these slides again
 
 :::{style="background: rgba(45, 69, 99, 0.1); padding: 18px; border-radius: 10px; font-size: 21px; margin-top: 20px;"}

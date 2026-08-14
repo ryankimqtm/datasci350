@@ -1307,7 +1307,7 @@ Bring a charged laptop, and check that `quarto render` works on it before you ar
 :::
 
 :::{.column width="50%"}
-After the quiz, [lecture 14]{.alert} keeps the model and changes the interface. Ollama has been running a small web server on `localhost:11434` this whole time, and Python can talk to it. We add coding agents in your terminal, and hosted models through an API key.
+After the quiz, [lecture 14]{.alert} keeps the model and changes the interface. Ollama has been running a small web server on `localhost:11434` this whole time, and Python can talk to it. You will classify a whole file of headlines with your own model, then reach a hosted one by changing an address.
 
 [Lecture 15]{.alert} then closes the module with retrieval, which is how you make a model answer from documents instead of from memory.
 

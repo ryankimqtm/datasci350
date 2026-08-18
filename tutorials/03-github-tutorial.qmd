@@ -3,35 +3,41 @@ title: "DATASCI 350 - GitHub Tutorial"
 lang: en-GB
 author: 
   - Danilo Freire
-appendix: false
-fontfamily: libertine
-monofont: inconsolata
-monofontoptions: scaled=.95
-fontsize: 12pt
-spacing: double
-geometry: 
-  - top=2cm
-  - bottom=2cm
-  - left=2cm
-  - right=2cm
-urlcolor: darkblue
-linkcolor: Mahogany
-citecolor: Mahogany
 jupyter: python3
 highlight-style: arrow
-pdf-engine: pdflatex
 format: 
     pdf:
       template: article-template.latex
       toc: true
       toc-depth: 2
       number-sections: true
+      fig-pos: 'H'
+      appendix: false
+      fontfamily: libertine
+      monofont: inconsolata
+      monofontoptions: scaled=.95
+      fontsize: 12pt
+      spacing: double
+      geometry: 
+        - top=2cm
+        - bottom=2cm
+        - left=2cm
+        - right=2cm
+      urlcolor: darkblue
+      linkcolor: Mahogany
+      citecolor: Mahogany
+      pdf-engine: pdflatex
+    html:
+      toc: true
+      toc-depth: 2
+      number-sections: false
 editor:
   render-on-save: true
 ---
 
-
+::: {.content-visible when-format="pdf"}
 \newpage
+:::
 
 # Introduction
 
@@ -53,39 +59,23 @@ We use GitHub throughout this course, so it is worth getting comfortable with it
 
 Go to <https://github.com/> and sign up, using the button in the top right. Use your Emory email address, which qualifies you for the educational account described below. Choose your username carefully, as it is public and it will follow you.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{images/github-signup.png}
-\caption{Signing up for GitHub.}
-\end{figure}
+![Signing up for GitHub.](images/github-signup.png){width=80%}
 
 ## Apply to GitHub Education
 
 Go to <https://github.com/education> and apply for the Student Developer Pack. It gives you a set of paid tools for free, including GitHub Copilot, a domain name, and cloud hosting credit. Click "Join GitHub Education" and follow the instructions. You will need proof of your student status, such as an ID card or a transcript.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{images/github-education.png}
-\caption{The GitHub Education page.}
-\end{figure}
+![The GitHub Education page.](images/github-education.png){width=80%}
 
 ## Install GitHub Desktop
 
 Download GitHub Desktop from <https://desktop.github.com/>. It is a graphical interface to Git for Windows and macOS, and it is the tool this tutorial uses. The command line does the same things, and you are welcome to use it instead.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{images/github-desktop.png}
-\caption{The GitHub Desktop website.}
-\end{figure}
+![The GitHub Desktop website.](images/github-desktop.png){width=80%}
 
 Open GitHub Desktop. Sign in with your GitHub account. You should then see this screen:
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{images/github-desktop-signin.png}
-\caption{GitHub Desktop after signing in.}
-\end{figure}
+![GitHub Desktop after signing in.](images/github-desktop-signin.png){width=80%}
 
 # Getting the course materials
 
@@ -95,19 +85,11 @@ The course materials live at <https://github.com/danilofreire/datasci350>. You w
 
 Open the repository page. Click "Fork" in the top right corner.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{images/github-fork.png}
-\caption{Forking the repository.}
-\end{figure}
+![Forking the repository.](images/github-fork.png){width=80%}
 
 GitHub asks you to name your copy. Any name works, but `datasci350` keeps it consistent with the instructions in these tutorials. Click "Create fork".
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{images/github-fork02.png}
-\caption{Naming your copy of the repository.}
-\end{figure}
+![Naming your copy of the repository.](images/github-fork02.png){width=80%}
 
 You do this once, at the start of the semester. From then on you pull my updates into your fork and push your own work back to it.
 
@@ -119,43 +101,23 @@ Open your fork on GitHub. Check the URL: it should have *your* username in it, n
 
 Open GitHub Desktop. Click "Clone a Repository from the Internet".
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{images/github-clone01.png}
-\caption{Click ``Clone a Repository from the Internet''.}
-\end{figure}
+![Click "Clone a Repository from the Internet".](images/github-clone01.png){width=70%}
 
 Click the "URL" tab. Paste the URL. Choose where to save the repository on your computer. Click "Clone".
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{images/github-clone02.png}
-\caption{Paste the URL of your fork, then click ``Clone''.}
-\end{figure}
+![Paste the URL of your fork, then click "Clone".](images/github-clone02.png){width=70%}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.5\textwidth]{images/github-clone03.png}
-\caption{Cloning in progress.}
-\end{figure}
+![Cloning in progress.](images/github-clone03.png){width=50%}
 
 GitHub Desktop then asks how you plan to use the fork. Select "To contribute to the parent project". Click "Continue". This is the option that lets you pull my updates later.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.5\textwidth]{images/github-clone04.png}
-\caption{Select ``To contribute to the parent project''.}
-\end{figure}
+![Select "To contribute to the parent project".](images/github-clone04.png){width=50%}
 
 If you pick the other option by mistake, your copy has no link back to my repository and you will never see an update. To fix it: right-click the repository in GitHub Desktop and remove it, delete the folder from your computer, then clone again.
 
 You now have the course materials on your machine. To open them in VS Code, click "Repository" > "Open in Visual Studio Code".
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.6\textwidth]{images/github-open-vscode.png}
-\caption{Opening the repository in VS Code.}
-\end{figure}
+![Opening the repository in VS Code.](images/github-open-vscode.png){width=60%}
 
 # Saving your changes
 
@@ -165,19 +127,11 @@ Git splits saving into two steps. A *commit* records a set of changes on your co
 
 Edit the files as you normally would. GitHub Desktop notices, and lists every changed file in the "Changes" tab.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.4\textwidth]{images/github-desktop-changes.png}
-\caption{Changed files in the ``Changes'' tab.}
-\end{figure}
+![Changed files in the "Changes" tab.](images/github-desktop-changes.png){width=40%}
 
 Click a file to see what changed inside it. Green lines are additions, red lines are deletions. The "History" tab shows the same view for every commit made so far.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/github-desktop-history.png}
-\caption{The history of changes to the repository.}
-\end{figure}
+![The history of changes to the repository.](images/github-desktop-history.png){width=90%}
 
 ## Commit
 
@@ -185,29 +139,17 @@ Write a short summary of what you changed in the "Summary" box. Click "Commit to
 
 [^main]: The default branch in GitHub is called `main`. This is the branch where you will make most of your changes. You can create other branches if you want to work on different features or bug fixes.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.4\textwidth]{images/github-desktop-commit.png}
-\caption{Committing changes.}
-\end{figure}
+![Committing changes.](images/github-desktop-commit.png){width=40%}
 
 Write summaries you will understand in three weeks. "Fixed question 4 of problem set 2" is useful; "update" is not.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/github-desktop-commit02.png}
-\caption{The commit and its message in the history.}
-\end{figure}
+![The commit and its message in the history.](images/github-desktop-commit02.png){width=90%}
 
 ## Push
 
 Your commits are still only on your computer. Click "Repository" > "Push" to send them to GitHub.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/github-desktop-push.png}
-\caption{Pushing and fetching changes.}
-\end{figure}
+![Pushing and fetching changes.](images/github-desktop-push.png){width=90%}
 
 The neighbouring "Fetch" button does the reverse: it downloads changes from GitHub to your computer. The next section puts it to work.
 
@@ -219,11 +161,7 @@ Commit everything you have been working on first. An update with uncommitted cha
 
 Open the "Branch" tab in the top menu. Click "Update from upstream/main". Here "upstream" means my repository, and "main" means its primary version.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.5\textwidth]{images/github-desktop-update.png}
-\caption{Updating from upstream.}
-\end{figure}
+![Updating from upstream.](images/github-desktop-update.png){width=50%}
 
 Two habits make this painless:
 

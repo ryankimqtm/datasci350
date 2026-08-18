@@ -3,35 +3,41 @@ title: "DATASCI 350 - Jupyter Notebook and Markdown Tutorial"
 lang: en-GB
 author: 
   - Danilo Freire
-appendix: false
-fontfamily: libertine
-monofont: inconsolata
-monofontoptions: scaled=.95
-fontsize: 12pt
-spacing: double
-geometry: 
-  - top=2cm
-  - bottom=2cm
-  - left=2cm
-  - right=2cm
-urlcolor: darkblue
-linkcolor: Mahogany
-citecolor: Mahogany
 jupyter: python3
 highlight-style: arrow
-pdf-engine: pdflatex
 format: 
     pdf:
       template: article-template.latex
       toc: true
       toc-depth: 2
       number-sections: true
+      fig-pos: 'H'
+      appendix: false
+      fontfamily: libertine
+      monofont: inconsolata
+      monofontoptions: scaled=.95
+      fontsize: 12pt
+      spacing: double
+      geometry: 
+        - top=2cm
+        - bottom=2cm
+        - left=2cm
+        - right=2cm
+      urlcolor: darkblue
+      linkcolor: Mahogany
+      citecolor: Mahogany
+      pdf-engine: pdflatex
+    html:
+      toc: true
+      toc-depth: 2
+      number-sections: false
 editor:
   render-on-save: true
 ---
 
-
+::: {.content-visible when-format="pdf"}
 \newpage
+:::
 
 # Introduction
 
@@ -55,37 +61,21 @@ You need Python, Jupyter, and VS Code installed first. Tutorial 01 covers all th
 
 In VS Code, click "File" > "New File". A prompt appears in the middle of the screen. Select "Jupyter Notebook".
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/new-jupyter-notebook.png}
-\caption{Creating a new Jupyter Notebook in VS Code.}
-\end{figure}
+![Creating a new Jupyter Notebook in VS Code.](images/new-jupyter-notebook.png){width=90%}
 
 VS Code creates a notebook with the extension `.ipynb`. Click the notebook name at the top of the screen to rename it. An empty notebook looks like this:
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/empty-jupyter-notebook.png}
-\caption{An empty Jupyter Notebook.}
-\end{figure}
+![An empty Jupyter Notebook.](images/empty-jupyter-notebook.png){width=90%}
 
 Now select the Python interpreter. Click the Python version in the top right corner. Select Anaconda's "base" from the list that appears. Nothing will run until you do this.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/select-kernel.png}
-\caption{Selecting the Python interpreter for the notebook.}
-\end{figure}
+![Selecting the Python interpreter for the notebook.](images/select-kernel.png){width=90%}
 
 ## Code cells
 
 Click "+ Code". An empty grey box appears with "Python" in its lower-right corner.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/code-cell.png}
-\caption{A code cell in a Jupyter Notebook.}
-\end{figure}
+![A code cell in a Jupyter Notebook.](images/code-cell.png){width=90%}
 
 Type your Python in the box. For example:
 
@@ -102,11 +92,7 @@ print(z)
 
 Run the cell with the "Run" button on its left, or by pressing "Shift + Enter". The output appears directly below:
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/vscode-output.png}
-\caption{The output of a code cell.}
-\end{figure}
+![The output of a code cell.](images/vscode-output.png){width=90%}
 
 ## Text cells
 
@@ -121,11 +107,7 @@ in [this notebook](https://github.com/danilofreire/datasci350/blob/main/tutorial
 
 Run the cell the same way, with the "Run" button or "Shift + Enter". The Markdown renders as formatted text:
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/text-cell.png}
-\caption{A text cell before and after running it.}
-\end{figure}
+![A text cell before and after running it.](images/text-cell.png){width=90%}
 
 To edit the text again, double-click it. The grey box reappears.
 
@@ -239,11 +221,7 @@ To see it as a formatted table instead of raw text, pass it to `display(Markdown
 display(Markdown(markdown_table))
 ```
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{images/markdown-table.png}
-\caption{A Markdown table rendered in a Jupyter Notebook.}
-\end{figure}
+![A Markdown table rendered in a Jupyter Notebook.](images/markdown-table.png){width=80%}
 
 `to_markdown()` takes several arguments for tidying the result. The ones you are most likely to want are `headers` for column names your reader will understand, `floatfmt` for the number of decimal places, and `colalign` for alignment:
 
@@ -269,11 +247,7 @@ display(Markdown("### Product Inventory Summary"))
 display(Markdown(markdown_table))
 ```
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/comprehensive-table.png}
-\caption{The same method with custom headers and number formatting.}
-\end{figure}
+![The same method with custom headers and number formatting.](images/comprehensive-table.png){width=90%}
 
 For a table with hundreds of rows, show a subset. A reader cannot take in more than about twenty rows on a page, and the full data belongs in a file. The [tabulate documentation](https://pypi.org/project/tabulate/) lists the remaining options if you need them.
 

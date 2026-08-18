@@ -1,38 +1,46 @@
 ---
 title: "DATASCI 350 - Web Scraping with Python"
 lang: en-GB
-author:
+author: 
   - Danilo Freire
-appendix: false
-fontfamily: libertine
-monofont: inconsolata
-monofontoptions: scaled=.95
-fontsize: 12pt
-spacing: single
-geometry:
-  - top=2cm
-  - bottom=2cm
-  - left=2cm
-  - right=2cm
-urlcolor: darkblue
-linkcolor: Mahogany
-citecolor: Mahogany
 jupyter: python3
 highlight-style: arrow
-pdf-engine: pdflatex
 bibliography: 05-web-scraping-references.bib
-format:
+format: 
     pdf:
       template: article-template.latex
       toc: true
       toc-depth: 2
       number-sections: true
       code-overflow: wrap
+      fig-pos: 'H'
+      appendix: false
+      fontfamily: libertine
+      monofont: inconsolata
+      monofontoptions: scaled=.95
+      fontsize: 12pt
+      spacing: single
+      geometry: 
+        - top=2cm
+        - bottom=2cm
+        - left=2cm
+        - right=2cm
+      urlcolor: darkblue
+      linkcolor: Mahogany
+      citecolor: Mahogany
+      pdf-engine: pdflatex
+    html:
+      toc: true
+      toc-depth: 2
+      number-sections: false
+      code-overflow: wrap
 editor:
   render-on-save: true
 ---
 
+::: {.content-visible when-format="pdf"}
 \newpage
+:::
 
 # Introduction
 
@@ -107,11 +115,7 @@ Scraping is walking this tree, and every scraping task reduces to the same two q
 
 The figure below answers both questions for the real front page of books.toscrape.com. The solid red box is one record, the dashed boxes are its repeating siblings, and the two coloured boxes inside are the fields. Every scraping job you will ever write starts by drawing these boxes, whether on paper or in your head.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.95\textwidth]{images/scraping-record-anatomy.png}
-\caption{The two questions answered on books.toscrape.com. Find the repeating branch, then find the fields inside it.}
-\end{figure}
+![The two questions answered on books.toscrape.com. Find the repeating branch, then find the fields inside it.](images/scraping-record-anatomy.png){width=95%}
 
 ## Finding the branch: your browser's inspector
 
@@ -121,11 +125,7 @@ You do not read the HTML source top to bottom. You ask the browser. Right-click 
 2. Read the class names on that branch and on the fields inside it. Those become your selectors.
 3. Walk up the tree until the highlight covers exactly one record and no more. That is your unit of observation.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{images/scraping-inspector.png}
-\caption{Step 3 in progress, in Chrome's inspector. Highlighting \texttt{article.product\_pod} in the tree lights up exactly one card and no more, so that is the branch holding one record. Its children name the fields: \texttt{h3 > a} is the title, \texttt{product\_price} the price.}
-\end{figure}
+![Step 3 in progress, in Chrome's inspector. Highlighting `article.product_pod` in the tree lights up exactly one card and no more, so that is the branch holding one record. Its children name the fields: `h3 > a` is the title, `product_price` the price.](images/scraping-inspector.png){width=100%}
 
 Practise on <https://books.toscrape.com> before you try a real site. We return to it in @sec-beautifulsoup.
 
@@ -135,22 +135,18 @@ Practise on <https://books.toscrape.com> before you try a real site. We return t
 
 A **selector** is a small pattern that picks elements out of the tree. The same syntax works in your browser's inspector, in BeautifulSoup, and in CSS itself.
 
-```{=latex}
-\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{7.2cm}>{\raggedright\arraybackslash}p{4.6cm}@{}}
-\toprule
-Selector & Reads as & Matches in our example \\
-\midrule
-\texttt{div} & every \texttt{div} element & both books \\
-\texttt{.book} & every element with class \texttt{book} & both books \\
-\texttt{\#b1} & the element with id \texttt{b1} & the first book only \\
-\texttt{div.book} & \texttt{div} elements that also have class \texttt{book} & both books \\
-\texttt{div.book h3} & any \texttt{h3} \emph{inside} a \texttt{div.book} & both titles \\
-\texttt{h3 > a} & an \texttt{a} that is a \emph{direct child} of an \texttt{h3} & both links \\
-\texttt{a[href]} & \texttt{a} elements that have an \texttt{href} attribute & both links \\
-\texttt{p[class=\symbol{34}intro\symbol{34}]} & \texttt{p} whose class is exactly \texttt{intro} & the intro paragraph \\
-\bottomrule
-\end{longtable}
-```
+| Selector | Reads as | Matches in our example |
+|---|---|---|
+| `div` | every `div` element | both books |
+| `.book` | every element with class `book` | both books |
+| `#b1` | the element with id `b1` | the first book only |
+| `div.book` | `div` elements that also have class `book` | both books |
+| `div.book h3` | any `h3` *inside* a `div.book` | both titles |
+| `h3 > a` | an `a` that is a *direct child* of an `h3` | both links |
+| `a[href]` | `a` elements that have an `href` attribute | both links |
+| `p[class="intro"]` | `p` whose class is exactly `intro` | the intro paragraph |
+
+: CSS selectors and what they match in the example page
 
 A space means "somewhere inside", and `>` means "directly inside". That single distinction causes most selector confusion. Test a selector in the inspector's search box before you put it in your code. A fuller cheat sheet appears in @sec-cheatsheet.
 
@@ -168,11 +164,7 @@ Here is how to find the real source:
 
 The figure below is that hunt succeeding on <https://quotes.toscrape.com/scroll>, a page that loads its quotes as you scroll. The Fetch/XHR filter is on, so only data calls are listed, and two of them are visible. The Response pane shows what the first one returned: clean JSON, with `has_next` telling you whether more pages exist and `text` holding the very quote the page had just drawn on screen. There was no need to parse any HTML at all.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{images/scraping-network.png}
-\caption{An undocumented API, found in about thirty seconds. The page rendered the Marilyn Monroe quote from this JSON, so fetching this URL directly gives you the data already structured.}
-\end{figure}
+![An undocumented API, found in about thirty seconds. The page rendered the Marilyn Monroe quote from this JSON, so fetching this URL directly gives you the data already structured.](images/scraping-network.png){width=100%}
 
 This is worth ten minutes before any scraping job. An undocumented endpoint is far better than parsing HTML, because a site redesign breaks selectors but usually leaves the data feed alone. Right-clicking a request and choosing "Copy as cURL" gives you the exact command, including headers and cookies, which you can translate to Python.
 
@@ -698,20 +690,16 @@ Three more defensive habits. Log what you got, printing counts per page while th
 
 ## Which tool, and when
 
-```{=latex}
-\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{5.9cm}>{\raggedright\arraybackslash}p{4.1cm}>{\raggedright\arraybackslash}p{5.4cm}@{}}
-\toprule
-Situation & Reach for & Why \\
-\midrule
-A documented API exists & \texttt{requests} + JSON & Stable, fast, explicitly permitted \\
-No documented API, but the Network tab shows JSON & \texttt{requests} on that URL & An undocumented API still beats HTML \\
-The data is in an HTML \texttt{<table>} & \texttt{pd.read\_html} & One line, then clean \\
-The data is in cards, lists, or divs & BeautifulSoup & Full control over the tree \\
-The page draws itself with JavaScript, and there is no JSON to find & Playwright or Selenium & A real browser. Slow, heavy, a last resort \\
-Personal data, or \texttt{robots.txt} says no, or the ToS forbids it & Stop & Ask, or find another source \\
-\bottomrule
-\end{longtable}
-```
+| Situation | Reach for | Why |
+|---|---|---|
+| A documented API exists | `requests` + JSON | Stable, fast, explicitly permitted |
+| No documented API, but the Network tab shows JSON | `requests` on that URL | An undocumented API still beats HTML |
+| The data is in an HTML `<table>` | `pd.read_html` | One line, then clean |
+| The data is in cards, lists, or divs | BeautifulSoup | Full control over the tree |
+| The page draws itself with JavaScript, and there is no JSON to find | Playwright or Selenium | A real browser. Slow, heavy, a last resort |
+| Personal data, or `robots.txt` says no, or the ToS forbids it | Stop | Ask, or find another source |
+
+: Which tool to reach for, and why
 
 Work down this table from the top. Most people start at row four and never discover that row one was available.
 
@@ -765,42 +753,34 @@ Every time, no exceptions. A scraper that returns a plausible-looking DataFrame 
 
 Keep this page as a reference. The left column works in `select()` and in your browser's inspector; the right column is the `find`/`find_all` equivalent.
 
-```{=latex}
-\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}p{4.7cm}>{\raggedright\arraybackslash}p{6.5cm}@{}}
-\toprule
-Goal & CSS selector (\texttt{select}) & \texttt{find\_all} equivalent \\
-\midrule
-Every paragraph & \texttt{p} & \texttt{find\_all(\symbol{34}p\symbol{34})} \\
-Class \texttt{price} & \texttt{.price} & \texttt{find\_all(class\_=\symbol{34}price\symbol{34})} \\
-Id \texttt{main} & \texttt{\#main} & \texttt{find(id=\symbol{34}main\symbol{34})} \\
-\texttt{div} with class \texttt{book} & \texttt{div.book} & \texttt{find\_all(\symbol{34}div\symbol{34}, class\_=\symbol{34}book\symbol{34})} \\
-Two classes at once & \texttt{p.instock.availability} & \texttt{find\_all(\symbol{34}p\symbol{34}, class\_=[\symbol{34}instock\symbol{34},} \newline \texttt{\symbol{34}availability\symbol{34}])} \\
-Descendant, any depth & \texttt{div.book a} & chained \texttt{find\_all} \\
-Direct child only & \texttt{ul > li} & \texttt{find\_all(\symbol{34}li\symbol{34}, recursive=False)} \\
-Has an attribute & \texttt{a[href]} & \texttt{find\_all(\symbol{34}a\symbol{34}, href=True)} \\
-Attribute equals & \texttt{a[href=\symbol{34}/b1\symbol{34}]} & \texttt{find\_all(\symbol{34}a\symbol{34}, href=\symbol{34}/b1\symbol{34})} \\
-Attribute starts with & \texttt{a[href\^{}=\symbol{34}/books\symbol{34}]} & needs a regex \\
-Attribute contains & \texttt{a[href*=\symbol{34}page\symbol{34}]} & needs a regex \\
-First match only & \texttt{select\_one(...)} & \texttt{find(...)} \\
-\bottomrule
-\end{longtable}
-```
+| Goal | CSS selector (`select`) | `find_all` equivalent |
+|---|---|---|
+| Every paragraph | `p` | `find_all("p")` |
+| Class `price` | `.price` | `find_all(class_="price")` |
+| Id `main` | `#main` | `find(id="main")` |
+| `div` with class `book` | `div.book` | `find_all("div", class_="book")` |
+| Two classes at once | `p.instock.availability` | `find_all("p", class_=["instock",` `"availability"])` |
+| Descendant, any depth | `div.book a` | chained `find_all` |
+| Direct child only | `ul > li` | `find_all("li", recursive=False)` |
+| Has an attribute | `a[href]` | `find_all("a", href=True)` |
+| Attribute equals | `a[href="/b1"]` | `find_all("a", href="/b1")` |
+| Attribute starts with | `a[href^="/books"]` | needs a regex |
+| Attribute contains | `a[href*="page"]` | needs a regex |
+| First match only | `select_one(...)` | `find(...)` |
+
+: CSS selectors and their `find`/`find_all` equivalents
 
 And for extraction, once you hold an element:
 
-```{=latex}
-\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{6.5cm}>{\raggedright\arraybackslash}p{8.5cm}@{}}
-\toprule
-Goal & Code \\
-\midrule
-Text inside an element & \texttt{el.get\_text(strip=True)} \\
-An attribute, safely & \texttt{el.get(\symbol{34}href\symbol{34})} \\
-An attribute, strictly & \texttt{el[\symbol{34}href\symbol{34}]} (raises if missing) \\
-The class list & \texttt{el.get(\symbol{34}class\symbol{34})} returns a list \\
-Readable HTML, for debugging & \texttt{el.prettify()} \\
-\bottomrule
-\end{longtable}
-```
+| Goal | Code |
+|---|---|
+| Text inside an element | `el.get_text(strip=True)` |
+| An attribute, safely | `el.get("href")` |
+| An attribute, strictly | `el["href"]` (raises if missing) |
+| The class list | `el.get("class")` returns a list |
+| Readable HTML, for debugging | `el.prettify()` |
+
+: Getting data out of an element you already hold
 
 # Going further
 

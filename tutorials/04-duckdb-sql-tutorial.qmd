@@ -1,37 +1,45 @@
 ---
 title: "DATASCI 350 - SQL Essentials with DuckDB"
 lang: en-GB
-author:
+author: 
   - Danilo Freire
-appendix: false
-fontfamily: libertine
-monofont: inconsolata
-monofontoptions: scaled=.95
-fontsize: 12pt
-spacing: single
-geometry:
-  - top=2cm
-  - bottom=2cm
-  - left=2cm
-  - right=2cm
-urlcolor: darkblue
-linkcolor: Mahogany
-citecolor: Mahogany
 jupyter: python3
 highlight-style: arrow
-pdf-engine: pdflatex
-format:
+format: 
     pdf:
       template: article-template.latex
       toc: true
       toc-depth: 2
       number-sections: true
       code-overflow: wrap
+      fig-pos: 'H'
+      appendix: false
+      fontfamily: libertine
+      monofont: inconsolata
+      monofontoptions: scaled=.95
+      fontsize: 12pt
+      spacing: single
+      geometry: 
+        - top=2cm
+        - bottom=2cm
+        - left=2cm
+        - right=2cm
+      urlcolor: darkblue
+      linkcolor: Mahogany
+      citecolor: Mahogany
+      pdf-engine: pdflatex
+    html:
+      toc: true
+      toc-depth: 2
+      number-sections: false
+      code-overflow: wrap
 editor:
   render-on-save: true
 ---
 
+::: {.content-visible when-format="pdf"}
 \newpage
+:::
 
 # Introduction
 
@@ -100,11 +108,7 @@ To install the command-line tool, visit the [DuckDB installation page](https://d
 
 The tool also has a browser interface. Start it with `duckdb -ui`. A local page opens where you can type SQL in a notebook cell and read the result as a table, as in the figure below. Everything in this tutorial works the same way, whether you type it in Python or in the command-line tool.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.95\textwidth]{images/duckdb-ui.png}
-\caption{The DuckDB browser interface, running one of this tutorial's queries against the World Bank data. Attached databases and their tables appear on the left.}
-\end{figure}
+![The DuckDB browser interface, running one of this tutorial's queries against the World Bank data. Attached databases and their tables appear on the left.](images/duckdb-ui.png){width=95%}
 
 # Connecting to a database
 

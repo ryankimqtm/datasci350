@@ -632,3 +632,6 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/latex,linux,macos,python,r,vim,windows
 
+
+# Local HTML previews of the tutorials (the website builds its own)
+/[0-9][0-9]-*.html

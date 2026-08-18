@@ -3,34 +3,41 @@ title: "DATASCI 350 - Setting Up WSL on Windows"
 lang: en-GB
 author: 
   - Danilo Freire
-appendix: false
-fontfamily: libertine
-monofont: inconsolata
-monofontoptions: scaled=.95
-fontsize: 12pt
-spacing: double
-geometry: 
-  - top=2cm
-  - bottom=2cm
-  - left=2cm
-  - right=2cm
-urlcolor: darkblue
-linkcolor: Mahogany
-citecolor: Mahogany
 jupyter: python3
 highlight-style: arrow
-pdf-engine: pdflatex
 format: 
     pdf:
       template: article-template.latex
       toc: true
       toc-depth: 2
       number-sections: true
+      pdf-engine: pdflatex
+      fig-pos: 'H'
+      appendix: false
+      fontfamily: libertine
+      monofont: inconsolata
+      monofontoptions: scaled=.95
+      fontsize: 12pt
+      spacing: double
+      geometry: 
+        - top=2cm
+        - bottom=2cm
+        - left=2cm
+        - right=2cm
+      urlcolor: darkblue
+      linkcolor: Mahogany
+      citecolor: Mahogany
+    html:
+      toc: true
+      toc-depth: 2
+      number-sections: false
 editor:
   render-on-save: true
 ---
 
+::: {.content-visible when-format="pdf"}
 \newpage
+:::
 
 # Introduction
 
@@ -147,12 +154,7 @@ This section is the one that confuses people, so read it before you save any wor
 
 Windows and Ubuntu each have their own file system, and each can reach into the other. Windows files live under `C:\`, which Ubuntu sees at `/mnt/c/`. Ubuntu files live under `/home/`, which Windows Explorer reaches at `\\wsl$\Ubuntu\`.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.95\linewidth]{images/wsl-filesystems.png}
-    \caption{The two file systems and the bridges between them.}
-    \label{fig:wsl-filesystems}
-\end{figure}
+![The two file systems and the bridges between them.](images/wsl-filesystems.png){width=95%}
 
 Keep your coursework in the Linux home directory, at `/home/yourname/`. Reading Windows files from Linux across `/mnt/c/` works, but it is much slower, and a Git repository stored there can take seconds to do what should be instant.
 

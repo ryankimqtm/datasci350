@@ -336,9 +336,9 @@ Of course, it's always possible to open up the shell directly if you prefer. It'
 
 - [Mac](https://www.techwalla.com/articles/how-to-open-terminal-on-a-macbook)
 
-- [Windows](https://www.howtogeek.com/265900/everything-you-can-do-with-windows-10s-new-bash-shell/)
+- [Windows]{.alert}: install WSL first, using [our tutorial](https://danilofreire.github.io/datasci350/06-wsl-tutorial.html). It gives you the same shell as everyone else
 
-Feel free to check our class tutorial on [how to set up your shell in VS Code](https://danilofreire.github.io/datasci350/tutorials/01-vscode-anaconda-tutorial.html).
+Feel free to check our class tutorial on [how to set up your shell in VS Code](https://danilofreire.github.io/datasci350/01-vscode-anaconda-tutorial.html)
 :::
 
 :::{.column width="50%"}

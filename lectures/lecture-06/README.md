@@ -12,31 +12,15 @@ Working with other people: sending your commits to GitHub, pulling theirs back, 
 - Branches: creating, switching, merging, and deleting them
 - Going back to an earlier commit safely
 - `clone` versus `fork`, and how to keep a fork up to date
-- Issues and pull requests
-- Gists, GitHub Pages, Actions, the GitHub CLI, and Copilot
+- Issues, pull requests, Gists, GitHub Pages, Actions, and the GitHub CLI
 
 ## Follow along
 
 We carry on with the `my-project` repository from Lecture 05. If you do not have it, create a folder, run `git init`, and add a couple of files.
 
-Two things worth knowing before you start:
+Your default branch may be called `master` or `main`. Both work identically, and the slides use `main`. Commit hashes in the screenshots are from my machine, so copy yours from `git log --oneline`.
 
-- Your default branch may be called `master` or `main`. Both work identically. The slides use `main`, so substitute your own name if it differs.
-- Commit hashes in the screenshots are from my machine. Yours will be different, so copy them from `git log --oneline`.
-
-## Merge conflicts
-
-They look alarming the first time. They are not. Git marks the disputed section like this:
-
-```text
-<<<<<<< HEAD
-your version
-=======
-their version
->>>>>>> commit-hash
-```
-
-Delete the three marker lines and whichever text you do not want, then `add`, `commit`, and `push` as usual.
+A merge conflict looks alarming and is not. Git marks the disputed section with `<<<<<<<`, `=======`, and `>>>>>>>`. Delete the three marker lines and whichever text you do not want, then `add`, `commit`, and `push` as usual.
 
 ## Before the next class
 
@@ -44,6 +28,6 @@ Delete the three marker lines and whichever text you do not want, then `add`, `c
 2. Create a branch, add a file to it, and merge it back.
 3. Add a `.gitignore` file with at least one pattern in it.
 
-Next time we go further: `git diff` to see exactly what changed, amending and undoing commits, cherry-picking, and rebasing. Bring any question that has been bothering you.
+Next time: `git diff`, amending and undoing commits, cherry-picking, and rebasing.
 
 Many thanks to [Davi Moreira](https://davi-moreira.github.io) and [Simon Munzert](https://github.com/intro-to-data-science-21/lectures/tree/main) for sharing their materials, which I used as a basis for this lecture.

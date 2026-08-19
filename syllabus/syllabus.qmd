@@ -1,6 +1,6 @@
 ---
 title: __DATASCI 350 - Data Science Computing__
-date: "Fall 2026"
+semester: "Fall 2026"
 lang: en-GB
 author: 
   - Danilo Freire
@@ -17,7 +17,6 @@ geometry:
 urlcolor: darkblue
 linkcolor: Mahogany
 citecolor: Mahogany
-engine: python3
 highlight-style: arrow
 pdf-engine: pdflatex
 format: 
@@ -32,7 +31,7 @@ editor:
 
 # Course Description
 
-Welcome to [DATASCI 350](https://github.com/danilofreire/datasci350)! This course introduces key tools in modern data science, focusing on three essential aspects: reliability, reproducibility, and robustness. We will cover the [command-line interface](https://en.wikipedia.org/wiki/Command-line_interface), version control with [Git](https://git-scm.com/) and [GitHub](https://github.com/), and literate programming using [Quarto](https://quarto.org/) and [Jupyter Notebooks](https://jupyter.org/). You will also learn about data storage and manipulation with [SQL](https://www.w3schools.com/sql/) and [Pandas](https://pandas.pydata.org/), and parallel computing with [Dask](https://www.dask.org/). We will explore artificial intelligence-assisted programming with [GitHub Copilot](https://github.com/features/copilot) and finish with [Docker](https://www.docker.com/) and containerisation. 
+Welcome to [DATASCI 350](https://github.com/danilofreire/datasci350)! This course introduces key tools in modern data science, focusing on three essential aspects: reliability, reproducibility, and robustness. We will cover the [command-line interface](https://en.wikipedia.org/wiki/Command-line_interface), version control with [Git](https://git-scm.com/) and [GitHub](https://github.com/), and reproducible reports using [Quarto](https://quarto.org/) and [Jupyter Notebooks](https://jupyter.org/). You will then work with language models, first running one on your own laptop with [Ollama](https://ollama.com/), then calling hosted models from Python, and finally building a small retrieval system over your own documents. We will rent machines in the cloud with [Amazon Web Services](https://aws.amazon.com/), collect data from web APIs with [requests](https://requests.readthedocs.io/), and process it at scale with [Polars](https://pola.rs/), [DuckDB](https://duckdb.org/), and [Dask](https://www.dask.org/). We finish with [Docker](https://www.docker.com/) and containerisation. 
 
 By working with real-world datasets and problems, students will gain hands-on experience using these tools and methods to extract insights from data. This course will develop technical skills and critical thinking needed to solve complex data challenges. Upon completion, students will be prepared to apply these tools to their own research and professional work.
 
@@ -43,53 +42,58 @@ By the end of this course, students will be able to:
 - Use the command line interface to manage files and directories.
 - Work with version control systems to track changes in code and collaborate with others.
 - Create reproducible reports and presentations.
-- Use AI tools to assist with programming tasks.
-- Apply advanced techniques for data storage, manipulation, and querying.
+- Use language models and coding agents responsibly to assist with programming tasks.
+- Collect data from web APIs and web pages, and process it at scale.
 - Understand the basics of containerisation and parallel computing.
  
 # Course Requirements
 
 Some knowledge of programming is recommended, and familiarity with basic data manipulation and visualisation techniques is helpful. However, no prior experience with the tools covered in the course is required.
 
-In terms of software, you will need to install the following tools: [Anaconda distribution of Python 3.x](https://www.anaconda.com/), [VS Code](https://code.visualstudio.com/), [PostgreSQL](https://www.postgresql.org/), [GitHub Desktop](https://github.com/apps/desktop), [Git](https://git-scm.com/), [Docker](https://www.docker.com/), [Quarto](https://quarto.org/), [Dask](https://dask.org/), [GitHub Copilot](https://copilot.github.com/).
+In terms of software, you will need to install the following tools: [Anaconda distribution of Python 3.x](https://www.anaconda.com/), [VS Code](https://code.visualstudio.com/), [Git](https://git-scm.com/), [GitHub Desktop](https://github.com/apps/desktop), [Quarto](https://quarto.org/), [Ollama](https://ollama.com/), and [Docker](https://www.docker.com/). Several lectures also need Python packages that Anaconda does not ship. Install them with `pip install ollama openai python-dotenv requests pyarrow polars duckdb dask joblib`. You will open two free accounts during the course, one on [OpenRouter](https://openrouter.ai/) for Lecture 14 and one on [Amazon Web Services](https://aws.amazon.com/) for Lectures 16 and 17. Neither costs anything if you follow the steps in the lecture READMEs.
 
 Please feel free to reach out if you have any questions about the course content or your readiness to take the class.
 
 # Materials
 
-This course is designed to be self-contained, providing all the necessary resources and materials to succeed in mastering the core concepts. However, students are encouraged to explore the following suggested books and online courses to deepen their understanding of the topics covered in the course.
+This course is designed to be self-contained, providing all the necessary resources and materials to succeed in mastering the core concepts. However, students are encouraged to explore the following suggested books, online courses, and documentation to deepen their understanding of the topics covered in the course. Everything listed here is free to read.
 
 ## Suggested Books
 
+- [Data Science on the Command Line](https://www.datascienceatthecommandline.com/) by Jeroen Janssens
+- [Pro Git](https://git-scm.com/book/en/v2) by Scott Chacon and Ben Straub
+- [The Turing Way](https://book.the-turing-way.org/) by The Turing Way Community
 - [Python for Data Analysis](https://wesmckinney.com/book/) by Wes McKinney
 - [Elements of Data Science](https://allendowney.github.io/ElementsOfDataScience/README.html) by Allen Downey
-- [SQL for Data Scientists](https://sqlfordatascientists.com/) by Renee M. P. Teate
-- [Data Science on the Command Line](https://www.datascienceatthecommandline.com/) by Jeroen Janssens
-- [Docker for Data Science](https://www.oreilly.com/library/view/docker-for-data/9781484230121/) by Joshua Cook
-- [Pro Git](https://git-scm.com/book/en/v2) by Scott Chacon and Ben Straub
+- [Speech and Language Processing](https://web.stanford.edu/~jurafsky/slp3/) by Dan Jurafsky and James H. Martin. Note: the chapters on embeddings and transformers explain what Lectures 12 and 15 use.
+- [DuckDB in Action](https://motherduck.com/duckdb-book/) by Mark Needham, Michael Hunger, and Michael Simons
 - [Free programming books](https://github.com/EbookFoundation/free-programming-books)
 
 ### Online Courses
 
+- [MIT: The Missing Semester of Your CS Education](https://missing.csail.mit.edu/)
 - [Coursera: Python for Everybody Specialisation](https://www.coursera.org/specializations/python)
-- [edX: Python Basics for Data Science](https://www.edx.org/learn/python/ibm-python-basics-for-data-science)
-- [Codecademy: Learn Python](https://www.codecademy.com/learn/learn-python-3)
-- [DataCamp: Introduction to SQL](https://www.datacamp.com/courses/intro-to-sql-for-data-science)
-- [Coursera: SQL for Data Science](https://www.coursera.org/learn/sql-for-data-science)
-- [Coursera: Introduction to Git and GitHub](https://www.classcentral.com/course/introduction-git-github-18060)
-- [Microsoft Learn: GitHub Copilot Fundamentals](https://learn.microsoft.com/en-us/training/paths/copilot/)
+- [Class Central: Introduction to Git and GitHub](https://www.classcentral.com/course/introduction-git-github-18060)
+- [Hugging Face: LLM Course](https://huggingface.co/learn/llm-course)
+- [AWS Skill Builder: Cloud Practitioner Essentials](https://skillbuilder.aws/)
+- [Kaggle: Learn](https://www.kaggle.com/learn)
 
 ### Documentation
 
 - [Official Python Documentation](https://docs.python.org/3/)
 - [NumPy Documentation](https://numpy.org/doc/)
 - [Pandas Documentation](https://pandas.pydata.org/docs/)
-- [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- [Matplotlib Documentation](https://matplotlib.org/stable/index.html)
+- [Quarto Documentation](https://quarto.org/docs/guide/)
 - [Git Documentation](https://git-scm.com/doc)
 - [GitHub Documentation](https://docs.github.com/en)
+- [Ollama Documentation](https://docs.ollama.com/)
+- [OpenRouter Documentation](https://openrouter.ai/docs)
+- [Requests Documentation](https://requests.readthedocs.io/)
+- [Polars Documentation](https://docs.pola.rs/)
+- [DuckDB Documentation](https://duckdb.org/docs/)
 - [Dask Documentation](https://docs.dask.org/en/latest/)
-- [GitHub Co-Pilot Documentation](https://copilot.github.com/)
+- [AWS Documentation](https://docs.aws.amazon.com/)
 - [Docker Documentation](https://docs.docker.com/)
 
 # Course Information
@@ -102,7 +106,7 @@ We will mainly use [Python](https://www.python.org) in this course. Python is a 
 
 You can write your Python code in any text editor, but I recommend [VS Code](https://code.visualstudio.com/) with the [Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python). [Pycharm](https://www.jetbrains.com/pycharm/) is also well-regarded by developers. If you are feeling adventurous, you can also use [Neovim](https://neovim.io/) with the [coc-pyright](https://github.com/fannheyward/coc-pyright) plugin. That is, if [you can exit the editor](https://stackoverflow.blog/2017/05/23/stack-overflow-helping-one-million-developers-exit-vim/). :)
 
-We will use [SQLite](https://www.sqlite.org/) for database management. SQLite is a lightweight, serverless, and self-contained database engine that is widely used in data science and web development. You can also easily integrate it with Python using the [sqlite3](https://docs.python.org/3/library/sqlite3.html) library. You are also free to use other databases, such as [PostgreSQL](https://www.postgresql.org/), [MySQL](https://www.mysql.com/), or [MongoDB](https://www.mongodb.com/), if you prefer.
+We will collect our own data rather than query a database. Lectures 18 and 19 use [requests](https://requests.readthedocs.io/) to pull data from web APIs, and we save the results as CSV and parquet files. If you want to learn SQL, work through the self-study [DuckDB tutorial](https://danilofreire.github.io/datasci350/04-duckdb-sql-tutorial.html) in the course repository. DATASCI 151 also covers SQL basics in more depth than we could here.
 
 We will also use [Jupyter Notebooks](https://jupyter.org/) and [Quarto](https://quarto.org) in class. Jupyter itself comes pre-installed with Anaconda, but please install the [Jupyter extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter&ssr=false) as well. To install Quarto, please follow the instructions on the [official website](https://quarto.org). We will have a hands-on session to learn how to use both of them (but I assume you are already familiar with Jupyter).
 
@@ -110,7 +114,16 @@ Please also install [Docker](https://www.docker.com/) to work with containers. D
 
 Finally, we will use [GitHub](https://github.com) for version control. Please create a free account on GitHub and install [GitHub Desktop](https://desktop.github.com/) to manage your repositories. We will also use [Git](https://git-scm.com/) in the course. Git is a distributed version control system that allows you to track changes in your codebase and collaborate with others. You can install Git from the [official website](https://git-scm.com/).
 
-To help you get started, I have prepared [a series of tutorials](https://github.com/danilofreire/datasci350/tree/main/tutorials) on how to install Anaconda, Jupyter, SQLite, VS Code, GitHub Copilot, and open a free educational account on GitHub. Please follow these tutorials to ensure that you have all the necessary tools for the course.
+To help you get started, I have prepared [six tutorials](https://danilofreire.github.io/datasci350/tutorials.html) for the course:
+
+- [Installing VS Code and connecting it with Anaconda](https://danilofreire.github.io/datasci350/01-vscode-anaconda-tutorial.html)
+- [Jupyter Notebook and Markdown](https://danilofreire.github.io/datasci350/02-jupyter-markdown-tutorial.html)
+- [Opening a free educational account on GitHub](https://danilofreire.github.io/datasci350/03-github-tutorial.html)
+- [SQL essentials with DuckDB](https://danilofreire.github.io/datasci350/04-duckdb-sql-tutorial.html)
+- [Web scraping with Python](https://danilofreire.github.io/datasci350/05-web-scraping-tutorial.html)
+- [Setting up WSL on Windows](https://danilofreire.github.io/datasci350/06-wsl-tutorial.html)
+
+Read tutorials 01 to 03 in order at the start of the semester. Windows users should also read tutorial 06 before Lecture 03. Tutorials 04 and 05 cover material we do not teach in class, and you can read them whenever you need them.
 
 # Office Hours
 
@@ -118,11 +131,11 @@ I am very flexible with office hours, and we can schedule an online meeting at a
 
 # Academic Integrity
 
-Upon every individual who is a part of Emory University falls the responsibility for maintaining in the life of Emory a standard of unimpeachable honour in all academic work. The [Honour Code of Emory College](http://catalog.college.emory.edu/academic/policies-regulations/honor-code.html) is based on the fundamental assumption that every loyal person of the University not only will conduct his or her own life according to the dictates of the highest honor, but will also refuse to tolerate in others action which would sully the good name of the institution. Academic misconduct is an offense generally defined as any action or inaction which is offensive to the integrity and honesty of the members of the academic community. Any suspected case of academic misconduct will be referred to the Emory Honour Council.
+Upon every individual who is a part of Emory University falls the responsibility for maintaining in the life of Emory a standard of unimpeachable honour in all academic work. The [Honor Code of Emory College](https://catalog.college.emory.edu/academic/policies-regulations/honor-code.html) is based on the fundamental assumption that every loyal person of the University not only will conduct his or her own life according to the dictates of the highest honor, but will also refuse to tolerate in others action which would sully the good name of the institution. Academic misconduct is an offense generally defined as any action or inaction which is offensive to the integrity and honesty of the members of the academic community. Any suspected case of academic misconduct will be referred to the Emory Honor Council.
 
 # Artificial Intelligence
 
-Students have to submit ten problem sets and complete five in-class quizzes. You are allowed to use AI to assist with your assignments. I recommend using [GitHub Copilot](https://copilot.github.com/) to generate code snippets, as it is free for students and provides good suggestions and explanations. [Claude](https://claude.ai), [ChatGPT](https://chat.openai.com), and [Perplexity AI](https://perplexity.ai) are also good tools. I am available to provide support and assistance with these tools during office hours or by appointment. However, please note that any errors or omissions resulting from the use of AI tools are your responsibility. Do not rely solely on AI to complete your assignments; you must always double-check your work. Remember to cite all sources used in your problem sets and projects, including AI tools. Please include a note at the end of any document indicating that AI was used in its development.
+Students have to submit ten problem sets and complete five in-class quizzes. You are allowed to use AI to assist with your assignments, and you may also use AI tools during quizzes. However, any errors or omissions resulting from the use of AI tools are your responsibility, and you must always double-check your work. Remember to cite all sources used in your problem sets and projects, including AI tools. Please include a note at the end of any document indicating that AI was used in its development. Quizzes carry an explanation requirement, which is described in the grading policy below. Using AI tools in a manner prohibited in this course syllabus constitutes cheating under the Emory Honor Code and is thus a form of academic misconduct.
 
 # Special Needs and Accessibility Services
 
@@ -134,15 +147,15 @@ Emory University welcomes students from around the country and the world, and th
 
 # Assignments and Grading Policy
 
-**Problem Sets (50%).** There will be ten problem sets throughout the course. These assignments are designed to reinforce concepts covered in lectures and readings, and to provide hands-on practice with statistical programming. Problem sets will include a mix of theoretical questions and practical applications. They will be assigned regularly and must be completed individually. You may discuss your work with other colleagues as long as you do not copy entire sentences, just changing a few words. If you worked with other students, please write down their names on your assignment. Please also acknowledge any sources you used in your work, including textbooks, articles, and AI resources. *Any assignment submitted after the due date/time will be penalised by 10% per day*. Please submit your assignments as Jupyter Notebooks (`.ipynb`) or `.pdf` files via Canvas or email until midnight on the due date.
+**Problem Sets (50%).** There will be ten problem sets throughout the course. These assignments are designed to reinforce concepts covered in lectures and readings, and to provide hands-on practice with statistical programming. Problem sets will include a mix of theoretical questions and practical applications. They will be assigned regularly and must be completed individually. All ten problem sets are in the course repository from the first day of class, so you can start any of them whenever you like. The dates in the schedule are the rhythm I mark to, not the moment the work appears. Please acknowledge any sources you used in your work, including textbooks, articles, and AI resources. *Any assignment submitted after the due date/time will be penalised by 10% per day*. Please submit your assignments as Jupyter Notebooks (`.ipynb`) or `.pdf` files via Canvas or email until midnight on the due date.
 
-**Class Quizzes (30%).** Students will also take five in-class quizzes throughout the semester. These quizzes will be based on the lectures from the previous weeks. They will be designed to test your understanding of the material and your ability to apply the concepts to new problems. Quizzes will be open-book and open-notes, and students have the entire class period to complete them. They are individual assessments, and students are not allowed to discuss the questions with their colleagues in class. 
+**Class Quizzes (30%).** Students will also take five in-class quizzes throughout the semester. These quizzes will be based on the lectures from the previous weeks. They will be designed to test your understanding of the material and your ability to apply the concepts to new problems. Quizzes will be open-book and open-notes, and students have the entire class period to complete them. They are individual assessments, and students are not allowed to discuss the questions with their classmates in class. You may use AI tools during a quiz, on the same terms as any other resource. *You must be able to explain every command and answer you submit.* After each quiz I select about five students at random and ask them to walk me through part of their work. Students who cannot explain what they submitted will lose marks at my discretion, up to and including a zero for the quiz, depending on how much of the work they can account for.
 
-**Final Project (20%)**: For the final project, you will work in groups of three to four to create a short report. This report will require you to apply the tools and methods we have covered in class to a real-world dataset. You should host your report in a GitHub repository, use Quarto for the document, and employ SQL for data manipulation. Make sure to include visualisations and statistical analyses as well. The project is due on the last day of class. You can find the instructions in the course [GitHub repository](https://github.com/danilofreire/qtm151/tree/main/project).
+**Final Project (20%)**: For the final project, you will work in groups of three to four to create a short report. This report will require you to apply the tools and methods we have covered in class to a real-world dataset. You should host your report in a GitHub repository, use Quarto for the document, and collect the data through the World Bank API. Make sure to include visualisations and statistical analyses as well. The project is due on the last day of class. You can find the instructions in the course [GitHub repository](https://github.com/danilofreire/datasci350/tree/main/project).
 
 # Grading Scale
 
-Each student's final grade will be based on the following after rounding up to the nearest point:
+Each student's final grade will be based on the following:
 
 \small
 
@@ -162,7 +175,7 @@ The lecture notes cover all the necessary material for the course, and the weekl
 
 - Syllabus and course repository: <https://github.com/danilofreire/datasci350>.
 - Lecture 01: [Welcome to DATASCI 350 - Introduction](https://danilofreire.github.io/datasci350/lectures/lecture-01/01-introduction.html).
-- [Course Tutorials: How to Install Anaconda, Jupyter, VSCode, and Open a Free Educational Account on GitHub](https://github.com/danilofreire/datasci350/tutorials).
+- [Course tutorials: installing Anaconda and VS Code, Jupyter and Markdown, and opening a free educational account on GitHub](https://github.com/danilofreire/datasci350/tree/main/tutorials).
 
 Suggested references:
 
@@ -170,18 +183,15 @@ Suggested references:
 - Donoho, D. (2017). [50 Years of Data Science](https://www.tandfonline.com/doi/full/10.1080/10618600.2017.1384734). Journal of Computational and Graphical Statistics, 26(4), 745-766.
 - Breiman, L. (2001). [Statistical Modeling: The Two Cultures (with Comments and a Rejoinder by the Author)](https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.full). Statistical Science, 16(3), 199-231.
 - Brady, H. E. (2019). [The Challenge of Big Data and Data Science](https://www.annualreviews.org/content/journals/10.1146/annurev-polisci-090216-023229). Annual Review of Political Science, 22(1), 297-323.
-- Zitnik, M., Nguyen, F., Wang, B., Leskovec, J., Goldenberg, A., & Hoffman, M. M. (2019). [Machine Learning for Integrating Data in Biology and Medicine: Principles, Practice, and Opportunities](https://www.sciencedirect.com/science/article/abs/pii/S1566253518304482). Information Fusion, 50, 71-91.
 
 ### September 1, 2026:
 
 - Lecture 02: [Computational Literacy](https://danilofreire.github.io/datasci350/lectures/lecture-02/02-computational-literacy.html).
-- [**Assignment 01**](https://github.com/danilofreire/datasci350/blob/main/assignments/01-assignment.ipynb).
 
 Suggested references:
 
 - Campbell-Kelly, M., Aspray, W. F., Yost, J. R., Tinn, H., & Díaz, G. C. (2023). [Computer: A History of the Information Machine](https://doi.org/10.4324/9781003263272). Routledge.
-- Shalf, J. (2020). [The Future of Computing beyond Moore’s Law](https://royalsocietypublishing.org/doi/full/10.1098/rsta.2019.0061). Philosophical Transactions of the Royal Society A, 378(2166), 20190061.
-- Al-Hashimi, H. M. (2023). [Turing, von Neumann, and The Computational Architecture of Biological Machines](https://www.pnas.org/doi/abs/10.1073/pnas.2220022120). Proceedings of the National Academy of Sciences, 120(25), e2220022120.
+- Shalf, J. (2020). [The Future of Computing beyond Moore's Law](https://royalsocietypublishing.org/doi/full/10.1098/rsta.2019.0061). Philosophical Transactions of the Royal Society A, 378(2166), 20190061.
 - Wing, J. M. (2006). [Computational Thinking](https://www.cs.cmu.edu/~15110-s13/Wing06-ct.pdf). Communications of the ACM, 49(3), 33-35.
 - Videos: [David J. Malan - Abstraction](https://www.youtube.com/watch?v=6V1sr0XV_Ng), [Khan Academy - Hexadecimal Number System](https://www.youtube.com/watch?v=4EJay-6Bioo), [Matthias Wandel - Marble Adding Machine](https://youtu.be/GcDshWmhF4A), [Crash Course - Early Computing](https://www.youtube.com/watch?v=O5nskjZ_GoI) and [Electronic Computing](https://www.youtube.com/watch?v=LN0ucKNX0hc) (the last two are quite entertaining!).
 
@@ -190,6 +200,7 @@ Suggested references:
 ### September 3, 2026:
 
 - Lecture 03: [The Command-Line Interface (CLI), Shell Basics, and File Management](https://danilofreire.github.io/datasci350/lectures/lecture-03/03-command-line.html).
+- [**Assignment 01**](https://github.com/danilofreire/datasci350/blob/main/assignments/01-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=9a77f4a0-f1ea-498a-b85f-1a8993922f82&hostId=05eb977d-4f8a-440e-9e45-95212b29d103)
 
 Suggested references:
@@ -202,34 +213,31 @@ Suggested references:
 ### September 8, 2026:
 
 - Lecture 04: [More Command Line Tools, Text Files and Scripting](https://danilofreire.github.io/datasci350/lectures/lecture-04/04-more-command-line.html).
-- **Assignment 01 due (5%).**
-- [**Assignment 02**](https://github.com/danilofreire/datasci350/blob/main/assignments/02-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=9a77f4a0-f1ea-498a-b85f-1a8993922f82&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
 
 - Kerr, D. (2024). [Effective Shell](https://effective-shell.com/).
 - Irianto, I. (2021). [Learn Vim (the Smart Way)](https://github.com/iggredible/Learn-Vim).
-- Neil, D. (2015). [Practical Vim: Edit Text at the Speed of Thought](https://pragprog.com/titles/dnvim2/practical-vim-second-edition/). Pragmatic Bookshelf.
 - Dennis, J. [Your problem with Vim is that you don't grok vi.](https://stackoverflow.com/questions/1218390/what-is-your-most-productive-shortcut-with-vim/1220118#1220118) (Stack Overflow).
-- [Vim Adventures](https://vim-adventures.com/). (Instructor's note: this is a fun, albeit cringy, way to learn Vim).
 - Videos: [freeCodeCamp - Command line crash course](https://www.youtube.com/watch?v=yz7nYlnXLfE&pp=ygUXaG93IHRvIHVzZSBjb21tYW5kIGxpbmU%3D), [Percy Grunwald - Absolute beginner guide to the macOS terminal](https://www.youtube.com/watch?v=aKRYQsKR46I&pp=ygUcdGVybWluYWwgZm9yIGJlZ2lubmVycyBtYWNvcw%3D%3D), [NetworkChuck - 50 macOS tips and tricks using terminal](https://www.youtube.com/watch?v=qOrlYzqXPa8&pp=ygUcdGVybWluYWwgZm9yIGJlZ2lubmVycyBtYWNvcw%3D%3D)
 
 ### September 10, 2026:
 
 - Lecture 05: [Version control with Git and GitHub](https://danilofreire.github.io/datasci350/lectures/lecture-05/05-git-github.html).
+- **Assignment 01 due (5%).**
+- [**Assignment 02**](https://github.com/danilofreire/datasci350/blob/main/assignments/02-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=f3930dce-298d-4610-a365-406fa3088a87&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
 
 - Chacon, S. and Straub, B. (2014). [Pro Git](https://git-scm.com/book/en/v2). Apress. (Instructor's note: this is _the book_ on Git).
-- GitHub tutorials: [GitHub skills](https://skills.github.com/) (recommended), [Git guides](https://github.com/git-guides), [GitHub learning lab](https://lab.github.com/), [Best practices for repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories).
+- GitHub tutorials: [GitHub skills](https://skills.github.com/) (recommended), [Git guides](https://github.com/git-guides), [Best practices for repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories).
+- [Dangit, Git!?!](https://dangitgit.com/). Note: the fix for the commit you did not mean to make, in plain language.
 
 ### September 15, 2026:
 
 - Lecture 06: [More Git and GitHub: pull requests, issues, pages, and collaboration features](https://danilofreire.github.io/datasci350/lectures/lecture-06/06-more-git-github.html).
-- **Assignment 02 due (5%).**
-- [**Assignment 03**](https://github.com/danilofreire/datasci350/blob/main/assignments/03-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=eec92538-78d8-4974-ba7b-8f83b5f3b215&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
@@ -241,45 +249,42 @@ Suggested references:
 ### September 17, 2026:
 
 - Lecture 07: [More Git Commands, CLI and Git Practice](https://danilofreire.github.io/datasci350/lectures/lecture-07/07-practice.html).
+- **Assignment 02 due (5%).**
+- [**Assignment 03**](https://github.com/danilofreire/datasci350/blob/main/assignments/03-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=0c41d485-25b6-44a6-a825-70854f1953cb&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 ### September 22, 2026:
 
-- Lecture 08: [Review session for Quiz 01](https://danilofreire.github.io/datasci350/lectures/lecture-08/08-review.html). This session covers Lectures 01-07 (Introduction, Computational Literacy, CLI, Git/GitHub) and prepares students for Quiz 01 on September 24.
+- Lecture 08: [Review session for Quiz 01](https://danilofreire.github.io/datasci350/lectures/lecture-08/08-review.html). This session revises everything covered so far and prepares students for Quiz 01 on September 24, which is examinable on Lectures 02-07.
 
-## Module 03: Literate Programming with Markdown, Quarto, and Jupyter
+## Module 03: Reproducible Research with Quarto
 
 ### September 24, 2026:
 
-- Lecture 09: [Quiz 01: Git and Github (6%)](https://github.com/danilofreire/datasci350-quiz01/).
+- Lecture 09: [Quiz 01: The Command Line, Git and GitHub (6%)](https://github.com/danilofreire/datasci350-quiz01/). Covers Lectures 02-07.
 - **Assignment 03 due (5%).**
 - [**Assignment 04**](https://github.com/danilofreire/datasci350/blob/main/assignments/04-assignment.ipynb).
 
 Suggested references:
 
-- [Quarto official website](https://quarto.org/).
-- Awesome Quarto: <https://github.com/mcanouil/awesome-quarto>. Note: this repository contains dozens of tutorials, examples, and resources. 
-- Çetinkaya-Rundel, M. & Lowndes, J. S. (2022) [Keynote talk: Hello Quarto: Share • Collaborate • Teach • Reimagine](https://www.youtube.com/watch?v=p7Hxu4coDl8). [Slides](https://mine.quarto.pub/hello-quarto/#/hello-quarto-title) and [source code](https://github.com/mine-cetinkaya-rundel/hello-quarto). This is one of the nicest Quarto presentations I have seen.
-- [Getting Started with Quarto (YouTube)](https://www.youtube.com/watch?v=_f3latmOhew&t=2s). Note: Posit (formerly RStudio) has a series of tutorials on Quarto on their YouTube channel. You can find their playlist [here](https://www.youtube.com/playlist?list=PL9HYL-VRX0oQI8fVioFxMTBrViFnRX_Df).
 - [Markdown Guide](https://www.markdownguide.org/basic-syntax/).
 - [Jupyter Notebooks Documentation](https://jupyter.org/).
-- [Codecademy - How to use Jupyter Notebooks](https://www.codecademy.com/article/how-to-use-jupyter-notebooks)
-- [Course tutorial: Jupyter and Markdown](https://danilofreire.github.io/datasci350/tutorials/02-jupyter-markdown-tutorial.html)
+- [Course tutorial: Jupyter and Markdown](https://danilofreire.github.io/datasci350/02-jupyter-markdown-tutorial.html)
 
 ### September 29, 2026:
 
-- Lecture 10: [Introduction to Quarto](https://danilofreire.github.io/datasci350/lectures/lecture-10/10-quarto.html).
+- Lecture 10: [Reproducible Research and Literate Programming](https://danilofreire.github.io/datasci350/lectures/lecture-10/10-quarto.html).
 
 Suggested references:
 
-- [Quarto official website](https://quarto.org/).
-- Awesome Quarto: <https://github.com/mcanouil/awesome-quarto>. Note: this repository contains dozens of tutorials, examples, and resources. 
+- Sandve, G. K., Nekrutenko, A., Taylor, J., & Hovig, E. (2013). [Ten Simple Rules for Reproducible Computational Research](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003285). PLOS Computational Biology, 9(10), e1003285.
+- [The Turing Way: Guide for Reproducible Research](https://book.the-turing-way.org/reproducible-research/overview).
+- [Quarto: Get Started](https://quarto.org/docs/get-started/).
 - Çetinkaya-Rundel, M. & Lowndes, J. S. (2022) [Keynote talk: Hello Quarto: Share • Collaborate • Teach • Reimagine](https://www.youtube.com/watch?v=p7Hxu4coDl8). [Slides](https://mine.quarto.pub/hello-quarto/#/hello-quarto-title) and [source code](https://github.com/mine-cetinkaya-rundel/hello-quarto). This is one of the nicest Quarto presentations I have seen.
-- [Getting Started with Quarto (YouTube)](https://www.youtube.com/watch?v=_f3latmOhew&t=2s). Note: Posit (formerly RStudio) has a series of tutorials on Quarto on their YouTube channel. You can find their playlist [here](https://www.youtube.com/playlist?list=PL9HYL-VRX0oQI8fVioFxMTBrViFnRX_Df).
 
 ### October 1, 2026:
 
-- Lecture 11: [Writing Documents, Presentations, and Websites with Quarto](https://danilofreire.github.io/datasci350/lectures/lecture-11/11-more-quarto.html).
+- Lecture 11: [Quarto in Practice](https://danilofreire.github.io/datasci350/lectures/lecture-11/11-more-quarto.html).
 - **Assignment 04 due (5%).**
 - [**Assignment 05**](https://github.com/danilofreire/datasci350/blob/main/assignments/05-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=b3cb9962-bfcd-4b44-a3f4-4357b1442eda&hostId=05eb977d-4f8a-440e-9e45-95212b29d103)
@@ -287,30 +292,27 @@ Suggested references:
 Suggested references:
 
 - [Quarto Documentation - Presentations](https://quarto.org/docs/presentations/) and [Websites](https://quarto.org/docs/websites/).
+- [Quarto Documentation - Code Execution and Freeze](https://quarto.org/docs/projects/code-execution.html).
 - [GitHub Pages Documentation](https://docs.github.com/en/pages).
 - French, J. (2023). [Creating Websites with Quarto and GitHub Pages (YouTube Playlist)](https://www.youtube.com/playlist?list=PLkrJrLs7xfbXcEKhTCKRSr2VXH4yiBeXo).
-- Taylor, I. (2022). [Publishing a Quarto Site to GitHub Pages](https://www.ianmtaylor.net/posts/2022/deploy-quarto-to-github-pages/).
 
 ## Module 04: AI-Assisted Programming
 
 ### October 6, 2026:
 
-- Lecture 12: [AI and Prompt Engineering](https://danilofreire.github.io/datasci350/lectures/lecture-12/12-ai-programming.html).
+- Lecture 12: [Local Language Models](https://danilofreire.github.io/datasci350/lectures/lecture-12/12-local-models.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=ecf9f3d1-7d0d-4ca1-a3a5-a26c5e72427b&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
 
-- Matarazzo, A & Torlone, R. (2025). [A Survey on Large Language Models with some Insights on their Capabilities and Limitations](https://arxiv.org/abs/2501.04040). arXiv preprint arXiv:2501.04040."
-- Wei, J., et al. (2022). [Chain-of-Thought prompting elicits reasoning in large language models](https://arxiv.org/abs/2201.11903).
-- Kojima, T., et al. (2022). [Large language models are zero-shot reasoners](https://arxiv.org/abs/2205.11916).
-- Yao, S., et al. (2022). [ReAct: Synergizing reasoning and acting](https://arxiv.org/abs/2210.03629).
-- Anthropic (2025). [Prompt engineering overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering). 
-- OpenAI (2025). [Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering).
-- Google (2025). [Gemini Prompting Guide](https://services.google.com/fh/files/misc/gemini-for-google-workspace-prompting-guide-101.pdf). 
+- [Ollama Documentation](https://docs.ollama.com/) and the [Modelfile Reference](https://docs.ollama.com/modelfile).
+- [Ollama Model Library](https://ollama.com/library). Note: browse this before class and pick a model your laptop can hold.
+- Wolfram, S. (2023). [What Is ChatGPT Doing, and Why Does It Work?](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/).
+- Google (2025). [Gemini Prompting Guide](https://services.google.com/fh/files/misc/gemini-for-google-workspace-prompting-guide-101.pdf). Note: the source of the PTCF framework we use to write system prompts.
 
 ### October 8, 2026:
 
-- Lecture 13: [Quiz 02: Literate Programming (6%)](https://github.com/danilofreire/datasci350-quiz02/).
+- Lecture 13: [Quiz 02: Reproducible Research and Quarto (6%)](https://github.com/danilofreire/datasci350-quiz02/). Covers Lectures 10 and 11.
 - **Assignment 05 due (5%).**
 - [**Assignment 06**](https://github.com/danilofreire/datasci350/blob/main/assignments/06-assignment.ipynb).
 
@@ -319,104 +321,117 @@ Suggested references:
 
 ### October 15, 2026:
 
-- Lecture 14: [AI-Assisted Programming, APIs, and Agents](https://danilofreire.github.io/datasci350/lectures/lecture-14/14-ai.html).
+- Lecture 14: [Calling Models from Your Own Code](https://danilofreire.github.io/datasci350/lectures/lecture-14/14-ai.html).
+
+Note: create a free [OpenRouter](https://openrouter.ai/) account and API key before this class, and set the key's spending limit to $0.00. The steps are in the lecture README.
 
 Suggested references:
 
-- [Ollama Documentation](https://github.com/ollama/ollama/tree/main/docs).
-- [LM Studio Documentation](https://lmstudio.ai/docs/app).
-- [Browser Use Documentation](https://docs.browser-use.com/introduction)
-- [Hugging Face Documentation](https://huggingface.co/docs). Note: great resource for NLP models and tools.
-
-## Module 05: Introduction to Cloud Computing
+- [Ollama API Documentation](https://docs.ollama.com/api) and its [OpenAI compatibility](https://docs.ollama.com/api/openai-compatibility) page. Note: lecture 12 runs Ollama from the terminal, and this lecture calls the same server from Python.
+- [OpenRouter Quickstart](https://openrouter.ai/docs/quickstart) and the [model catalogue](https://openrouter.ai/models). Note: filter the catalogue by Prompt pricing "Free" to find a model that costs nothing today.
+- [OpenAI Python library](https://github.com/openai/openai-python). Note: despite the name, it is a client for a protocol that Ollama and OpenRouter both speak.
+- Willison, S. (2025). [The lethal trifecta for AI agents](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/).
 
 ### October 20, 2026:
 
-- Lecture 15: [Introduction to Cloud Computing](https://danilofreire.github.io/datasci350/lectures/lecture-15/15-cloud.html).
-- **Assignment 06 due (5%).**
-- [**Assignment 07**](https://github.com/danilofreire/datasci350/blob/main/assignments/07-assignment.ipynb).
+- Lecture 15: [Retrieval-Augmented Generation and Fine-Tuning](https://danilofreire.github.io/datasci350/lectures/lecture-15/15-rag-finetuning.html).
+
+Note: install or update Ollama before this class, then run `pip install ollama numpy`. The steps are in the lecture README.
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=8691380c-2ccb-49fa-aab1-471754aeb24c&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
 
-- [Amazon Web Services (AWS) Documentation](https://docs.aws.amazon.com/).
-- [AWS Educate](https://aws.amazon.com/education/awseducate/).
-- [AWS Training and Certification](https://aws.amazon.com/training/).
-- [AWS Cloud Practitioner Tutorial](https://www.w3schools.com/aws/)
-- Newman, S. (2021). [Building microservices: designing fine-grained systems](https://books.google.com.br/books?id=ZvM5EAAAQBAJ&lpg=PT16&ots=ui8f8ybCQq&dq=Building%20Microservices%20by%20Sam%20Newman&lr&pg=PA1#v=onepage&q&f=false). O'Reilly Media, Inc.
-- Erl, T., Puttini, R., & Mahmood, Z. (2013). [Cloud computing: concepts, technology & architecture](https://books.google.com.br/books?id=zqhpAgAAQBAJ&lpg=PR13&ots=N7cmAFxaQV&dq=%22Cloud%20Computing%3A%20Concepts%2C%20Technology%20%26%20Architecture%22%20by%20Thomas%20Erl%20&lr&pg=PR13#v=onepage&q=%22Cloud%20Computing:%20Concepts,%20Technology%20&%20Architecture%22%20by%20Thomas%20Erl&f=false). Pearson Education.
+- [Ollama Documentation: Embedding models](https://docs.ollama.com/capabilities/embeddings).
+- [EmbeddingGemma on the Ollama model library](https://ollama.com/library/embeddinggemma). Note: this is the model we run in class.
+- [Sentence Transformers Documentation](https://sbert.net/). Note: the clearest explanation of what a sentence embedding is and how similarity search uses it.
+- [Unsloth Documentation](https://docs.unsloth.ai/). Note: the tool behind the fine-tuning demonstration; you are not expected to run it yourself.
+
+## Module 05: Cloud Computing
 
 ### October 22, 2026:
 
-- Lecture 16: [More Cloud Computing with Amazon Web Services (AWS)](https://danilofreire.github.io/datasci350/lectures/lecture-16/16-cloud2.html).
+- Lecture 16: [Introduction to Cloud Computing](https://danilofreire.github.io/datasci350/lectures/lecture-16/16-cloud.html).
+- **Assignment 06 due (5%).**
+- [**Assignment 07**](https://github.com/danilofreire/datasci350/blob/main/assignments/07-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=9a098f1f-ebd6-40cd-aa4e-b8f096683a37&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
-## Module 06: Introduction to SQL Databases
+Suggested references:
+
+- [Amazon Web Services (AWS) Documentation](https://docs.aws.amazon.com/).
+- [AWS Free Tier](https://aws.amazon.com/free/). Note: read this before opening an account, and set a zero-spend budget.
+- [AWS Cloud Practitioner Tutorial](https://www.w3schools.com/aws/).
 
 ### October 27, 2026:
 
-- Lecture 17: [Introduction to SQL: Data Types, Tables, and Queries](https://danilofreire.github.io/datasci350/lectures/lecture-17/17-introduction-sql.html).
-- **Assignment 07 due (5%).**
-- No assignment this week.
+- Lecture 17: [Cloud Computing II: Running Your Own Server on AWS](https://danilofreire.github.io/datasci350/lectures/lecture-17/17-cloud2.html).
+- No new assignment this week. Start reading the final project instructions.
 - [Instructions for the Final Project](https://github.com/danilofreire/datasci350/tree/main/project).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=1ee46eb8-e667-4132-9895-4dd72ef3c561&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
 
-- [Mode Analytics: SQL Tutorial](https://mode.com/sql-tutorial/).
-- [Real Python: SQL Databases and SQLite](https://realpython.com/python-sql-libraries/).
-- [Khan Academy: SQL Basics](https://www.khanacademy.org/computing/computer-programming/sql). (Note: Khan Academy is a great resource for learning SQL and other programming languages).
-- [SQLite Cheat Sheet](https://www.sqlitetutorial.net/sqlite-cheat-sheet/).
-- [SQLite Documentation](https://www.sqlite.org/docs.html).
-- [SQL for Data Science](https://www.coursera.org/learn/sql-for-data-science?irgwc=1).
+- [Amazon EC2 Documentation](https://docs.aws.amazon.com/ec2/).
+- [AWS CloudShell Documentation](https://docs.aws.amazon.com/cloudshell/). Note: the way out when a key file's permissions will not work on Windows.
+- [Ubuntu Server Documentation](https://documentation.ubuntu.com/server/). Note: the instance we launch runs Ubuntu, and `apt` is how you install anything on it.
+
+## Module 06: Getting Data from the Web
 
 ### October 29, 2026:
 
-- Lecture 18: [SQL in Python: Connecting to Databases with Pandas](https://danilofreire.github.io/datasci350/lectures/lecture-18/18-sql-python.html).
+- Lecture 18: [Web APIs and JSON](https://danilofreire.github.io/datasci350/lectures/lecture-18/18-web-apis.html).
+- **Assignment 07 due (5%).**
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=ebd517ed-7bf1-447c-8e30-9c5abb75ef16&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
+
+Suggested references:
+
+- [Requests: Quickstart](https://requests.readthedocs.io/en/latest/user/quickstart/).
+- MDN. [An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview).
+- [World Bank API Documentation](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589). Note: the API behind the final project.
+- [Working with JSON](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/JSON).
 
 ### November 3, 2026:
 
-- Lecture 19: [Merging Tables in SQL](https://danilofreire.github.io/datasci350/lectures/lecture-19/19-sql-tables.html).
+- Lecture 19: [Working with APIs in Practice](https://danilofreire.github.io/datasci350/lectures/lecture-19/19-apis-in-practice.html).
+- Optional: [Web scraping tutorial](https://danilofreire.github.io/datasci350/05-web-scraping-tutorial.html). Self-study, not examinable.
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=0d1466b5-ef43-4ab3-90aa-c46ae0554f19&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
 
-- [Pandas Documentation: SQL Databases](https://pandas.pydata.org/docs/user_guide/io.html#sql-queries).
-- [Real Python: Working with SQLite Databases Using Python and Pandas](https://realpython.com/python-sql-libraries/).
-- [Mode Analytics: SQL Joins](https://mode.com/sql-tutorial/sql-joins/).
-- [SQL Joins Tutorial](https://www.sqlitetutorial.net/sqlite-join/).
+- [pandas: json_normalize](https://pandas.pydata.org/docs/reference/api/pandas.json_normalize.html). Note: how nested JSON becomes a flat table.
+- [python-dotenv Documentation](https://saurabh-kumar.com/python-dotenv/). Note: how an API key stays out of your repository.
+- [Apache Parquet Documentation](https://parquet.apache.org/docs/). Note: the format we save results in, and the one Lectures 21 and 22 read back.
+- [wbgapi](https://github.com/tgherzog/wbgapi). Note: a Python client for the World Bank API, useful for the final project.
 
 ### November 5, 2026:
 
-- Lecture 20: [Quiz 03: AI-Assisted Programming and Cloud Computing (6%)](https://github.com/danilofreire/datasci350-quiz03/).
+- Lecture 20: [Quiz 03: AI-Assisted Programming and Cloud Computing (6%)](https://github.com/danilofreire/datasci350-quiz03/). Covers Lectures 12, 14, 15, 16, and 17.
 - [**Assignment 08**](https://github.com/danilofreire/datasci350/blob/main/assignments/08-assignment.ipynb).
 
-## Module 07: Parallel Computing
+## Module 07: Scaling and Performance
 
 ### November 10, 2026:
 
-- Lecture 21: [Parallel Computing with Dask](https://danilofreire.github.io/datasci350/lectures/lecture-21/21-parallel-computing.html).
-- **Assignment 08 due (5%).**
-- [**Assignment 09**](https://github.com/danilofreire/datasci350/blob/main/assignments/09-assignment.ipynb).
+- Lecture 21: [Parallel Computing Fundamentals](https://danilofreire.github.io/datasci350/lectures/lecture-21/21-parallel-computing.html).
 
 Suggested references:
 
-- [Dask Documentation](https://docs.dask.org/en/latest/)
-- [Dask Tutorial](https://tutorial.dask.org/)
-- [Coiled - Intro to Dask Tutorial (YouTube)](https://www.youtube.com/watch?v=z18qjLu-Mw4&list=PLeDTMczuyDQ8S73cdc0PrnTO80kfzpgz2&pp=iAQB).
-- Rocklin, M. (2017). [Dask: Flexible Library for Parallel Computing in Python](https://proceedings.scipy.org/articles/Majora-7b98e3ed-013). In Proceedings of the 16th Python in Science Conference (Vol. 126, p. 130).
+- [Python Documentation: concurrent.futures](https://docs.python.org/3/library/concurrent.futures.html).
+- [Python Glossary: global interpreter lock](https://docs.python.org/3/glossary.html#term-global-interpreter-lock).
+- [joblib Documentation](https://joblib.readthedocs.io/en/stable/).
+- [Dask Documentation](https://docs.dask.org/en/latest/).
 
 ### November 12, 2026:
 
-- Lecture 22: [Application: Parallelising Data Analysis with Dask and AutoML](https://danilofreire.github.io/datasci350/lectures/lecture-22/22-parallel-automl.html).
+- Lecture 22: [Scaling Data Analysis in Practice](https://danilofreire.github.io/datasci350/lectures/lecture-22/22-parallel-automl.html).
+- **Assignment 08 due (5%).**
+- [**Assignment 09**](https://github.com/danilofreire/datasci350/blob/main/assignments/09-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=a2403e39-2c84-473b-8e78-ea0889581b0c&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
 
-- [Dask Documentation: Machine Learning](https://ml.dask.org/).
-- He, X., Zhao, K., & Chu, X. (2021). [AutoML: A Survey of the State-of-The-Art](https://www.sciencedirect.com/science/article/abs/pii/S0950705120307516). Knowledge-based systems, 212, 106622.
-- [TPOT Documentation](https://epistasislab.github.io/tpot/).
+- [Polars User Guide](https://docs.pola.rs/).
+- [DuckDB Documentation](https://duckdb.org/docs/).
+- [Dask: Best Practices](https://docs.dask.org/en/stable/best-practices.html).
 
 ## Module 08: Containers and Reproducibility
 
@@ -427,32 +442,39 @@ Suggested references:
 
 Suggested references:
 
-- [Docker Documentation](https://docs.docker.com/)
-- [ComposeCraft](https://github.com/composecraft/composecraft). A tool to help you manage, edit and share docker compose files in a GUI way.
+- [Python Documentation: venv](https://docs.python.org/3/library/venv.html).
+- [uv Documentation](https://docs.astral.sh/uv/). Note: the tool we use in class to create environments and lock dependencies.
+- [Docker: Get Started](https://docs.docker.com/get-started/).
 
 ### November 19, 2026:
 
-- Lecture 24: [Quiz 04: SQL Databases (6%)](https://github.com/danilofreire/datasci350-quiz04/).
+- Lecture 24: [Quiz 04: Web APIs and JSON (6%)](https://github.com/danilofreire/datasci350-quiz04/). Covers Lectures 18 and 19.
 - **Assignment 09 due (5%).**
 - [**Assignment 10**](https://github.com/danilofreire/datasci350/blob/main/assignments/10-assignment.ipynb).
 
 ### November 24, 2026:
 
 - Lecture 25: [Docker for Data Science](https://danilofreire.github.io/datasci350/lectures/lecture-25/25-docker.html).
-- **Assignment 10 due (5%).**
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=f2e51b56-a8f6-4178-8656-fec9d42679b1&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
+
+Suggested references:
+
+- [Dockerfile Reference](https://docs.docker.com/reference/dockerfile/).
+- [Docker Compose Documentation](https://docs.docker.com/compose/).
+- [Jupyter Docker Stacks](https://jupyter-docker-stacks.readthedocs.io/en/latest/). Note: ready-made images for data science work.
 
 ### November 26, 2026: Thanksgiving Recess (No Classes)
 
 
 ### December 1, 2026:
 
-- Lecture 26: [Course Review](https://danilofreire.github.io/datasci350/lectures/lecture-26/26-revision.html).
+- Lecture 26: [Course Revision](https://danilofreire.github.io/datasci350/lectures/lecture-26/26-revision.html).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=d19e2d39-f38c-4a1e-9d5d-c3113bd3ad36&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 ### December 3, 2026:
 
-- Lecture 27: [Quiz 05: Dask, Docker and Containers (6%)](https://github.com/danilofreire/datasci350-quiz05/).
+- Lecture 27: [Quiz 05: Scaling, Docker and Containers (6%)](https://github.com/danilofreire/datasci350-quiz05/). Covers Lectures 21, 22, 23, and 25.
+- **Assignment 10 due (5%).**
 
 ### December 8, 2026:
 

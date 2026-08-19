@@ -1,4 +1,4 @@
-% !TEX program = XeLaTeX
+% !TEX program = pdflatex
 \documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{article}
 
 % Set up the page
@@ -242,7 +242,7 @@ $if(author)$
 $endif$
 
 % Date
-\date{{Fall 2026}}
+\date{$semester$}
 
 % Tightlist
 \providecommand{\tightlist}{%

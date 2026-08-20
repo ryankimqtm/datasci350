@@ -872,7 +872,7 @@ Before then:
 3. Read the final project instructions
 
 :::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 15px;"}
-The final project is out. Groups of 4 to 5, due 8 December 2026, and you will collect the data yourselves from the World Bank API. Next class is the first tool you need for it
+The final project is out. Groups of three to four, due 8 December 2026. You will pull the data from a web API (the World Bank by default, or another one you clear with me) and submit everything as a Docker container, starting from the starter repository. Next class is the first tool you need for it
 :::
 :::
 :::

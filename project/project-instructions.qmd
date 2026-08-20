@@ -1,7 +1,7 @@
 ---
 title: "DATASCI 350 - Data Science Computing"
 lang: en-GB
-author: 
+author:
   - Final Project Instructions
 appendix: false
 fontfamily: libertine
@@ -9,7 +9,7 @@ monofont: inconsolata
 monofontoptions: scaled=.95
 fontsize: 12pt
 spacing: double
-geometry: 
+geometry:
   - top=2cm
   - bottom=2cm
   - left=2cm
@@ -20,7 +20,7 @@ citecolor: Mahogany
 jupyter: python3
 highlight-style: arrow
 pdf-engine: pdflatex
-format: 
+format:
     pdf:
       template: article-template.latex
       toc: false
@@ -32,104 +32,131 @@ editor:
 
 # Overview
 
-This project tests your ability to combine the programming concepts covered in QTM 350 and produce your own analysis for real-world datasets. In groups of 4-5 students, you will conduct a comprehensive analysis of real-world datasets from the [World Bank's World Development Indicators](https://databank.worldbank.org/source/world-development-indicators), focusing on one of the topics indicated below. You will use SQL for data cleaning and descriptive statistics, then switch to Python for data modelling and visualisation. The project will involve version control using GitHub and document the entire workflow in a Quarto report. The report should be fully reproducible and the repository should indicate the contributions of each group member with the number of commits and lines of code added.[^fn-github]
+The final project is worth 20% of your course grade. You will work in groups of three to four students and build a reproducible container pipeline from end to end.
 
-[^fn-github]: For more information on how to use GitHub, see the [GitHub Guides](https://guides.github.com/). GitHub provides these statistics in the Insights tab of your repository.
+Your pipeline does four things. It collects data from a web API with `requests`. It processes that data with Polars or DuckDB. It presents the results in a Quarto report. It ships inside a Docker container that anyone can run.
 
-# Dataset
+You submit a GitHub repository. The repository holds your Quarto source, all of your code, and a Dockerfile.
 
-You will use data from the World Bank's World Development Indicators (WDI) database. The dataset contains 1,600+ indicators for 200+ countries from 1960 to 2023, although not all indicators are available for all countries or years. The dataset is large, so you will need to select a subset of variables and countries to focus on for your analysis. I suggest that you work with only a few of them to keep the analysis manageable. You can download the dataset from the [World Bank's website](https://databank.worldbank.org/source/world-development-indicators) or use the excellent `wgapi` Python package to access the data directly from the World Bank's API. The package documentation is available [on the package's GitHub repository](https://github.com/tgherzog/wbgapi). There are other packages available for accessing the World Bank's data, such as `wbdata`, which you can find [here](https://wbdata.readthedocs.io/en/stable/).
+Here is the rule that matters most. _If `docker run` on my machine does not reproduce your report, your project does not exist._ Reproducibility is the point of this course, so it is the point of this project.
 
-## Topics
+You may use Pandas if you prefer it for a particular step, but Polars or DuckDB should do the main work.
 
-You can choose one of the following topics for your analysis. Each topic has three indicators that you can use to explore the topic further. You can use additional indicators if you find them relevant to your analysis. Feel free to work with particular countries (more than one) or regions (e.g., Sub-Saharan Africa, Latin America, etc.) to make your analysis more focused. You are also encouraged to assess the relationships between the indicators and how they have evolved over time, as well as to choose your own research questions.
+# Timeline
 
-Every indicator below has a unique code that you can use to access the data from the World Bank's API. The code is provided in the description of each indicator. Please visit the indicator's website and click on "Details" to read more about the indicator and its definition.
+The project is released on Tuesday 27 October 2026. Please email me the names of your group members by Thursday 5 November 2026, and I will keep the list myself, so there is nothing to register on Canvas. If I have not heard from you by then, I will assign you to a group at random. If you are taking Track B, please mention the API you have in mind in the same email.
 
-- **Economic Development**
-- Datasets:
-  - GDP per capita (constant 2015 US$) – Indicator: `NY.GDP.PCAP.KD`. [Website](https://data.worldbank.org/indicator/NY.GDP.PCAP.KD).
-  - Employment to population ratio, 15+, total (%) – Indicator: `SL.EMP.TOTL.SP.ZS`. [Website](https://data.worldbank.org/indicator/SL.EMP.TOTL.SP.ZS).
-  - GDP growth (annual %)– Indicator: `NY.GDP.MKTP.KD.ZG`. [Website](https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG).
+The project is due on Tuesday 8 December 2026 at 11:59pm. That is the last day of class. The deadline is firm.
 
-- **Population dynamics**
-- Datasets:
-  - Life expectancy at birth, total (years) – Indicator: `SP.DYN.LE00.IN`. [Website](https://data.worldbank.org/indicator/SP.DYN.LE00.IN).
-  - Mortality rate, under-5 (per 1,000 live births) – Indicator: `SH.DYN.MORT`. [Website](https://data.worldbank.org/indicator/SH.DYN.MORT).
-  - Adolescent fertility rate (births per 1,000 women ages 15-19) – Indicator: `SP.ADO.TFRT`. [Website](https://data.worldbank.org/indicator/SP.ADO.TFRT).
+# Two tracks
 
-- **Education**
-- Datasets:
-  - School enrollment, primary (% gross) – Indicator: `SE.PRM.ENRR`. [Website](https://data.worldbank.org/indicator/SE.PRM.ENRR).
-  - School enrollment, secondary (% gross) – Indicator: `SE.SEC.ENRR`. [Website](https://data.worldbank.org/indicator/SE.SEC.ENRR).
-  - School enrollment, tertiary (% gross) – Indicator: `SE.TER.ENRR`. [Website](https://data.worldbank.org/indicator/SE.TER.ENRR).
+You choose one of two tracks. Both tracks are graded with the identical rubric. Choosing your own API earns you no bonus and costs you nothing.
 
-# Deliverables
+## Track A: the World Bank API
 
-The project will be due on December 8 at 11:59 PM. Please send the link to your repository on Canvas. You will submit the following items:
+This is the guided track and the default choice. You use the [World Bank Indicators API](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589), which needs no key and no registration.
 
-1. GitHub repository with the project files. The repository should include the following:
-   - A README file with a brief description of the project and instructions on how to run the code.
-   - A `data` folder with the dataset.
-   - A `documentation` folder with the codebook and entity-relationship diagram.
-   - A `figures` folder with the plots and tables generated in the analysis.
-   - A `scripts` folder with the SQL and Python scripts used in the analysis.
+You pick the indicators and the countries. You build your own research question around them. For example, you might ask how under-five mortality has moved with health spending across Latin America since 2000, or whether secondary school enrolment tracks GDP per capita in Sub-Saharan Africa.
 
-All group members must contribute to the repository. It can be helpful to assign roles to each member to ensure that everyone contributes equally to the project. Each member's participation will be verified by the number of lines and commits in the repository, and anyone without contributions will receive a grade of 0 for the project. Although the repository will be hosted on someone's GitHub account, all members should have access to it.
+## Track B: bring your own API
 
-2. A Quarto report in PDF and HTML format. When you submit an HTML file, please make sure it is rendered on GitHub and all figures are displayed correctly. The report should include the following sections:
-   - Title, names of project members and their Emory IDs.
-   - Introduction.
-   - Data description.
-   - Data analysis.
-   - Results and discussion.
-   - Conclusion.
+You may use any other public API. Please talk to me about the API you have chosen and get my approval before you start building on it.
 
-The report should be concise, but not too brief. You may aim for 5 pages, excluding the code.  You should focus on the main results and insights from the analysis. The report should be fully reproducible, meaning that anyone should be able to run the code and generate the same results as in the report.
+Your API must meet three criteria:
 
-# Grading Rubric
+- It is free to access.
+- It needs no heavy authentication. An API key is fine. OAuth is not.
+- It is documented well enough that another student in this class could use it.
 
-Please find below the grading rubric for the final project. The rubric is based on a total of 20 points, with each section having a different weight. The rubric is detailed to help you understand what is expected in each section of the project. 
+Send me the API name, a link to its documentation, and two sentences on what you plan to ask of the data.
+
+# The report
+
+Write the report in Quarto. Aim for 1,500 to 2,500 words, excluding code. Short and clear beats long and padded.
+
+Your report must contain the following:
+
+- A research question, stated in the opening paragraph.
+- At least two visualisations.
+- The code chunks that produce your analysis and your visualisations, visible in the rendered report rather than hidden.
+- Descriptive or statistical analysis appropriate to the question you asked.
+- An honest discussion of the limitations of your data and your analysis.
+- A short contribution statement at the end, as described in the grading rubric section.
+
+The limitations section is not a formality. Missing country-years, indicators that measure something narrower than their name suggests, and correlations you cannot read causally all belong there.
+
+A word on the statistics, because this worries students every year. I do not grade the sophistication of your method, and many of you have not taken advanced statistics. Careful descriptive work, means and trends and well-chosen comparisons, correctly interpreted, scores better than a regression you cannot explain. When the rubric says analysis quality, it means three things: the method suits the question you asked, you carried it out correctly, and you read the result for what it actually shows. A group that computes a simple summary and interprets it honestly can earn full marks.
+
+# The container
+
+Your repository must include a Dockerfile that builds an image containing every dependency your analysis needs. Anyone who clones your repository should be able to build the image and render the report with no extra installation.
+
+You do not start from nothing. A minimal starter repository is available at <https://github.com/danilofreire/datasci350-project-starter>. It contains a working Dockerfile, a pinned `requirements.txt`, a script that pulls data from the World Bank API, and a skeleton `report.qmd` whose headings match the rubric below. Clone it, check that it renders on your machine, then replace the example with your own work.
+
+## The data workflow
+
+Your project has two separate steps, and keeping them separate is what makes the container reproducible.
+
+The first step is the pull. A script in your repository calls the API once and saves what comes back into `data/raw/`. Save two things: the raw response exactly as the API sent it, and the tidy table you built from it. You then commit both files to the repository. The starter repository does this in `scripts/pull_data.py`.
+
+The second step is the report. Your Quarto file reads only the saved copy in `data/raw/`. It never calls the API while rendering.
+
+The reason is that an API is not under your control. It may change its format, rename an indicator, or simply be down on the day I mark your project in December. A report that calls the API while rendering breaks when any of that happens, and a report that does not render scores nothing for reproducibility. With the snapshot committed, the container produces the same report on any machine, in any month, with no internet connection at all.
+
+So pull once, commit the snapshot, and leave it alone. Do not add `data/raw/` to your `.gitignore`.
+
+## Testing your container
+
+Test your container long before you submit. Clone your own repository into a fresh folder. Build the image from that clone. Run the container and confirm the report renders. Do not test only on the machine where you wrote the code, because that machine already has your dependencies installed.
+
+# How to submit
+
+1. Push your final work to your group's GitHub repository.
+2. Make the repository public, or add me as a collaborator.
+3. Confirm that the Dockerfile, the Quarto source, and all code are in the repository.
+4. Confirm that the report renders from a clean `docker run`.
+5. Post the repository link on Canvas before 11:59pm on Tuesday 8 December 2026.
+
+One member posts the link on behalf of the group.
+
+# Grading rubric
 
 \singlespacing
 
-\renewcommand{\arraystretch}{1.2}
-\footnotesize
+\renewcommand{\arraystretch}{1.4}
 
-\begin{tabular}{|>{\raggedright\arraybackslash}p{10cm}|>{\centering\arraybackslash}p{2.5cm}|>{\centering\arraybackslash}p{2cm}|}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{12.5cm}|>{\centering\arraybackslash}p{2cm}|}
 \hline
-\textbf{Component}       & \textbf{Detailed Points}                     & \textbf{Total Points} \\
+\textbf{Component} & \textbf{Weight} \\
 \hline
-\textbf{Overall}         &                                              & 2 \\
-Organisation and aesthetics & 1                                         &   \\
-Originality of approach and insights & 1                                &   \\
+Reproducibility: the container builds and the report renders from a clean \texttt{docker run} & 30\% \\
 \hline
-\textbf{Introduction}    &                                              & 2 \\
-Description of topic and research question & 1                          &   \\
-Summary of main findings & 1                                            &   \\
+Analysis quality: the research question, the method, and the interpretation & 30\% \\
 \hline
-\textbf{Data Description} &                                             & 5 \\
-Clear introduction of the dataset and context & 1                       &   \\
-Data merging steps       & 1                                            &   \\
-Data cleaning and pre-processing & 2                                    &   \\
-Summary of key variables (columns) & 1                                  &   \\
+Communication: clarity of the writing and the visualisations & 20\% \\
 \hline
-\textbf{Data Analysis}   &                                              & 5 \\
-Interpretation of main results and trends & 2                           &   \\
-Well-formatted tables and plots & 3                                     &   \\
+Code quality: organised, readable, no dead code & 10\% \\
 \hline
-\textbf{GitHub Management} &                                            & 3 \\
-Consistent version control with meaningful commit messages & 1          &   \\
-Effective use of branches and merges & 1                                &   \\
-Clear README file outlining project structure and instructions & 1      &   \\
+Git workflow: meaningful commits from all members, sensible repository structure & 10\% \\
 \hline
-\textbf{Discussion}      &                                              & 2 \\
-Clarity, conciseness, and relevance of discussion & 1                   &   \\
-Reflection on findings and any limitations & 1                          &   \\
-\hline
-\textbf{Technical Requirements} &                                       & 1 \\
-Report reproducibility using Quarto & 1                                 &   \\
-\hline
-\textbf{Total}           &                                              & \textbf{20} \\
+\textbf{Total} & \textbf{100\%} \\
 \hline
 \end{tabular}
+
+\vspace{2em}
+
+\doublespacing
+
+Every member must contribute to the shared repository. A member with no meaningful contribution, judged from the commit history, receives a zero for the project. Contributions must also be broadly comparable across the group: where the history shows that one member did most of the work, I will adjust individual grades to reflect each member's share. I read the history itself rather than applying a formula, so commits and lines changed count as evidence, not as a score. Your report must end with a short contribution statement saying who did what. I will check it against the repository.
+
+# Use of AI
+
+The course AI policy applies to this project without change. You may use AI tools, and you must attribute them.
+
+Add a short note at the end of your report saying how you used AI. Name the tools. Say which parts of the work they touched.
+
+Every group member must be able to explain any part of the submission. If you cannot explain a block of code in your own repository, do not submit it.
+
+# Questions
+
+Please bring your questions to class or to office hours. Ask about the container early: Docker problems are much easier to solve with a few days to spare than on the night of the deadline.

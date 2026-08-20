@@ -865,14 +865,16 @@ This workflow is similar to how data scientists use cloud resources for larger d
 :::
 
 :::{.column width="48%"}
+:::{style="margin-top: -20px;"}
 Before then:
 
 1. Terminate every instance you started today
 2. Open [Billing and Cost Management](https://console.aws.amazon.com/billing/home) and check that the total is zero
-3. Read the final project instructions
+3. Read the final project instructions here: <https://github.com/danilofreire/datasci350/blob/main/project/project-instructions.pdf>
 
 :::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 15px;"}
-The final project is out. Groups of three to four, due 8 December 2026. You will pull the data from a web API (the World Bank by default, or another one you clear with me) and submit everything as a Docker container, starting from the starter repository. Next class is the first tool you need for it
+The final project is out. Groups of three to four, due 8 December 2026. You will pull the data from a web API (the World Bank by default, or another one you clear with me) and submit everything as a Docker container, starting from the starter repository: <https://github.com/danilofreire/datasci350-project-starter>
+:::
 :::
 :::
 :::

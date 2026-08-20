@@ -47,7 +47,7 @@ SQL is no longer taught in the lectures of DATASCI 350. Module 06 now covers get
 
 The tutorial is self-contained. You will install one Python package, run every query yourself, and finish able to read and write the SQL you are most likely to see in a data science role. All the code here executes when the document is rendered, so every output you read below is real.
 
-We use [DuckDB](https://duckdb.org/) as the engine. If you followed the old lectures, you saw SQLite instead. DuckDB is a better fit for data science, and the reasons are worth a short section of their own.
+We use [DuckDB](https://duckdb.org/) as the engine. If you have met SQL before, it was probably through SQLite. DuckDB is a better fit for data science, and the reasons are worth a short section of their own.
 
 # Why learn SQL, and why DuckDB
 
@@ -772,7 +772,7 @@ ON CONFLICT (iso3) DO NOTHING;
 con.sql("SELECT * FROM regions WHERE iso3 = 'USA'").df()
 ```
 
-The syntax here is identical to the SQLite version in the old lectures. Upsert is one place where the two engines agree exactly.
+The syntax here is identical to SQLite's. Upsert is one place where the two engines agree exactly.
 
 ## Views
 

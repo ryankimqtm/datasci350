@@ -47,7 +47,7 @@ This tutorial installs Visual Studio Code, installs Anaconda, and connects the t
 
 VS Code is a free code editor made by Microsoft. In the [2025 Stack Overflow Developer Survey](https://survey.stackoverflow.co/2025/technology), 75.9% of developers reported using it, more than twice the share of any other editor. Three reasons matter for this course.
 
-- It does what an editor should do, with syntax highlighting, autocompletion, and a debugger built in. Hundreds of extensions cover anything missing, including [GitHub Copilot](https://github.com/features/copilot/).
+- It does what an editor should do, with syntax highlighting, autocompletion, and a debugger built in. Hundreds of extensions cover anything missing.
 - It runs on Windows, macOS, and Linux, so everyone in the class works with the same screen.
 - It works with Git and GitHub out of the box, which you will need for every assignment.
 
@@ -216,18 +216,6 @@ Click "Run" in the top right corner of the editor. Select "Run Current File in D
 The output shows the Anaconda Python version and the path to it. The word `anaconda` should appear in that path. If it does not, VS Code is running a different Python, and you should select the interpreter again.
 
 ![The version and path printed in the terminal.](images/vscode-output.png){width=70%}
-
-# Optional: GitHub Copilot
-
-[GitHub Copilot](https://github.com/features/copilot) is an AI assistant built into VS Code. It suggests code as you type and answers questions in a chat panel. The [GitHub tutorial](03-github-tutorial.pdf) covers it in more detail, and Microsoft documents it at <https://code.visualstudio.com/docs/copilot/getting-started-chat>. The short version follows.
-
-Sign up for the free student licence at <https://github.com/education/students>. Click "Join GitHub Education" and follow the instructions to verify your student status. You will need proof of enrolment, such as your Emory email address or a transcript. The licence lasts two years.
-
-Search for [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) in the Extensions view. Click "Install". VS Code installs two extensions, Copilot and Copilot Chat. Sign in to your GitHub account when prompted.
-
-Press `Tab` to accept a suggestion. Use the chat panel, the speech bubble icon, to ask questions in plain English and get code back.
-
-Copilot is wrong often enough to matter, so read every suggestion before you accept it. Under the course policy, any errors that come from an AI tool are still your responsibility, and you must note in your submission that you used one.
 
 # Conclusion
 

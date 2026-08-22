@@ -35,7 +35,7 @@ workflow and create more reliable, reproducible, and robust analyses.
 By the end of this course, students will be able to:
 
 - Use data science tools for project collaboration and version control
-- Apply advanced techniques for data storage, manipulation, and querying
+- Collect data from web APIs and web pages, and process it at scale
 - Create clear data visualisations and write well-documented code
 - Use AI tools to help with programming tasks
 - Understand the basics of containerisation and parallel computing

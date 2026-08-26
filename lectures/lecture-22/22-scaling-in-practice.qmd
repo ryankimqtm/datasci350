@@ -1009,54 +1009,52 @@ The Dask task stream during the benchmark
 ## A word on GPUs
 ### When different hardware is worth the trouble
 
-:::{style="margin-top: 12px; font-size: 19px;"}
+:::{style="margin-top: 12px; font-size: 21px;"}
 :::{.columns}
 :::{.column width="50%"}
-- Everything today used your [CPU]{.alert}: a few fast, general-purpose cores
+- Everything today used your [CPU]{.alert}, which are general-purpose processors with a few fast cores
 - A [[GPU]{.alert}](https://developer.nvidia.com/cuda-zone) has thousands of small, slow cores
-- That suits [data-parallel]{.alert} work: the same operation applied to millions of numbers at once, like matrix multiplication
-- This is exactly what training a neural network needs, which is why the models from Lectures 12 and 14 live on GPUs
-- GPUs pay off when the work is the same arithmetic repeated across millions of values. Ordinary data wrangling rarely has that shape, which is why everything else today ran on the CPU
+- That suits [data-parallel]{.alert} work 
+  - The same operation applied to millions of numbers at once, like matrix multiplication
+- This is [exactly what training a neural network needs]{.alert}
+- GPUs pay off when the work is the same arithmetic repeated across millions of values
+- Ordinary data wrangling rarely has that shape, which is why everything else today ran on the CPU
 :::
 
 :::{.column width="50%"}
 - For data analysis, the GPU stack is [RAPIDS, renamed CUDA-X in August 2026](https://developer.nvidia.com/topics/ai/data-science/cuda-x-for-data-science):
   - [cuDF](https://docs.rapids.ai/api/cudf/stable/): DataFrames on the GPU
   - [cuML](https://docs.rapids.ai/api/cuml/stable/): the same offer for scikit-learn
-- Useful when your data is numeric and large, and a niche everywhere else
 
 :::{style="text-align: center; margin-top: 8px;"}
 [![](figures/rapids-home-2026.png){width="80%"}](#){data-modal-type="image" data-modal-url="figures/rapids-home-2026.png"}
 :::
 
-:::{style="font-size: 16px; margin-top: 5px;"}
-Source: [NVIDIA CUDA-X](https://developer.nvidia.com/topics/ai/data-science/cuda-x-for-data-science), accessed 25 August 2026
+:::{style="font-size: 16px; margin-top: 5px; text-align: center;"}
+Source: [NVIDIA CUDA-X](https://developer.nvidia.com/topics/ai/data-science/cuda-x-for-data-science)
 :::
 :::
 :::
 :::
 
 ## GPUs without rewriting your code
-### Two accelerators you can switch on, and when they pay
 
-:::{style="margin-top: 12px; font-size: 19px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- [cudf.pandas](https://docs.rapids.ai/api/cudf/stable/cudf_pandas/) accelerates pandas from [one line]{.alert}: `%load_ext cudf.pandas` in a notebook, and your imports stay the same
-- It covers the whole pandas API and [falls back to the CPU]{.alert} for anything the GPU cannot do, so your code still runs
-- The [Polars GPU engine](https://docs.rapids.ai/api/cudf/stable/cudf_polars/) does the same for lazy Polars: you pass an engine to `collect`, and unsupported queries fall back to the CPU
+- [cudf.pandas](https://docs.rapids.ai/api/cudf/stable/cudf_pandas/) accelerates pandas from [one line]{.alert}
+  - `%load_ext cudf.pandas` in a notebook
+- It covers the whole pandas API and [falls back to the CPU]{.alert}, so your code still runs
+- The [Polars GPU engine](https://docs.rapids.ai/api/cudf/stable/cudf_polars/) does the same for lazy Polars
+  - You pass an engine to `collect`, and unsupported queries fall back to the CPU
 - It is still [open beta]{.alert}, and NVIDIA aims it at datasets of hundreds of gigabytes and up
 - No GPU on your laptop? [Google Colab](https://colab.research.google.com/) gives you one for free, and both projects ship a Colab demo
 - Nothing in the final project needs a GPU
 :::
 
 :::{.column width="50%"}
-:::{style="text-align: center;"}
-[![](figures/cudf-pandas-2026-crop.png){width="88%"}](#){data-modal-type="image" data-modal-url="figures/cudf-pandas-2026.png"}
-:::
-
-:::{style="font-size: 16px; margin-top: 5px;"}
-Source: [cudf.pandas documentation](https://docs.rapids.ai/api/cudf/stable/cudf_pandas/), accessed 26 August 2026
+:::{style="text-align: center; margin-top: -20px;"}
+[![](figures/cudf-pandas-2026-crop.png){width="80%"}](#){data-modal-type="image" data-modal-url="figures/cudf-pandas-2026.png"}
 :::
 :::
 :::

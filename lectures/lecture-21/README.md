@@ -29,6 +29,8 @@ conda run -n datasci quarto render 21-parallel-computing.qmd
 
 `dask.visualize` also needs the graphviz binary itself, not only the Python package (`brew install graphviz` on macOS, `apt install graphviz` on Linux).
 
+The CSV and parquet files under `data/` are not stored in the repository. The deck generates them from `dask.datasets.timeseries()` while it runs, so run the cells in order: the ones that read `data/` come after the ones that write it. The generator has no fixed seed, so your numbers will differ from the ones on the slides.
+
 ## Before the next class
 
 Run the two exercises. Lecture 22 benchmarks Polars and DuckDB against pandas and Dask on the WDI panel you built in Module 06, so bring your timings.

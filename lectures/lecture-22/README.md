@@ -9,12 +9,11 @@ Last class we learnt the concepts. This one is the practice session: which tool 
 - Dask clusters: workers, the scheduler, and the `Client` you create once at the top of a script
 - The dashboard at `localhost:8789`, read while a real computation runs
 - The 2026 reality check: why most datasets that feel large fit on one machine
-- The design decisions behind the speed: columnar memory, compiled kernels, every core by default
-- Polars: expressions, `select` and `filter`, `with_columns`, `group_by`, and how each one maps to pandas
+- Polars: expressions, `select` and `filter`, `with_columns`, `group_by`, and how each maps to pandas
 - Lazy mode with `scan_parquet` and `collect`, plus streaming for data larger than RAM
 - DuckDB: SQL straight over a Parquet file, and querying a DataFrame by name
 - The benchmark on 200 million rows, with the same query written four ways
-- A decision framework for pandas, Polars, DuckDB and Dask, and a short word on GPUs
+- A decision framework for the four tools, then two slides on GPUs
 
 Every output on the slides comes from a real run on my laptop (Apple M5, 10 cores, 24 GB RAM). The benchmark was measured once and saved to `data/benchmark_results.csv`.
 
@@ -40,6 +39,6 @@ QUARTO_PYTHON=~/miniconda3/envs/datasci/bin/python quarto render 22-scaling-in-p
 
 ## Before the next class
 
-Finish both Polars exercises. Run the benchmark exercise on your own laptop with the small panel and note your ranking; we compare rankings in class. Check that `dask`, `polars` and `duckdb` all import in your environment.
+Finish both exercises: the Polars rewrite and the DuckDB query. Time the four engines on the small panel with the code in Appendix 05. Check that `dask`, `polars` and `duckdb` all import in your environment.
 
-Tool claims and screenshots verified 25 August 2026.
+Tool claims and screenshots verified 26 August 2026.

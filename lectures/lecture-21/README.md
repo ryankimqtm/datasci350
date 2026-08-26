@@ -2,7 +2,7 @@
 
 Your laptop has eight cores and your Python script uses one of them. This lecture is about the other seven, and about the more useful question underneath: whether you need them at all. We time a slow function four ways, watch a parallel version lose to a serial one, and work out why. Then we meet Dask, which splits both the work and the data, and read its dashboard while it runs.
 
-Slides: <https://danilofreire.github.io/datasci350/lectures/lecture-21/21-parallel-computing.html>
+[View the slides](https://danilofreire.github.io/datasci350/lectures/lecture-21/21-parallel-computing.html)
 
 ## What we cover
 

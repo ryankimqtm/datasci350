@@ -1372,7 +1372,7 @@ The Dask dashboard at `localhost:8787` while this computation ran on my laptop
 | Dask | Python | All cores + clusters | Yes |
 :::
 
-- To try SQL on DataFrames before then, see `tutorials/04-duckdb-sql-tutorial.qmd`
+- To try SQL on DataFrames before then, see [`tutorials/04-duckdb-sql-tutorial.qmd`](https://danilofreire.github.io/datasci350/04-duckdb-sql-tutorial.html)
 :::
 :::
 :::

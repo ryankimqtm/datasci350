@@ -1,11 +1,16 @@
-# Use an official Python runtime as a parent image
-FROM python:3
+# Start from an official Python image
+FROM python:3.14-slim
 
-# Install libraries
-RUN pip install numpy pandas matplotlib
+# Everything below happens inside /app
+WORKDIR /app
 
-# Add a script
-RUN echo "print('Hello, DATASCI350!')" > hello.py
+# Copy requirements first, so Docker can
+# cache the install
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Run the script
+# Copy the script
+COPY hello.py .
+
+# What runs when the container starts
 CMD ["python", "hello.py"]

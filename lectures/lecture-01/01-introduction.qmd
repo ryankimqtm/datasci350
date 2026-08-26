@@ -148,7 +148,7 @@ Tell us your name, your major, one thing you really like, and something we don't
 
 :::: {.columns}
 ::: {.column width=70%}
-- Coding can be tough and push you out of your comfort zone. If the course pace is too fast, let us know. I expect your commitment, but [I do not want anyone to fail]{.alert}
+- Coding can be tough and push you out of your comfort zone. If the course pace is too fast, let me know. I expect your commitment, but [I do not want anyone to fail]{.alert}
 - You are all keen on data science, but your backgrounds vary. That is great! Some sessions might be more engaging than others. If you are bored, [help others]{.alert} or explore new data science areas
 - [Always be respectful]{.alert} to each other
 - [Ask questions]{.alert} whenever you need to!
@@ -315,36 +315,31 @@ And much more...
 :::
 
 ## Key focus areas
-### Why reliability, reproducibility, and robustness matter
 
 - This course centres around three key areas of the modern data science workflow: [reliability]{.alert}, [reproducibility]{.alert}, and [robustness]{.alert}
 
+:::{style="margin-top: 40px; font-size: 24px;"}
 :::: {.columns}
 ::: {.column width="33%"}
 ::: {.fragment .fade-in}
-::: {style="font-size: 24px;"}
 - [Reliability]{.alert}:
   - Ensures consistency in results across multiple runs
   - Minimises errors in data processing and analysis
   - Supports accurate interpretation of findings
 :::
 :::
-:::
 
 ::: {.column width="33%"}
 ::: {.fragment .fade-in}
-::: {style="font-size: 24px;"}
 - [Reproducibility]{.alert}:
   - Allows others to verify and build upon your work
   - Enhances the credibility of research outcomes
   - Facilitates long-term preservation of scientific knowledge
 :::
 :::
-:::
 
 ::: {.column width="33%"}
 ::: {.fragment .fade-in}
-::: {style="font-size: 24px;"}
 - [Robustness]{.alert}:
   - Enables analyses to handle unexpected data variations
   - Improves the stability of results under different conditions

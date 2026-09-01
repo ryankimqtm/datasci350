@@ -692,9 +692,6 @@ represented by a 1
 01111001`
 :::
 
-:::{style="font-size: 28px;"}
-:::
-
 * [[Solutions]{.button}](#sec-solution03)
 :::
 

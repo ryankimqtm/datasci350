@@ -98,7 +98,7 @@ I will write a tutorial for whichever option loses, so you can work through it o
 :::: {.columns}
 ::: {.column}
 - [A terminal]{.alert}
-  - Windows: install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install), or use [VS Code's](https://code.visualstudio.com/) built-in terminal
+  - Windows: install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install), and use [VS Code's](https://code.visualstudio.com/) built-in terminal
   - Mac: you already have one. [iTerm2](https://iterm2.com/), [Homebrew](https://brew.sh/), and [Oh My Zsh](https://ohmyz.sh/) make it nicer
   - Linux: you are good to go
 :::
@@ -154,7 +154,7 @@ I will write a tutorial for whichever option loses, so you can work through it o
 ::::
 
 :::: {.column width="50%"}
-:::{style="font-size: 20px;"}
+:::{style="font-size: 20px; text-align: center"}
 [![](figures/abacus.jpg){width="100%"}](#){data-modal-type="image" data-modal-url="figures/abacus.jpg"}
 Video: [How to use an abacus](https://youtu.be/SkUdjlQy3rk&t=176)
 :::
@@ -197,7 +197,7 @@ The 1970s marked the transition from mechanical to electronic:
 :::{.incremental}
 - [Transistors](https://en.wikipedia.org/wiki/Transistor) act as switches for electronic signals
 - [Integrated circuits](https://en.wikipedia.org/wiki/Integrated_circuit) combine multiple transistors on a single chip
-- [Microprocessors](https://en.wikipedia.org/wiki/Microprocessor) are integrated circuits that contain the functions of a computer's central processing unit (CPU)
+- [Microprocessors](https://en.wikipedia.org/wiki/Microprocessor) are integrated circuits that contain the functions of a computer's [central processing unit (CPU)](https://en.wikipedia.org/wiki/Central_processing_unit)
 - They follow the [Von Neumann architecture](https://en.wikipedia.org/wiki/Von_Neumann_architecture)
 :::
 :::
@@ -262,7 +262,7 @@ The 1970s marked the transition from mechanical to electronic:
 :::{style="font-size: 24px;"}
 - Computers store everything as [0s and 1s]{.alert}
 - A transistor is a [switch]{.alert}: high voltage is 1, low voltage is 0
-- They are [tiny and cheap]{.alert}. A modern chip holds 200 billion and performs billions of operations per second!
+- They are [tiny and cheap]{.alert}. A modern chip holds ~200 billion transistors and performs billions of operations per second!
 - Two states are the simplest thing a switch can do
 
 :::{.incremental}
@@ -611,7 +611,7 @@ represented by a 1
 - Unlike colours, characters do not have a logical connection to numbers
 - To represent characters as numbers, we use a [lookup table]{.alert} called
   [ASCII](https://en.wikipedia.org/wiki/ASCII)
-- ASCII stands for American Standard Code for Information Interchange
+- ASCII stands for [American Standard Code for Information Interchange](https://www.ascii-code.com/timeline)
 - As long as every computer uses the same lookup table, computers can always translate a set of numbers into the same set of characters
 :::
 :::
@@ -637,7 +637,7 @@ represented by a 1
 
 ::: {.column width="60%"}
 :::{style="margin-top: -25px;"}
-[![](figures/ascii-table.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/ascii-table.png"}
+[![](figures/ascii-table-wide.svg){width="100%"}](#){data-modal-type="image" data-modal-url="figures/ascii-table-wide.svg"}
 :::
 :::
 ::::
@@ -670,7 +670,7 @@ represented by a 1
 :::
 
 ::: {.column width="60%"}
-[![](figures/ascii-table.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/ascii-table.png"}
+[![](figures/ascii-table-wide.svg){width="100%"}](#){data-modal-type="image" data-modal-url="figures/ascii-table-wide.svg"}
 :::
 ::::
 
@@ -685,24 +685,28 @@ represented by a 1
 ::: {.column width="40%"}
 :::{style="font-size: 38px;"}
 - Translate the following binary into ASCII text:
+- Work in hexadecimal or in decimal
 
 `01011001
 01100001
 01111001`
 :::
 
+:::{style="font-size: 28px;"}
+:::
+
 * [[Solutions]{.button}](#sec-solution03)
 :::
 
 ::: {.column width="60%"}
-[![](figures/ascii-table.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/ascii-table.png"}
+[![](figures/ascii-table-wide.svg){width="100%"}](#){data-modal-type="image" data-modal-url="figures/ascii-table-wide.svg"}
 :::
 ::::
 
 
 ## ASCII limitations
 
-:::{style="margin-top:40px; font-size: 26px;"}
+:::{style="margin-top:40px; font-size: 32px;"}
 
 - 128 slots go a long way, but not far enough
 - No accents, so "café" is out of reach. No Greek, Arabic, or Chinese either
@@ -982,28 +986,24 @@ print("Hello, World!")
 
 ## Solution - Practice exercise 03 {#sec-solution03}
 
-:::{style="font-size: 24px; margin-top: 40px;"}
-- Step 1: Identify the binary strings: `01011001 01100001 01111001`
+:::{style="font-size: 25px; margin-top: 40px;"}
 
-- Step 2: Convert each binary string to its decimal equivalent
-  - 01011001 = 89
-  - 01100001 = 97
-  - 01111001 = 121
+Split each byte in half. Every half is one hex digit, which makes the lookup quicker.
 
-- Step 3: Map each decimal value to its corresponding ASCII character
-  - 89 = Y
-  - 97 = a
-  - 121 = y
+| Binary | Halves | Hex | Decimal | Character |
+|:--|:--|:--|:--|:--|
+| `01011001` | `0101 1001` | 59 | 89 | Y |
+| `01100001` | `0110 0001` | 61 | 97 | a |
+| `01111001` | `0111 1001` | 79 | 121 | y |
 
-- Step 4: Combine the ASCII characters to form the final text
-  - Result: Yay
+Result: `Yay`
 
 [[Back to the exercise]{.button}](#question03)
 :::
 
 ## Solution - "Hello World" in binary {#sec-solution-ascii}
 
-:::{style="font-size: 19px; margin-top: 20px;"}
+:::{style="font-size: 25px; margin-top: 40px;"}
 
 Split each byte in half. Every half is one hex digit, which makes the lookup quicker.
 

@@ -1,0 +1,66 @@
+# Copies rendered decks from main into the two places gh-pages keeps them:
+# lectures/ (the site source) and docs/lectures/ (what GitHub Pages serves).
+# Decks are self-contained HTML with images inlined, so only .html is copied
+# and nothing is re-rendered here.
+name: Sync lectures to website
+
+on:
+  push:
+    branches: [main]
+    paths: ["lectures/**/*.html"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# One sync at a time, so two pushes cannot race for the same branch.
+concurrency:
+  group: sync-lectures
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          path: main
+
+      - name: Check out gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+
+      - name: Copy the rendered decks
+        run: |
+          for target in site/lectures site/docs/lectures; do
+            rsync -a --include='*/' --include='*.html' --exclude='*' \
+              main/lectures/ "$target/"
+          done
+
+      - name: Commit and push
+        working-directory: site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A lectures docs/lectures
+          if git diff --cached --quiet; then
+            echo "Nothing to sync"
+            exit 0
+          fi
+          git commit -m "docs(website): sync lectures from main (${GITHUB_SHA::7})"
+          # gh-pages may have moved while this job ran, so rebase and retry
+          # instead of failing the way a plain push does.
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "Push rejected, rebasing onto the current gh-pages"
+            git pull --rebase origin gh-pages
+            sleep $((attempt * 5))
+          done
+          echo "Could not push after 5 attempts"
+          exit 1

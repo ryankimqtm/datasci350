@@ -24,7 +24,7 @@ Free-tier terms, instance types, package names and console screenshots were chec
 
 Accounts opened after 15 July 2025 do not get the old 750 free hours per month. Yours runs on credits: $100 at sign-up and up to $100 more, across six months. Instance hours are paid out of those credits, so an instance left running overnight costs you real money from a finite pot.
 
-A `t3.micro` costs 0.0104 USD an hour. Left running for a month that is about $7.50 of your $100, and the disk keeps charging even while the instance is stopped.
+A `t3.micro` costs 0.0104 USD an hour. Left running for a month, with its public IP address and disk, it uses about $12 of your $100. The disk keeps charging even while the instance is stopped.
 
 Terminate everything before you close your laptop.
 
@@ -38,7 +38,7 @@ Install the `jupyter-notebook` package, with a hyphen:
 sudo apt install -y python3 python3-pip jupyter-notebook
 ```
 
-Debian and Ubuntu split Jupyter in two. `python3-notebook` is the library on its own. It installs without error and leaves you with no `jupyter` command, so `jupyter notebook` fails. The `jupyter-notebook` package carries the command and pulls the library in with it.
+Debian and Ubuntu split Jupyter in two. `python3-notebook` installs only the library. The `jupyter-notebook` package brings the `jupyter` command and the server, and pulls the library in with it.
 
 Activity 02 runs a full analysis in the cloud. `weather_data.py` builds a small dataset on your laptop. You upload it with `scp`, download `weather_analysis.py` onto the instance with `wget`, run the analysis there, and bring `weather_analysis.png` back with `scp`. Both scripts live in this folder.
 

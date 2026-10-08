@@ -1,0 +1,1511 @@
+---
+title: DATASCI 350 - Data Science Computing
+subtitle: Lecture 18 - Web APIs and JSON
+author:
+  - name: Danilo Freire
+    email: danilo.freire@emory.edu
+    affiliations: "Department of Data and Decision Sciences <br> Emory University"
+format:
+  clean-revealjs:
+    self-contained: false
+    code-overflow: wrap
+    footer: "[Web APIs and JSON](https://danilofreire.github.io/datasci350/lectures/lecture-18/18-web-apis.html)"
+transition: slide
+transition-speed: default
+scrollable: true
+engine: python3
+revealjs-plugins:
+  - multimodal
+editor:
+  render-on-save: true
+---
+
+# Hey, there! 😊 <br> I hope you're all doing well! {background-color="#1B3A6B"}
+
+# Brief recap 📚 {background-color="#1B3A6B"}
+
+## Lecture 17: a machine in the cloud
+### What we did on AWS on Tuesday
+
+:::{style="margin-top: 30px; font-size: 24px;"}
+:::{.columns}
+::::{.column width="55%"}
+- Launched an EC2 [`t3.micro`]{.alert} running Ubuntu 26.04
+- Connected with a [key pair]{.alert} and `ssh -i`
+- Installed software with `apt`
+- Moved files with `scp` and `wget`
+- Ran Jupyter on the instance through a forwarded port
+- Met [AWS CloudShell]{.alert}, the browser terminal
+- Stopping pauses compute, but the disk still charges. Terminating deletes the machine
+- A `t3.micro` left running costs [about $12 a month]{.alert}
+::::
+
+::::{.column width="45%"}
+:::{style="text-align: center; margin-top: -20px;"}
+[![](figures/aws-logo.jpeg){width="100%"}](#){data-modal-type="image" data-modal-url="figures/aws-logo.jpeg"}
+
+Source: [K21](https://k21academy.com/aws-cloud/overview-of-amazon-web-services-concepts/)
+:::
+::::
+:::
+:::
+
+## Check your AWS account!
+### Confirm that the bill reads zero
+
+:::{style="margin-top: 30px; font-size: 23px;"}
+:::{.columns}
+:::{.column width="42%"}
+- Check that no instance is still running
+- [Terminate your EC2 instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/terminating-instances.html) and [delete your S3 buckets](https://docs.aws.amazon.com/AmazonS3/latest/userguide/delete-bucket.html)
+- Open the [Billing and Cost Management Dashboard](https://console.aws.amazon.com/billing/home?#/). The total should be zero
+- Charged by mistake? Ask for a refund:
+  - Open the [AWS Support Center](https://console.aws.amazon.com/support/home) and click `Create case`
+  - Choose `Account and billing support` and explain what happened
+  - Replies are usually quick. Email me if you get stuck
+:::
+
+:::{.column width="58%"}
+:::{style="text-align: center; margin-top: -20px;"}
+[![](figures/aws-billing.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/aws-billing.png"}
+
+Billing and Cost Management Home
+:::
+:::
+:::
+:::
+
+## Final project
+
+:::{style="margin-top: 20px; font-size: 23px;"}
+:::{.columns}
+::::{.column width="52%"}
+- Pull data from a web API with `requests`
+- Process it with [pandas or DuckDB]{.alert}
+- Save a snapshot in `data/raw/`. The report reads only that snapshot
+- Quarto report: 1,500 to 2,500 words, two or more visualisations, visible code
+- Ship it in a [Docker container]{.alert}, with the [code on GitHub]{.alert}
+- [Track A]{.alert} (default): the [World Bank Indicators API](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589), no key needed
+- [Track B]{.alert}: a free, well-documented public API without OAuth, cleared with me first
+- Groups of [three to four]{.alert}. Email me the names by [Thursday 5 November]{.alert}, or I assign you at random
+::::
+
+::::{.column width="48%"}
+:::{style="text-align: center;"}
+[![](figures/project-starter-2026.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/project-starter-2026.png"}
+
+:::{style="font-size: 17px;"}
+The starter repository: <https://github.com/danilofreire/datasci350-project-starter>
+:::
+:::
+
+:::{style="margin-top: 15px; font-size: 21px;"}
+- Due [Tuesday 8 December]{.alert}. Send the repository link on Canvas
+- Full instructions: [project-instructions.pdf](https://github.com/danilofreire/datasci350/blob/main/project/project-instructions.pdf)
+:::
+::::
+:::
+:::
+
+## Final project: how it is graded
+### Where the 20% goes, and what I do not grade
+
+:::{style="margin-top: 20px; font-size: 24px;"}
+:::{.columns}
+::::{.column width="50%"}
+- The project is worth [20%]{.alert} of your course grade
+
+:::{style="margin-top: 30px; font-size: 28px; margin-bottom: 30px;"}
+| Component | Weight |
+|---|---|
+| Reproducibility | 30% |
+| Analysis quality | 30% |
+| Communication | 20% |
+| Code quality | 10% |
+| Git workflow | 10% |
+:::
+
+:::{style="margin-top: 15px;"}
+- Sophistication is not graded. Careful descriptive work beats a regression you cannot explain
+:::
+::::
+
+::::{.column width="50%"}
+- Every member commits to the shared repository, and I read the [commit history]{.alert}
+- [No meaningful contribution means a zero for the project]{.alert}
+- Clearly unequal shares [change individual grades]{.alert}
+- The report ends with a [contribution statement]{.alert}, which I check against the repository
+
+:::{style="margin-top: 20px; background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 23px;"}
+If `docker run` on my machine does not reproduce your report, your project does not exist 😅
+:::
+::::
+:::
+:::
+
+# Today's lecture 📚 {background-color="#1B3A6B"}
+
+## You have already used an API
+### Lecture 14, when you talked to a language model
+
+:::{style="margin-top: 20px; font-size: 23px;"}
+:::{.columns}
+::::{.column width="45%"}
+- In [Lecture 14](https://danilofreire.github.io/datasci350/lectures/lecture-14/14-ai.html) you saved an API key in a `.env` file
+- A few lines of Python sent your prompt to a language model online
+- A reply came back, and you printed it
+- That was an [API call]{.alert}
+- Today we look at what actually happened
+- Then you can point the same idea at weather, economic data, census records, or anything else public!
+:::
+
+::::{.column width="55%"}
+:::{style="margin-top: 20px; font-size: 22px;"}
+```python
+# Lecture 14, roughly: the openai library
+# sent this request for you
+import os, requests
+from dotenv import load_dotenv
+
+load_dotenv()
+key = os.getenv("OPENROUTER_API_KEY")
+
+r = requests.post(
+    "https://openrouter.ai/api/v1/chat/completions",
+    headers={"Authorization": f"Bearer {key}"},
+    json={"model": "...", "messages": [...]},
+)
+print(r.json())
+```
+
+Every piece of this will make sense by the end of the module 😉
+:::
+:::
+:::
+:::
+
+## Lecture overview
+### What we will cover today
+
+:::{style="margin-top: 20px; font-size: 24px;"}
+:::{.columns}
+::::{.column width="50%"}
+[1. What an API is]{.alert}
+
+- The contract between two programs
+- The client-server model you met on EC2
+- Why data scientists care
+
+[2. HTTP]{.alert}
+
+- URLs and query strings
+- `GET` and `POST`
+- Status codes (headers are in [Appendix 05](#sec:appendix05))
+::::
+
+::::{.column width="50%"}
+[3. JSON]{.alert}
+
+- The format almost every API answers in
+- How it maps onto Python dictionaries and lists
+
+[4. The `requests` library]{.alert}
+
+- Three lines of code do (most of) what we need
+- Some exercises along the way
+
+::::
+:::
+:::
+
+# What is an API? {background-color="#1B3A6B"}
+
+## An API is a contract
+### Ask in this exact way, get an answer in that exact shape
+
+:::{style="margin-top: 20px; font-size: 24px;"}
+:::{.columns}
+::::{.column width="45%"}
+- [API]{.alert} stands for [Application Programming Interface](https://en.wikipedia.org/wiki/Application_programming_interface)
+- It is a [contract between two programs]{.alert}
+- For example, [the World Bank API](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589) turns a URL ending in `/country/BRA/indicator/SP.POP.TOTL` into [Brazil's population, year by year](https://api.worldbank.org/v2/country/BRA/indicator/SP.POP.TOTL?format=json)
+- Neither side needs to know how the other works inside
+- Their database, language, and servers are [none of your business]{.alert}
+::::
+
+::::{.column width="55%"}
+:::{style="text-align: center; margin-top: -30px;"}
+[![](figures/api-contract-diagram-vertical.png){width="65%"}](#){data-modal-type="image" data-modal-url="figures/api-contract-diagram-vertical.png"}
+:::
+::::
+:::
+:::
+
+## The restaurant
+### A tired metaphor, but it works
+
+:::{style="margin-top: 30px; font-size: 24px;"}
+:::{.columns}
+::::{.column width="55%"}
+- An API works like a [restaurant]{.alert} 😅
+- The [menu]{.alert} tells you what you may ask for
+- You [order]{.alert} in terms the kitchen recognises
+- The [dish]{.alert} arrives in a predictable form
+- You never enter the kitchen
+- Order something off the menu and you get an error, never a surprise dish
+:::
+
+::::{.column width="45%"}
+:::{style="text-align: center; font-size: 18px; margin-top: -30px;"}
+[![](figures/api-restaurant-2026.jpg){width="100%"}](#){data-modal-type="image" data-modal-url="figures/api-restaurant-2026.jpg"}
+
+Source: [Manutan](https://www.manutan.com/blog/en/glossary/api-definition-and-application-in-procurement)
+:::
+
+:::{style="font-size: 24px; margin-top: 20px;"}
+| Restaurant | API |
+|---|---|
+| Menu | Documentation |
+| Order | HTTP request |
+| Kitchen | Server |
+| Dish | JSON response |
+| "We're out of that" | `404 Not Found` |
+| "One order per customer" | Rate limit |
+:::
+:::
+:::
+:::
+
+## Client and server
+
+:::{style="margin-top: 40px; font-size: 24px;"}
+:::{.columns}
+::::{.column width="55%"}
+- You have played [both roles]{.alert} this semester
+- The [client]{.alert} asks: your laptop, script, or browser
+- The [server]{.alert} answers: a machine in a data centre, waiting for requests
+- On Tuesday you [launched a server]{.alert} on [EC2](https://aws.amazon.com/ec2/)
+- The [World Bank API](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation) is the same idea, with a bigger budget and (hopefully!) better uptime 😂
+- There is nothing magical about it. [It is someone else's computer](https://aws.amazon.com/ec2/) 🤓
+::::
+
+::::{.column width="45%"}
+:::{style="margin-top: -20px;"}
+```{mermaid}
+%%| fig-width: 6
+sequenceDiagram
+    participant C as Your laptop
+    participant S as api.worldbank.org
+    C->>S: GET /v2/country/BRA/...
+    Note right of S: look up data
+    S-->>C: 200 OK + JSON
+    C->>C: parse and analyse
+```
+:::
+::::
+:::
+:::
+
+## Web APIs specifically
+### What makes an API a web API
+
+:::{style="margin-top: 20px; font-size: 24px;"}
+- "API" is a broad word. `pandas` has an API, and so does your operating system
+- This module is about [web APIs](https://en.wikipedia.org/wiki/Web_API):
+  - The request is an [HTTP request to a URL]{.alert}, like the ones your browser sends
+  - The response is usually [JSON]{.alert}, a text format we meet shortly
+- So [any language that can fetch a URL and read text can use one]{.alert}: Python, R, JavaScript, or `curl`
+- Terms you will see in documentation:
+  - [REST (Representational State Transfer)](https://en.wikipedia.org/wiki/Representational_State_Transfer): each URL names a resource (`/country/BRA`). Most public data APIs follow it
+  - [Endpoint](https://en.wikipedia.org/wiki/Web_API#Endpoints): one URL pattern the API offers, such as `/v2/country/{code}/indicator/{code}`
+  - [Rate limit](https://en.wikipedia.org/wiki/Rate_limiting): how many requests you may send per unit of time
+:::
+
+## Why this matters for data science
+### Public data, and the script that goes and gets it
+
+:::{style="margin-top: 20px; font-size: 23px;"}
+:::{.columns}
+::::{.column width="50%"}
+#### The data is already out there
+
+- [The World Bank](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589), [the IMF](https://data.imf.org/en/Resource-Pages/IMF-API), [the US Census Bureau](https://www.census.gov/data/developers/data-sets.html), [the ECB](https://data.ecb.europa.eu/help/api/overview), [Eurostat](https://ec.europa.eu/eurostat/web/main/data/web-services), [NOAA](https://www.ncei.noaa.gov/cdo-web/webservices/v2), and most statistics offices publish through APIs
+- So do [GitHub](https://docs.github.com/en/rest), [Wikipedia](https://www.mediawiki.org/wiki/API:Main_page), and most platforms you use
+- So does [Emory's course catalogue (Atlas)](https://atlas.emory.edu/)
+- The [World Bank API](https://api.worldbank.org/v2/indicator?format=json) alone has [29,544 indicators]{.alert} for 217 countries and territories
+- Most of it is free, and a script can build exactly the panel you need
+::::
+
+::::{.column width="50%"}
+#### Scripts are always better than clicking
+
+- A manual download is a story about your data. A script [is]{.alert} its history
+- Re-run it next year to get the updated numbers
+- A colleague who runs it gets your exact dataset
+- A reviewer can check every step on GitHub
+- This is ingredient two from [Lecture 10](https://danilofreire.github.io/datasci350/lectures/lecture-10/10-quarto.html): "the raw inputs, or a script that fetches them"
+::::
+:::
+:::
+
+## Three kinds of API you will meet
+### Keyless, key-required, and the ones that send a bill
+
+:::{style="margin-top: 30px; font-size: 21px;"}
+:::{.columns}
+::::{.column width="60%"}
+| Kind | What it costs you | Examples |
+|---|---|---|
+| [Open and keyless]{.alert} | Nothing. Just fetch the URL | Open-Meteo, World Bank, National Weather Service, USGS earthquakes, GitHub |
+| [Free but key-required]{.alert} | A signup form, then a key in every request | NASA, OpenWeatherMap, OpenRouter's free models, GitHub for higher limits |
+| [Paid]{.alert} | A key and a bill | OpenRouter's paid models, most commercial data vendors |
+
+:::{style="margin-top: 30px;"}
+- [GitHub answers keyless requests](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api), up to [60 per hour per IP address]{.alert}
+- [OpenWeatherMap](https://openweathermap.org/price#one_call) still has a free tier, but a narrower one
+- Today we stay in the first row, so nobody needs an account
+- Keys come in Lecture 19. You already used one in Lecture 14
+:::
+::::
+
+::::{.column width="40%"}
+:::{style="text-align: center;"}
+[![](figures/github-api-2026.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/github-api-2026.png"}
+
+:::{style="font-size: 19px;"}
+`api.github.com/users/danilofreire`, fetched with no key at all (click to enlarge)
+:::
+:::
+::::
+:::
+:::
+
+# URLs, verbs, and codes {background-color="#1B3A6B"}
+
+## Anatomy of a URL
+### Four parts you will see in every request
+
+:::{style="margin-top: 30px; font-size: 25px;"}
+- Every API call starts with a URL, and every URL has the same parts
+- [Here is a real one](https://api.worldbank.org/v2/country/BRA/indicator/NY.GDP.PCAP.KD?format=json&date=2014:2025), which we request later today
+- `NY` = national accounts (income), `GDP` = gross domestic product, `PCAP` = per capita, `KD` = constant US dollars
+
+:::{style="margin-top: 25px; text-align: center; font-size: 26px; font-family: monospace; line-height: 1.8;"}
+[https]{style="color: #1B3A6B; font-weight: bold;"}[://]{style="color: #999;"}[api.worldbank.org]{style="color: #C1272D; font-weight: bold;"}[/v2/country/BRA/indicator/NY.GDP.PCAP.KD]{style="color: #2E7D32; font-weight: bold;"}[?]{style="color: #999;"}[format=json&date=2014:2025]{style="color: #E65100; font-weight: bold;"}
+:::
+
+:::{style="margin-top: 30px; font-size: 26px;"}
+| Part | Name | What it does |
+|---|---|---|
+| [https]{style="color: #1B3A6B; font-weight: bold;"} | scheme | Which protocol. Almost always `https` |
+| [api.worldbank.org]{style="color: #C1272D; font-weight: bold;"} | host | Which machine to ask |
+| [/v2/country/BRA/indicator/...]{style="color: #2E7D32; font-weight: bold;"} | path | Which resource on that machine |
+| [format=json&date=2014:2025]{style="color: #E65100; font-weight: bold;"} | query string | Options, as `key=value` pairs joined by `&` |
+:::
+:::
+
+## Reading the query string
+### Everything after the question mark
+
+:::{style="margin-top: 20px; font-size: 23px;"}
+:::{.columns}
+::::{.column width="52%"}
+- The query string starts at the [`?`]{.alert}
+- Each option is `key=value`, and [`&`]{.alert} joins them
+
+:::{style="margin-left: 50px;"}
+```
+?format=json&date=2014:2025&per_page=100
+ ^^^^^^^^^^ ^^^^^^^^^^^^^^ ^^^^^^^^^^^^
+ option 1   option 2       option 3
+```
+:::
+
+- [Order does not matter]{.alert}: `?a=1&b=2` and `?b=2&a=1` are the same request
+- The path says [what]{.alert} you want. The query string says [how]{.alert}
+- A value should not hold a raw `&`, `=`, `#` or space, because they already mean something
+- Encode them as [percent codes]{.alert}. `requests` does this for you
+::::
+
+::::{.column width="48%"}
+:::{style="margin-top: 10px; font-size: 22px;"}
+| You write | It travels as | | You write | It travels as |
+|---|---|---|---|---|
+| space | `%20` or `+` | | `=` | `%3D` |
+| `/` | `%2F` | | `:` | `%3A` |
+| `?` | `%3F` | | `#` | `%23` |
+| `&` | `%26` | | `%` | `%25` |
+:::
+
+:::{style="margin-top: 30px;"}
+- The pattern is [always the same]{.alert}: `%` and the character's byte in hexadecimal (remember them? 😉)
+- `America/New_York` becomes `America%2FNew_York`, and `2014:2025` becomes `2014%3A2025`
+- More: [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding), [W3Schools](https://www.w3schools.com/tags/ref_urlencode.asp), [RFC 3986 §2.1](https://datatracker.ietf.org/doc/html/rfc3986#section-2.1), and Python's [`urllib.parse.quote`](https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote)
+:::
+::::
+:::
+:::
+
+## GET and POST
+### Two main verbs
+
+:::{style="margin-top: 20px; font-size: 24px;"}
+:::{.columns}
+::::{.column width="50%"}
+#### `GET`: "please send me this"
+
+- Asks for data and changes nothing
+- The whole request fits in the URL
+- Your browser sends one for every page you visit
+- Safe to repeat: fetching twice changes nothing on the server
+- [About 95% of what you will do in this course]{.alert}
+:::
+
+::::{.column width="50%"}
+#### `POST`: "here is some data"
+
+- Sends data to the server
+- The data travels in the request [body]{.alert}, not the URL
+- Used for logins, uploads, and long inputs
+- In Lecture 14, the `openai` library sent your prompt as a `POST` body
+- A paragraph of text does not belong in a URL
+:::
+:::
+
+:::{style="margin-top: 25px;"}
+[Other methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods) exist (`PUT`, `DELETE`, `PATCH`), but you rarely need them to read public data
+:::
+:::
+
+## Status codes
+### How to tell if it worked
+
+:::{style="margin-top: 20px; font-size: 23px;"}
+- Every response carries a three-digit number saying how it went
+- The first digit sums it up: `2xx` worked, `4xx` is your mistake, `5xx` is theirs
+
+:::{style="font-size: 20px;"}
+| Code | Name | What it really means |
+|---|---|---|
+| [`200`]{style="color: #2E7D32; font-weight: bold;"} | OK | It worked. Go ahead and parse |
+| `301` / `302` | Moved | The resource lives elsewhere now. `requests` follows these for you |
+| [`400`]{style="color: #E65100; font-weight: bold;"} | Bad Request | Your URL is malformed. Check the query string |
+| [`401`]{style="color: #E65100; font-weight: bold;"} | Unauthorized | You need a key, or yours is wrong |
+| [`403`]{style="color: #E65100; font-weight: bold;"} | Forbidden | You authenticated but lack permission for this resource |
+| [`404`]{style="color: #E65100; font-weight: bold;"} | Not Found | Nothing at that path. Usually a typo |
+| [`429`]{style="color: #C1272D; font-weight: bold;"} | Too Many Requests | You are asking too fast. Slow down |
+| [`500`]{style="color: #C1272D; font-weight: bold;"} | Internal Server Error | Their problem. Wait and retry |
+:::
+
+:::{style="margin-top: 15px; background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 19px;"}
+Some APIs, like the World Bank, answer errors with [`200`]{.alert} and hide the failure in the body. A status check alone is not enough
+:::
+:::
+
+## Try it in the browser first
+### The address bar is an HTTP client you already know
+
+:::{style="margin-top: 20px; font-size: 20px;"}
+:::{.columns}
+::::{.column width="45%"}
+- Before writing code, [paste the URL into your browser]{.alert} ([try this one](https://api.open-meteo.com/v1/forecast/?latitude=33.75&longitude=-84.39&current=temperature_2m))
+- The browser sends the `GET` and shows the raw response
+- JSON on screen: the URL is right, so the problem is in your Python
+- An error on screen: the URL is wrong, and no Python will fix it
+- This habit will save you hours of debugging
+- `curl` from Module 02 does the same in the terminal:
+
+```bash
+curl -s \
+  "https://api.open-meteo.com/v1/forecast\
+?latitude=33.75&longitude=-84.39\
+&current=temperature_2m" \
+  | python3 -m json.tool
+```
+
+- `-s` hides the progress meter. `python3 -m json.tool` pretty-prints the result
+:::
+
+::::{.column width="55%"}
+:::{style="text-align: center;"}
+[![](figures/openmeteo-browser-2026.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/openmeteo-browser-2026.png"}
+
+:::{style="font-size: 17px;"}
+Open-Meteo answering a plain `GET` from the address bar, no code involved
+:::
+:::
+:::
+:::
+:::
+
+## Try it yourself! 🤓 {#sec:exercise01}
+### Five minutes, in the browser. Do everything manually!
+
+:::{style="margin-top: 30px; font-size: 22px;"}
+:::{.columns}
+::::{.column width="55%"}
+1. Open the [Open-Meteo documentation](https://open-meteo.com/en/docs#api_documentation). The API is free
+2. Start from the base URL `https://api.open-meteo.com/v1/forecast`
+3. Find the parameters for the [current temperature]{.alert}. Two are required, and a third asks for current conditions
+4. Use Atlanta's coordinates: latitude `33.75`, longitude `-84.39`
+5. [Write the query string yourself, without copying the full URL from the docs]{.alert}
+6. Paste your URL into the browser address bar and press Enter
+7. Change the coordinates to another city and reload the page
+::::
+
+::::{.column width="45%"}
+:::{style="margin-top: -15px;"}
+[What to look for]{.alert}
+
+- A page of JSON, with a temperature somewhere inside it
+- The units the API reports back alongside the number
+- A different temperature once the coordinates change
+
+:::{style="margin-top: 25px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;"}
+Stuck, or want to compare your URL with mine?
+
+[[Appendix 01]{.button}](#sec:appendix01)
+:::
+:::
+::::
+:::
+:::
+
+# JSON 📦 {background-color="#1B3A6B"}
+
+## What JSON is
+### Plain text that every language can read
+
+:::{style="margin-top: 20px; font-size: 23px;"}
+:::{.columns}
+::::{.column width="50%"}
+- [JSON]{.alert} means [JavaScript Object Notation](https://en.wikipedia.org/wiki/JSON). The name records its origin, [not where it is used today](https://www.geeksforgeeks.org/javascript/json-vs-javascript-object/)
+- It is [plain text]{.alert}, so any editor opens it
+- It holds key-value pairs and lists, nested as deep as needed
+- Almost every web API uses it, because [every language can read it]{.alert}
+- [It holds data only]{.alert}: no code, functions, or classes
+
+```json
+{
+  "city": "Atlanta",
+  "temperature": 29.6,
+  "raining": false,
+  "sensors": ["a1", "b2"],
+  "last_checked": null
+}
+```
+::::
+
+::::{.column width="50%"}
+:::{style="margin-top: -15px;"}
+It maps almost perfectly onto Python
+
+| JSON | Python |
+|---|---|
+| `{...}` object | `dict` |
+| `[...]` array | `list` |
+| `"text"` | `str` |
+| `42`, `3.14` | `int`, `float` |
+| `true` / `false` | `True` / `False` |
+| `null` | `None` |
+
+:::{style="margin-top: 20px;"}
+JSON keys are [always strings in double quotes]{.alert}, and JSON allows no trailing commas
+:::
+:::
+::::
+:::
+:::
+
+## Reading JSON in Python
+### `json.loads()` turns text into a dictionary
+
+:::{style="margin-top: 20px; font-size: 23px;"}
+:::{.columns}
+::::{.column width="56%"}
+The [`json` module](https://docs.python.org/3/library/json.html) ships with Python, so there is nothing to install
+
+```python
+import json
+
+text = '''{"city": "Atlanta",
+ "temperature": 29.6, "raining": false}'''
+
+# json.loads() reads a string
+# The 's' in 'loads' is for 'string'
+data = json.loads(text)
+
+print(type(data))
+print(data["city"], data["temperature"])
+print(data["raining"], type(data["raining"]))
+```
+
+```text
+<class 'dict'>
+Atlanta 29.6
+False <class 'bool'>
+```
+::::
+
+::::{.column width="44%"}
+:::{style="margin-top: 20px;"}
+- [`json.loads(text)`]{.alert} reads a JSON string into Python objects
+- [`json.load(file)`]{.alert} does the same from an open file
+- You get an ordinary `dict`, so use square brackets
+- JSON `false` becomes Python `False`, not the text `"false"`
+:::
+::::
+:::
+:::
+
+## Digging into nested JSON
+### What Open-Meteo sent back when this slide was built
+
+:::{style="margin-top: 20px; font-size: 21px;"}
+:::{.columns}
+::::{.column width="56%"}
+We saved the reply once, so the lecture does not depend on the weather
+
+```python
+import json
+
+with open("data/openmeteo_atlanta.json") as f:
+    weather = json.load(f)
+
+print(list(weather.keys()))
+print(weather["current"])
+print(weather["current"]["temperature_2m"],
+      weather["current_units"]["temperature_2m"])
+```
+
+```text
+['latitude', 'longitude', 'generationtime_ms',
+ 'utc_offset_seconds', 'timezone',
+ 'timezone_abbreviation', 'elevation',
+ 'current_units', 'current']
+{'time': '2026-08-21T16:00', 'interval': 900,
+ 'temperature_2m': 33.2, 'relative_humidity_2m': 42,
+ 'wind_speed_10m': 4.4}
+33.2 °C
+```
+::::
+
+::::{.column width="44%"}
+:::{style="margin-top: 20px; font-size: 20px;"}
+- The top level is a dict, and [`current`]{.alert} is another dict inside it
+- Nested data means [chained lookups]{.alert}, read left to right
+- [`current_units`]{.alert} gives each field's unit, so 33.2 is clearly Celsius
+- `time` is a [string]{.alert}, because JSON has no date type
+- The API snaps coordinates to its own grid, so they differ from ours
+- [`.keys()`]{.alert} lists what is available at one level
+- [`.get("key")`]{.alert} returns `None` instead of a `KeyError` when a key is missing
+:::
+
+:::{style="margin-top: 20px; background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 20px;"}
+`KeyError: 'temperature'` means no such key at that level. Print the level and check the spelling
+:::
+::::
+:::
+:::
+
+## The World Bank's little surprise
+### Metadata first, data second, in a two-element list
+
+:::{style="margin-top: 20px; font-size: 21px;"}
+:::{.columns}
+::::{.column width="52%"}
+Not every API answers with a tidy dict at the top
+
+```python
+with open("data/wb_gdp_bra.json") as f:
+    wb = json.load(f)
+
+print(type(wb).__name__, len(wb))
+print(wb[0])
+print(type(wb[1]).__name__, len(wb[1]))
+print(wb[1][0]["country"]["value"],
+      wb[1][0]["date"],
+      round(wb[1][0]["value"], 2))
+```
+
+```text
+list 2
+{'page': 1, 'pages': 1, 'per_page': 100,
+ 'total': 12, 'sourceid': '2',
+ 'lastupdated': '2026-07-13'}
+list 12
+Brazil 2025 9748.0
+```
+::::
+
+::::{.column width="48%"}
+:::{style="margin-top: 20px;"}
+- Element 0 is [metadata]{.alert}. `lastupdated` says when the series was last revised
+- Element 1 is the [data]{.alert}: one dict per year, newest first
+- So the 2025 value is `wb[1][0]["value"]`
+- Write `wb[0]["value"]` and you get an error or a wrong number
+- [Print the type, the keys, and the first record before you parse]{.alert}
+- Lecture 19 hands these long chains to pandas
+
+:::{style="text-align: center; margin-top: 10px;"}
+[![](figures/worldbank-response-2026.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/worldbank-response-2026.png"}
+
+:::{style="font-size: 17px;"}
+The same two elements in the browser
+:::
+:::
+:::
+::::
+:::
+:::
+
+## Try it yourself! 🤓 {#sec:exercise02}
+### Five minutes, with plain indexing
+
+:::{style="margin-top: 20px; font-size: 21px;"}
+:::{.columns}
+::::{.column width="55%"}
+A response from a fictional course API:
+
+```json
+{
+  "department": "Data and Decision Sciences",
+  "term": "Fall 2026",
+  "courses": [
+    {"code": "DATASCI 350",
+     "title": "Data Science Computing",
+     "enrolled": 40,
+     "instructor": {"name": "Danilo Freire",
+                    "office": "PAIS 480"}},
+    {"code": "DATASCI 101",
+     "title": "Introduction to AI Applications",
+     "enrolled": 65,
+     "instructor": {"name": "Danilo Freire",
+                    "office": "PAIS 480"}}
+  ],
+  "updated": null
+}
+```
+::::
+
+::::{.column width="45%"}
+1. Copy the JSON into a Python string
+2. Read it with `json.loads()`
+3. Print the [title of the second course]{.alert}
+4. Print the [office of the instructor of the first course]{.alert}
+5. Print the [total enrolment]{.alert} across both courses
+6. Print `updated` and its type
+7. Use indexing only. The first two need no loop
+
+:::{style="margin-top: 20px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;"}
+Stuck, or want to compare your code with mine?
+
+[[Appendix 02]{.button}](#sec:appendix02)
+:::
+::::
+:::
+:::
+
+# The `requests` library 🐍 {background-color="#1B3A6B"}
+
+## The happy path
+### Six lines from a URL to a live number
+
+:::{style="margin-top: 20px; font-size: 23px;"}
+:::{.columns}
+::::{.column width="56%"}
+`requests` is not in the standard library. Install it once with `pip install requests`
+
+More information here: <https://github.com/psf/requests>
+
+```python
+import requests
+
+url = ("https://api.open-meteo.com/v1/forecast"
+       "?latitude=33.75&longitude=-84.39"
+       "&current=temperature_2m")
+
+r = requests.get(url)
+
+print(r.status_code)
+data = r.json()           # JSON into Python objects
+print(data["current"]["temperature_2m"])
+```
+
+```text
+200
+33.2
+```
+::::
+
+::::{.column width="44%"}
+:::{style="margin-top: 20px;"}
+- [`r.status_code`]{.alert} is the status code
+- [`r.json()`]{.alert} runs `json.loads(r.text)` for you
+- [`r.text`]{.alert} is the raw body, for answers that are not JSON
+- No key, no account: [this URL answers anyone!]{.alert} 😎
+- The reading is live, so your number will differ
+:::
+::::
+:::
+:::
+
+## Let `requests` build the URL
+### Pass a dictionary and stop gluing strings
+
+:::{style="margin-top: 20px; font-size: 23px;"}
+:::{.columns}
+::::{.column width="56%"}
+Hand `requests` a [`params`]{.alert} dictionary and it writes the query string for you
+
+```python
+import requests
+
+params = {
+    "latitude": 33.75,
+    "longitude": -84.39,
+    "current": "temperature_2m,wind_speed_10m",
+    "timezone": "America/New_York",
+}
+
+r = requests.get("https://api.open-meteo.com/v1/forecast",
+                 params=params)
+print(r.url)
+```
+
+```text
+https://api.open-meteo.com/v1/forecast?latitude=
+33.75&longitude=-84.39&current=temperature_2m%2C
+wind_speed_10m&timezone=America%2FNew_York
+```
+::::
+
+::::{.column width="44%"}
+:::{style="margin-top: 20px;"}
+- [Encoding]{.alert}: the comma became `%2C` and the slash `%2F`
+- [Readability]{.alert}: one option per line, not a 140-character string
+- [Reuse]{.alert}: change one value in a loop
+- Numbers go in as numbers. `requests` turns them into text
+- `r.url` shows exactly what was sent, which helps with debugging
+:::
+::::
+:::
+:::
+
+## Check before you parse
+### `raise_for_status()`, and the failure it cannot see
+
+:::{style="margin-top: 20px; font-size: 20px;"}
+:::{.columns}
+::::{.column width="52%"}
+`r.json()` on an error page raises a confusing exception, because the page is not JSON
+
+```python
+r = requests.get(url, params=params, timeout=10)
+r.raise_for_status()     # raises on 4xx and 5xx
+data = r.json()
+```
+
+A friendlier version for scripts other people will run:
+
+```python
+try:
+    r = requests.get(url, params=params, timeout=10)
+    r.raise_for_status()
+    data = r.json()
+except requests.exceptions.HTTPError as e:
+    print(f"The server said no: {e}")
+except requests.exceptions.RequestException as e:
+    print(f"Could not reach the server: {e}")
+```
+
+- Always pass [`timeout`]{.alert}. Without it, a silent server hangs your script
+- `HTTPError` means a status you did not want. `RequestException` means no response at all
+::::
+
+::::{.column width="48%"}
+The World Bank retired an old CO2 indicator. This is how it says so:
+
+```python
+url = ("https://api.worldbank.org/v2/country/BRA"
+       "/indicator/EN.ATM.CO2E.PC")
+
+r = requests.get(url, params={"format": "json"},
+                 timeout=10)
+print(r.status_code)
+print(r.text[:110])
+```
+
+```text
+200
+[{"message":[{"id":"175","key":"Invalid format",
+"value":"The indicator was not found. It may have
+been deleted
+```
+
+:::{style="margin-top: 15px; background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 19px;"}
+The status is [`200`]{.alert}, so `raise_for_status()` passes and `r.json()` works. Check the body too, every time
+:::
+::::
+:::
+:::
+
+## Worked example: World Bank GDP per capita
+### Country and indicator in the path, options in the query string
+
+:::{style="margin-top: 20px; font-size: 22px;"}
+:::{.columns}
+::::{.column width="56%"}
+Twelve years of Brazilian GDP per capita, in one request
+
+```python
+import requests, json
+
+country   = "BRA"
+# GDP per capita, constant 2015 US$
+indicator = "NY.GDP.PCAP.KD"
+url = ("https://api.worldbank.org/v2"
+       f"/country/{country}/indicator/{indicator}")
+
+params = {"format": "json", "date": "2014:2025",
+          "per_page": 100}
+
+r = requests.get(url, params=params, timeout=10)
+r.raise_for_status()
+wb = r.json()
+
+with open("data/wb_gdp_bra.json", "w") as f:
+    json.dump(wb, f)
+
+print(r.status_code, wb[0]["total"], "records saved")
+```
+
+```text
+200 12 records saved
+```
+::::
+
+::::{.column width="44%"}
+:::{style="margin-top: 20px;"}
+- [`format=json`]{.alert} is required. Without it, the World Bank sends XML
+- `date` takes a range with a colon: `2014:2025`
+- `per_page=100` fits the whole range on one page
+- Two variables make the next country a one-word edit
+- The count comes from the metadata, before any parsing
+:::
+::::
+:::
+:::
+
+## Worked example, continued
+### Turning the two-element response into a readable series
+
+:::{style="margin-top: 20px; font-size: 21px;"}
+:::{.columns}
+::::{.column width="56%"}
+```python
+with open("data/wb_gdp_bra.json") as f:
+    wb = json.load(f)
+
+meta, records = wb[0], wb[1]
+print(f"{meta['total']} records, "
+      f"page {meta['page']} of {meta['pages']}\n")
+
+# Build a list of (year, value) pairs, oldest first
+series = [(int(r["date"]), r["value"]) for r in records]
+series.sort()
+
+for year, value in series:
+    print(f"  {year}  {value:>10,.0f} US$")
+```
+
+- `meta, records = wb[0], wb[1]` names the two halves
+- `int(r["date"])` turns the year from text into a number, which is safer for sorting and maths
+- `page 1 of 1`: the whole range arrived on one page
+- `{value:>10,.0f}` right-aligns, adds thousands separators, and drops the decimals
+::::
+
+::::{.column width="44%"}
+```text
+12 records, page 1 of 1
+
+  2014       9,338 US$
+  2015       8,936 US$
+  2016       8,578 US$
+  2017       8,628 US$
+  2018       8,722 US$
+  2019       8,771 US$
+  2020       8,435 US$
+  2021       8,799 US$
+  2022       9,032 US$
+  2023       9,288 US$
+  2024       9,567 US$
+  2025       9,748 US$
+```
+
+Pagination comes in Lecture 19, for ranges too big for one page
+::::
+:::
+:::
+
+## Worked example, one step further
+### A list of tuples is one line from a DataFrame
+
+:::{style="margin-top: 20px; font-size: 22px;"}
+:::{.columns}
+::::{.column width="56%"}
+You already know pandas, so the analysis starts here
+
+```python
+import pandas as pd
+
+df = pd.DataFrame(series, columns=["year", "gdp_per_capita"])
+df["change_pct"] = df["gdp_per_capita"].pct_change() * 100
+
+print(df.round(2).to_string(index=False))
+```
+
+```text
+ year  gdp_per_capita  change_pct
+ 2014         9338.34         NaN
+ 2015         8936.20       -4.31
+ 2016         8577.84       -4.01
+ 2017         8628.25        0.59
+ 2018         8722.34        1.09
+ 2019         8771.44        0.56
+ 2020         8435.01       -3.84
+ 2021         8799.23        4.32
+ 2022         9032.08        2.65
+ 2023         9288.03        2.83
+ 2024         9566.75        3.00
+ 2025         9748.00        1.89
+```
+::::
+
+::::{.column width="44%"}
+:::{style="margin-top: 20px;"}
+- `pd.DataFrame` reads the tuples as rows, and `columns` names them
+- [`pct_change()`]{.alert} compares each row with the one above, so 2014 is `NaN`
+- Output fell in 2015 and 2016 (recession) and in 2020 (pandemic)
+- It passed the 2014 level in 2024, and 2025 is [4.4%]{.alert} above it
+- Twelve rows went from JSON to a DataFrame in four lines
+:::
+::::
+:::
+:::
+
+## How to read API documentation
+
+:::{style="font-size: 20px;"}
+:::{.columns}
+::::{.column width="55%"}
+Every API reference answers four questions
+
+1. [Base URL]{.alert}: what every request starts with, such as `https://api.worldbank.org/v2`
+2. [Path parameters]{.alert}: the variable parts, written `{country}` or `:country` in the docs
+3. [Query parameters]{.alert}: the options after the `?`, with their defaults and allowed values
+4. [Response schema]{.alert}: what comes back, field by field
+
+Read them in that order. Run the example request unchanged, and only then edit it
+
+- Indicator codes: [data.worldbank.org/indicator](https://data.worldbank.org/indicator)
+- Codes get retired: `EN.ATM.CO2E.PC` now returns an error message with a `200`
+- `/v2/` in the path is a version. A guide for `/v1/` may not match
+- Check that your code returns data before you build a project on it
+::::
+
+::::{.column width="45%"}
+:::{style="text-align: center;"}
+[![](figures/worldbank-docs-2026.png){width="88%"}](#){data-modal-type="image" data-modal-url="figures/worldbank-docs-2026.png"}
+
+:::{style="font-size: 20px;"}
+The World Bank's call structures page
+
+More information here: <https://datahelpdesk.worldbank.org/knowledgebase/articles/898581-api-basic-call-structures>
+:::
+:::
+::::
+:::
+:::
+
+# Conclusion 📚 {background-color="#1B3A6B"}
+
+## What we learned today
+### Now you know how to read a web API, and how to get its data into Python!
+
+:::{style="margin-top: 20px; font-size: 22px;"}
+:::{.columns}
+::::{.column width="50%"}
+#### Concepts
+
+- An [API]{.alert} is a contract: ask this way, get that back
+- An [endpoint]{.alert} is one URL pattern that contract offers
+- [HTTP]{.alert} is the transport: a path, a [query string]{.alert}, a [`GET`]{.alert} for reading, and a [status code]{.alert} in reply
+- [JSON]{.alert} is the format: key-value pairs and lists, mapping onto Python dicts and lists
+- [`requests`]{.alert} is the tool, and three lines do the job
+
+:::{style="margin-top: 15px; font-size: 20px;"}
+```python
+r = requests.get(url, params=p, timeout=10)
+r.raise_for_status()
+data = r.json()
+```
+:::
+::::
+
+::::{.column width="50%"}
+#### Habits worth keeping
+
+- Paste the URL into your browser before you debug your Python
+- Print the shape of the response before you parse it
+- Let [`params`]{.alert} build your query string, and read `r.url` to check it
+- Always set a `timeout`
+- Call [`raise_for_status()`]{.alert}, then look at the body anyway
+- Fetch once, save to disk, then work from the file
+- Read the documentation's example request first, then adapt it
+::::
+:::
+:::
+
+## Next class
+### Lecture 19, and what to do before it
+
+:::{style="margin-top: 20px; font-size: 22px;"}
+:::{.columns}
+::::{.column width="55%"}
+- Next class we go from "one request works" to "we have a real dataset"
+- [Authentication]{.alert}: how keys travel, and how to keep yours out of your repository
+- [Pagination]{.alert}: what to do when the server sends 500 rows and says 17,000 remain
+- [Rate limits]{.alert}: how to be a guest the server does not mind
+- [DataFrames and files]{.alert}: `json_normalize`, and why parquet beats CSV
+- We finish by writing `get_wdi()`, the function you will use in your final project
+::::
+
+::::{.column width="45%"}
+:::{style="text-align: center; margin-top: -20px;"}
+[Before then]{.alert}
+
+1. Install the three packages you will need on Tuesday
+2. Check that your AWS bill reads zero
+3. Read the project instructions and form a group of three to four
+4. Try the Uruguay exercise in [Appendix 03](#sec:exercise03)
+
+```bash
+pip install requests pandas pyarrow
+```
+
+:::{style="margin-top: 10px; font-size: 20px;"}
+A table of keyless APIs to explore is in [Appendix 04](#sec:appendix04)
+:::
+
+:::{style="margin-top: 15px; font-size: 20px;"}
+Group names are due by [Thursday 5 November]{.alert}, and I assign the rest at random
+:::
+:::
+::::
+:::
+:::
+
+# And that's all for today! 😊 {background-color="#1B3A6B"}
+
+## Appendix 01 {#sec:appendix01}
+### Exercise 01 solution
+
+:::{style="margin-top: 20px; font-size: 20px;"}
+:::{.columns}
+::::{.column width="55%"}
+Open-Meteo needs `latitude` and `longitude`, and `current` asks for present conditions
+
+```
+https://api.open-meteo.com/v1/forecast?latitude=33.75
+&longitude=-84.39&current=temperature_2m
+```
+
+Adding a timezone makes the timestamp readable:
+
+```
+https://api.open-meteo.com/v1/forecast?latitude=33.75
+&longitude=-84.39&current=temperature_2m
+&timezone=America%2FNew_York
+```
+
+The same request in Python:
+
+```python
+import requests
+
+r = requests.get(
+    "https://api.open-meteo.com/v1/forecast",
+    params={"latitude": 33.75, "longitude": -84.39,
+            "current": "temperature_2m",
+            "timezone": "America/New_York"},
+    timeout=10,
+)
+print(r.url)
+print(r.json()["current"])
+```
+
+```text
+https://api.open-meteo.com/v1/forecast?latitude=
+33.75&longitude=-84.39&current=temperature_2m
+&timezone=America%2FNew_York
+{'time': '2026-08-21T16:00', 'interval': 900,
+ 'temperature_2m': 33.2}
+```
+::::
+
+::::{.column width="45%"}
+- Both coordinates are required. The request fails without either one
+- `requests` encoded the `/` in the timezone as `%2F`, with no work from you
+- Without `timezone`, the time comes back in GMT, which reads oddly for Atlanta
+- The reading is live, so your number will differ from this one
+
+:::{style="margin-top: 25px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;"}
+[[Back to exercise]{.button}](#sec:exercise01)
+:::
+::::
+:::
+:::
+
+## Appendix 02 {#sec:appendix02}
+### Exercise 02 solution
+
+:::{style="margin-top: 20px; font-size: 20px;"}
+:::{.columns}
+::::{.column width="55%"}
+```python
+import json
+
+# text holds the JSON from the exercise, between ''' quotes
+data = json.loads(text)
+
+# 1. Title of the second course: index 1 of the courses list
+print(data["courses"][1]["title"])
+
+# 2. Office of the first course's instructor
+print(data["courses"][0]["instructor"]["office"])
+
+# 3. Total enrolment
+print(sum(c["enrolled"] for c in data["courses"]))
+
+# 4. The one that catches people out
+print(data["updated"], type(data["updated"]))
+```
+
+```text
+Introduction to AI Applications
+PAIS 480
+105
+None <class 'NoneType'>
+```
+::::
+
+::::{.column width="45%"}
+- `data["courses"]` is a list, so `[1]` picks the second course
+- The office needs three steps down: list, then course, then `instructor`
+- The sum runs over the list, and no course is named in the code
+- `null` became `None`, not the string `"null"`
+
+:::{style="margin-top: 25px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;"}
+[[Back to exercise]{.button}](#sec:exercise02)
+:::
+::::
+:::
+:::
+
+## Appendix 03: one more exercise {#sec:exercise03}
+### For after class, in your editor
+
+:::{style="margin-top: 20px; font-size: 21px;"}
+:::{.columns}
+::::{.column width="55%"}
+1. Copy the World Bank example into a new script
+2. Change the country in the path to `URY`, for Uruguay
+3. Change the indicator to `SP.POP.TOTL`, total population
+4. Keep `format=json` and set `date` to `2014:2025`
+5. Send the request with a `timeout`, then call `raise_for_status()`
+6. Save the response to `data/wb_pop_ury.json`
+7. Read the file back and print the [2020]{.alert} value
+
+:::{style="margin-top: 15px; font-size: 20px;"}
+Hint: only the two path pieces change. The parsing you wrote for Brazil still works
+:::
+::::
+
+::::{.column width="45%"}
+[What to look for]{.alert}
+
+- Twelve records, newest first
+- A population close to 3.4 million
+- The same two-element shape as the GDP response
+- A series that stops growing near the end
+
+:::{style="margin-top: 25px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;"}
+Stuck, or want to compare your code with mine?
+
+[[Solution]{.button}](#sec:appendix03)
+:::
+::::
+:::
+:::
+
+## Appendix 03: solution {#sec:appendix03}
+### Part 1: the fetch
+
+:::{style="margin-top: 20px; font-size: 20px;"}
+:::{.columns}
+::::{.column width="55%"}
+Only the two path pieces change
+
+```python
+import requests, json
+
+country   = "URY"
+indicator = "SP.POP.TOTL"
+url = ("https://api.worldbank.org/v2"
+       f"/country/{country}/indicator/{indicator}")
+
+r = requests.get(url,
+                 params={"format": "json",
+                         "date": "2014:2025",
+                         "per_page": 100},
+                 timeout=10)
+r.raise_for_status()
+
+with open("data/wb_pop_ury.json", "w") as f:
+    json.dump(r.json(), f)
+
+print(r.status_code, r.json()[0]["total"], "records")
+```
+
+```text
+200 12 records
+```
+::::
+
+::::{.column width="45%"}
+- `country` and `indicator` are the only edits. The rest is the Brazilian script
+- The query string is the same, because the options apply to every indicator
+- Saving first means the next slide runs without the network
+- A wrong indicator code returns `200` with an error message, so read the count
+
+:::{style="margin-top: 20px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;"}
+[[Back to exercise]{.button}](#sec:exercise03)
+:::
+::::
+:::
+:::
+
+## Appendix 03: solution, continued
+### Part 2: reading the file
+
+:::{style="margin-top: 20px; font-size: 20px;"}
+:::{.columns}
+::::{.column width="55%"}
+```python
+import json
+
+with open("data/wb_pop_ury.json") as f:
+    wb = json.load(f)
+
+records = wb[1]
+
+# The 2020 value
+for r in records:
+    if r["date"] == "2020":
+        print(f"Uruguay, 2020: {r['value']:,} people")
+
+# The whole series, for context
+print()
+for r in sorted(records, key=lambda x: x["date"]):
+    print(f"  {r['date']}  {r['value']:>12,}")
+```
+
+```text
+Uruguay, 2020: 3,398,968 people
+
+  2014     3,356,334
+  2015     3,368,017
+  2016     3,379,283
+  2017     3,388,438
+  2018     3,394,534
+  2019     3,397,206
+  2020     3,398,968
+  2021     3,396,695
+  2022     3,390,913
+  2023     3,388,081
+  2024     3,386,588
+  2025     3,384,688
+```
+::::
+
+::::{.column width="45%"}
+- `wb[1]` is the data list, as in the Brazilian response
+- The loop compares `r["date"]` with the string `"2020"`, because years arrive as text
+- Sorting the strings works here, since all twelve years have four digits
+- Uruguay's population peaks in 2020 and falls every year after
+- `{:,}` adds thousands separators
+::::
+:::
+:::
+
+## Appendix 04: free APIs worth exploring {#sec:appendix04}
+### Six keyless places to practise this week
+
+:::{style="margin-top: 20px; font-size: 20px;"}
+All of these answered a keyless request on 21 August 2026
+
+| API | What it gives you | Documentation |
+|---|---|---|
+| [Open-Meteo]{.alert} | Weather forecasts and history, anywhere | <https://open-meteo.com/en/docs> |
+| [World Bank]{.alert} | 29,544 development indicators, all countries | <https://datahelpdesk.worldbank.org/knowledgebase/topics/125589> |
+| [National Weather Service]{.alert} | US forecasts and alerts, from `api.weather.gov/points/{lat},{lon}` | <https://www.weather.gov/documentation/services-web-api> |
+| [GitHub]{.alert} | Repositories, users, commits (keyless with low limits) | <https://docs.github.com/en/rest> |
+| [Open Library]{.alert} | Books, authors, covers, by ISBN (occasionally flaky) | <https://openlibrary.org/developers/api> |
+| [USGS Earthquakes]{.alert} | Every recorded earthquake, live | <https://earthquake.usgs.gov/fdsnws/event/1/> |
+
+:::{style="margin-top: 20px;"}
+Pick one this week and fetch something from it
+:::
+:::
+
+## Appendix 05: headers {#sec:appendix05}
+### The envelope, not the letter
+
+:::{style="margin-top: 20px; font-size: 21px;"}
+:::{.columns}
+::::{.column width="55%"}
+- Every request also carries [headers]{.alert}: metadata about the request
+
+| Header | Purpose |
+|---|---|
+| [`User-Agent`]{.alert} | Who is asking. Browsers set this; polite scripts should too |
+| [`Accept`]{.alert} | What format you want back (`application/json`) |
+| [`Authorization`]{.alert} | Your API key. Covered in Lecture 19 |
+| `Content-Type` | Format of data you are sending (for `POST`) |
+
+- Responses carry headers too: content type, cache rules, and your remaining rate-limit quota
+::::
+
+::::{.column width="45%"}
+:::{style="font-size: 21px;"}
+```python
+# What requests sends by default (the exact
+# values depend on your version and packages)
+r = requests.get(url, timeout=10)
+print(r.request.headers)
+# {'User-Agent': 'python-requests/2.34.2',
+#  'Accept-Encoding': 'gzip, deflate, zstd',
+#  'Accept': '*/*',
+#  'Connection': 'keep-alive'}
+
+# Response headers worth reading
+print(r.headers["Content-Type"])
+# application/json; charset=utf-8
+```
+
+`requests` sends sensible defaults, so you can ignore headers until you need them
+:::
+::::
+:::
+:::

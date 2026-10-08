@@ -1,25 +1,24 @@
 # Lecture 18 - Web APIs and JSON
 
-Last class you rented a machine and typed into it over SSH. This class your own laptop asks other people's servers for data. By the end you will know what happens between a URL and a Python dictionary: how the request is built, what the status code tells you, why the response arrives as JSON, and how three lines of `requests` cover the whole journey. You did this once already in Lecture 14, when you sent a prompt to a language model. Today we open the box.
+Last class you rented a machine and typed into it over SSH. This class your own laptop asks other people's servers for data. By the end you will know how a request is built, what the status code tells you, why the reply arrives as JSON, and how to find one value inside it. We do it all in the browser and the terminal, with one short taste of Python at the end. Lecture 19 does the same work in Python.
 
 [View the slides](https://danilofreire.github.io/datasci350/lectures/lecture-18/18-web-apis.html)
 
 ## What we cover
 
 - What an API is: a contract between two programs, and the client-server model you met on EC2
-- Anatomy of a URL: scheme, host, path, and the query string after the `?`
+- Anatomy of a URL, and building a World Bank URL one piece at a time
+- The query string, percent-encoding, and status codes
 - `GET` and `POST`, and why almost everything you do this semester is a `GET`
-- Status codes, including the `200` that hides an error in the body
-- JSON, and how it maps onto Python dictionaries and lists
-- Digging into nested responses, and the World Bank's two-element list
-- The `requests` library: `params`, `timeout`, `raise_for_status()`, and `.json()`
-- A worked example: Brazilian GDP per capita from 2014 to 2025
-- How to read a reference page: find the example request first, then the parameter table
-- Three exercises, each with a worked solution in the appendix. Headers get a preview in Appendix 05
+- JSON objects and arrays, and how to write the path to one value
+- The World Bank's two-element reply
+- `curl` in the terminal: printing, checking the status, and saving a reply to a file
+- A first look at `requests` in Python
+- Three exercises, each with a worked solution in the appendix
 
 ## Data snapshots
 
-Three JSON files live in `data/`: `openmeteo_atlanta.json`, `wb_gdp_bra.json`, and `wb_pop_ury.json`. All three were pulled on 21 August 2026. The deck reads them from disk and renders with no network connection, so the numbers on the slides stay put.
+Three JSON files live in `data/`: `openmeteo_atlanta.json`, `wb_gdp_bra.json`, and `wb_pop_ury.json`. All three were pulled on 21 August 2026. The slides show shortened copies of them, so the numbers stay put. You can make your own copies with `curl -o`, as the lecture shows.
 
 ## Rendering
 
@@ -35,7 +34,7 @@ No code executes at render time. Every output on the slides was captured from a 
 2. Open the AWS billing console and confirm your total reads zero.
 3. Read the final project instructions.
 4. Form a group of three to four and email me the names by Thursday 5 November.
-5. Try the Uruguay exercise in Appendix 03
+5. Finish Exercise 03 if you did not have time in class.
 
 API claims last verified: 21 August 2026 (the World Bank lists 29,544 indicators).
 

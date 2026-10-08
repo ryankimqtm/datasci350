@@ -7,7 +7,7 @@ author:
     affiliations: "Department of Data and Decision Sciences <br> Emory University"
 format:
   clean-revealjs:
-    self-contained: true
+    self-contained: false
     code-overflow: wrap
     footer: "[Containers](https://danilofreire.github.io/datasci350/lectures/lecture-23/23-containers.html)"
 transition: slide
@@ -27,16 +27,15 @@ editor:
 
 ## Scaling up an analysis
 
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 24px;"}
 :::{.columns}
 :::{.column width="52%"}
 - We set up a [Dask cluster]{.alert} and watched work flow through the dashboard
 - We met the ["single-machine renaissance"]{.alert}
   - Columnar memory, vectorised kernels, all cores by default
-- [Polars]{.alert}: expressions, lazy mode, streaming, and pandas interop
-- [DuckDB]{.alert}: SQL over files, out-of-core, results back into pandas or Polars
-- Our little [benchmark]{.alert}: [Polars](https://pola.rs) and [DuckDB](https://duckdb.org/) finished in under a second, way ahead of [pandas](https://pandas.pydata.org/) and [Dask](https://dask.org/)
-- Pandas for small data, Polars or DuckDB when it grows, Dask when it leaves one machine
+- [DuckDB]{.alert}: SQL over files, out-of-core, results back into pandas
+- Our little [benchmark]{.alert}: [DuckDB](https://duckdb.org/) finished in under a second, way ahead of [pandas](https://pandas.pydata.org/) and [Dask](https://dask.org/)
+- pandas for small data, DuckDB when it grows, Dask when it leaves one machine
 - Now that your pipeline works, [let's make it run anywhere!]{.alert} 🤓
 :::
 
@@ -79,8 +78,8 @@ The Dask dashboard during the 200-million-row benchmark
 
 [4. Your first image]{.alert}
 
-- Five instructions, built, run, and pushed to Docker Hub
-- The [final project]{.alert} is due on the last day of classes, and 30% of the grade is a container that renders your report
+- Six instructions, built, run, and pushed to Docker Hub
+- The [final project]{.alert} is due on the last day of classes, and 30% of the project grade is a container that renders your report
 - Starter: [github.com/danilofreire/datasci350-project-starter](https://github.com/danilofreire/datasci350-project-starter)
 :::
 :::
@@ -94,7 +93,7 @@ The Dask dashboard during the 200-million-row benchmark
 :::{style="margin-top: 20px; font-size: 24px;"}
 :::{.columns}
 :::{.column width="50%"}
-- Your code works, it is fast thanks to Polars and DuckDB, the report renders, the repository is documented
+- Your code works, it is fast thanks to DuckDB, the report renders, the repository is documented
 - One question remains: [will it run anywhere else?]{.alert}
 - What happens when you move it to a new machine, hand it to a colleague, or open it again in six months?
 - Everything so far assumed one thing you never wrote down: [the software installed on your laptop]{.alert}
@@ -216,7 +215,7 @@ SyntaxError: Missing parentheses in call to
 ## `venv` and `pip`: an isolated Python
 ### The workflow your Dockerfile will use
 
-:::{style="margin-top: 2px; font-size: 19px;"}
+:::{style="margin-top: 2px; font-size: 20px;"}
 :::{.columns}
 :::{.column width="52%"}
 - [`venv`]{.alert} ships with Python. It creates a folder with its own `python` and `site-packages`
@@ -235,13 +234,13 @@ pip install requests polars
 ```
 :::
 
-- Add `.venv/` to your `.gitignore`. The package list goes into git; [the folder itself stays on your machine]{.alert}
+- Add `.venv/` to your `.gitignore` (Python 3.13 and later does this for you). The package list goes into git, but [the folder stays on your machine]{.alert}
 :::
 
 :::{.column width="48%"}
 - `which python` tells you which interpreter you are actually using:
 
-:::{style="font-size: 16px;"}
+:::{style="font-size: 19px;"}
 ```{verbatim}
 which python
 /private/tmp/[...]/l23/venv-demo/.venv/bin/python
@@ -254,20 +253,19 @@ pip 26.1.2 [...] (python 3.14)
 ```
 :::
 
-- The path ends in `.venv/bin/python`, so the environment is active
-- The install itself:
+- The path ends in `.venv/bin/python`, so the environment is active. The install itself:
 
-:::{style="font-size: 16px;"}
+:::{style="font-size: 20px;"}
 ```{verbatim}
 Successfully installed certifi-2026.7.22
-charset_normalizer-3.5.1 idna-3.19 polars-1.44.0
-polars-runtime-32-1.44.0 requests-2.34.2
+charset_normalizer-3.5.1 idna-3.19 polars-1.44.2
+polars-runtime-32-1.44.2 requests-2.34.2
 urllib3-2.7.0
 ```
 :::
 
 - [Docker images do this too]{.alert} 
-- The project starter's Dockerfile runs `python3 -m venv /opt/venv` and sets `ENV PATH="/opt/venv/bin:$PATH"`, so every later instruction uses that interpreter without activation
+- The project starter's Dockerfile runs `python3 -m venv /opt/venv` and sets `ENV PATH="/opt/venv/bin:$PATH"`, so later steps use that Python without activating it
 :::
 :::
 :::
@@ -287,8 +285,8 @@ cat requirements.txt
 certifi==2026.7.22
 charset-normalizer==3.5.1
 idna==3.19
-polars==1.44.0
-polars-runtime-32==1.44.0
+polars==1.44.2
+polars-runtime-32==1.44.2
 requests==2.34.2
 urllib3==2.7.0
 ```
@@ -312,10 +310,10 @@ pip install -r requirements.txt
 
 ```{verbatim}
 # Talking to web APIs
-requests==2.34.2
+requests==2.32.5
 
 # Data processing (use either, or both)
-polars==1.44.0
+pandas==3.0.5
 duckdb==1.5.5
 ```
 :::
@@ -370,7 +368,7 @@ prefix: /Users/dafreir/miniconda3/envs/l23-demo
 
 - Drop `--from-history` and it lists every transitive package instead:
 
-:::{style="font-size: 16px; margin-top: 20px; margin-bottom: 20px;"}
+:::{style="font-size: 20px; margin-top: 20px; margin-bottom: 20px;"}
 ```{verbatim}
   - _openmp_mutex=4.5=7_kmp_llvm
   - bzip2=1.0.8=h4e30115_10
@@ -391,7 +389,7 @@ prefix: /Users/dafreir/miniconda3/envs/l23-demo
 :::{style="margin-top: 12px; font-size: 20px;"}
 :::{.columns}
 :::{.column width="50%"}
-- A conda [build](https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/build.html) is [a specific compiled binary of a package]{.alert}
+- A conda [build](https://docs.conda.io/projects/conda-build/en/stable/concepts/package-naming-conv.html) is [a specific compiled binary of a package]{.alert}
 - The same version can be compiled differently per platform, Python version, or feature set
 - A full conda package specification:
 
@@ -405,15 +403,17 @@ numpy=1.21.5=py39h12345_0
    └────────────────────── Package name (numpy)
 ```
 
-- The [`--no-builds` flag]{.alert} strips it, making the file [portable across platforms]{.alert}
+- The [`--no-builds` flag]{.alert} strips the build strings, but macOS-only packages stay in the file
+- For a file that [works on other platforms]{.alert}, use `--from-history`
 :::
 
 :::{.column width="50%"}
 - The build string (`py39h12345`) encodes metadata:
   - Python version (`py39`, `py310`)
-  - Architecture (`linux_64`, `osx_arm64`)
   - Compiler (`gcc9`, `clang`)
   - Features (`nomkl`, `cuda`)
+
+- The platform (`linux-64`, `osx-arm64`) is stored separately, not in the build string
 
 - Why do builds exist?
   - Software is compiled differently per operating system
@@ -433,7 +433,7 @@ numpy=1.21.5=py39h12345_0
 :::{.columns}
 :::{.column width="50%"}
 - [uv](https://docs.astral.sh/uv/) is a Python package and project manager built by [Astral](https://astral.sh/), the people behind the [Ruff](https://docs.astral.sh/ruff/) linter
-- Written in Rust, it replaces `pip`, `pip-tools`, `pipenv`, `poetry`, `virtualenv`, and `pyenv` with one command
+- Written in Rust, it replaces `pip`, `pip-tools`, `pipx`, `poetry`, `pyenv`, and `virtualenv` with one command
 - It installs Python itself, so you need no separate installer
 - Install it:
 
@@ -458,7 +458,7 @@ aarch64-apple-darwin)
 <https://docs.astral.sh/uv/>
 :::
 
-:::{style="font-size: 17px;"}
+:::{style="font-size: 20px;"}
 ```{verbatim}
 uv init l23-uv-demo --python 3.14
 cd l23-uv-demo
@@ -467,16 +467,16 @@ uv add polars requests
 Using CPython 3.14.6 interpreter at:
   /opt/homebrew/opt/python@3.14/bin/python3.14
 Creating virtual environment at: .venv
-Resolved 8 packages in 1.62s
-Prepared 3 packages in 1m 06s
-Installed 7 packages in 12ms
- + polars==1.44.0
+Resolved 8 packages in 378ms
+Prepared 2 packages in 6.66s
+Installed 7 packages in 10ms
+ + polars==1.44.2
  [...]
  + requests==2.34.2
 ```
 :::
 
-- Eight packages resolved in [1.62 seconds]{.alert}, environment created along the way
+- [378 milliseconds!]{.alert}
 :::
 :::
 :::
@@ -497,19 +497,19 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "polars>=1.44.0",
+    "polars>=1.44.2",
     "requests>=2.34.2",
 ]
 ```
 
 - [TOML]{.alert} ([Tom's Obvious Minimal Language](https://toml.io/en/)): a config format of key-value pairs and `[sections]`. Created by Tom Preston-Werner, a GitHub co-founder. [More here](https://toml.io/en/)
   - Very similar to [YAML,](https://yaml.org/) which we saw when writing Quarto documents
-- `uv init` also writes a `.gitignore`, a `README.md`, and a `main.py`
+- `uv init` also writes `.gitignore`, `.python-version`, `README.md` and `main.py`, and starts a git repository
 :::
 
 :::{.column width="50%"}
 - [`uv.lock`]{.alert} [is generated for you,]{.alert} recording the exact version and hash of every package
-- Mine is 182 lines for eight packages. You never edit it by hand
+- Mine is 182 lines, for seven packages plus the project. [You never edit it by hand]{.alert}
 - [Push both `pyproject.toml` and `uv.lock`]{.alert}. Your collaborator clones and runs `uv sync` [to get the same environment:]{.alert}
 
 ```{verbatim}
@@ -519,7 +519,7 @@ Checked 7 packages in 1ms
 
 uv run python -c \
   "import polars; print(polars.__version__)"
-1.44.0
+1.44.2
 ```
 
 - `uv run` executes inside the project environment, so there is nothing to activate
@@ -549,7 +549,7 @@ certifi==2026.7.22
     # via requests
 charset-normalizer==3.5.1
     # via requests
-polars==1.44.0
+polars==1.44.2
     # via l23-uv-demo
 requests==2.34.2
     # via l23-uv-demo
@@ -656,16 +656,16 @@ The host only needs Docker, and the image carries everything else
 :::{.columns}
 :::{.column width="50%"}
 - [Containers](https://www.docker.com/resources/what-container) package software so it can run on any system
-- A [virtual machine](https://www.vmware.com/topics/glossary/content/virtual-machine) boots a whole operating system. A container carries only [the libraries the application needs]{.alert}, so it starts in a second
+- A [virtual machine](https://www.vmware.com/topics/virtual-machine) boots a whole operating system. A container carries only [the libraries the application needs]{.alert}, so it starts in a second
 - A virtual environment isolates Python packages. A container also carries the operating system libraries, the interpreter, and the system tools your code touches
-- It then runs on [any system with Docker installed]{.alert}, whatever the operating system or hardware
+- It then runs on [any system with Docker installed]{.alert}, as long as the image was built for that chip (Intel/AMD `amd64` or Apple Silicon `arm64`)
 :::
 
 :::{.column width="50%"}
 - Created with tools like [Docker](https://www.docker.com/) or [Apptainer](https://apptainer.org/) 
 - Usually [a stripped-down Linux]{.alert} ([Ubuntu](https://ubuntu.com/) or [Alpine Linux](https://alpinelinux.org/)) with only the required libraries
 - Why Linux? It is open source and the most widely used server operating system
-- Stored in [container registries](https://www.docker.com/resources/what-container-registry) like [Docker Hub](https://hub.docker.com/), so you can share them
+- Stored in [container registries](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-registry/) like [Docker Hub](https://hub.docker.com/), so you can share them
 - [More about Docker here](https://docs.docker.com/get-started/overview/)
 
 :::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 15px;"}
@@ -708,8 +708,8 @@ Client, daemon, and registry, from the [Docker documentation](https://docs.docke
 :::{.columns}
 :::{.column width="55%"}
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) runs the Docker engine on macOS and Windows. It is how most of you will install Docker
-- The free licence covers non-commercial open source work and companies with [fewer than 250 employees and under $10M in annual revenue]{.alert}
-- The personal plan also caps Docker Hub at [100 image pulls per hour]{.alert}
+- The free licence covers personal use, education, non-commercial open source, and companies with [fewer than 250 employees and under $10M in annual revenue]{.alert}
+- A free Docker Hub account allows [200 image pulls every six hours]{.alert}, and anonymous use 100
 - [Docker Engine](https://docs.docker.com/engine/) itself is open source and free everywhere, including every Linux server
 - Free alternatives that take the same commands: [Podman](https://podman.io/), [Colima](https://github.com/abiosoft/colima) (macOS), [OrbStack](https://orbstack.dev/) (macOS, free for personal use), and [Rancher Desktop](https://rancherdesktop.io/)
 
@@ -749,7 +749,7 @@ docker run hello-world
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world
 58dee6a49ef1: Pull complete
-Digest: sha256:5dd0d3e6e255913fc30f90b9f2b1d359cc2cbdb48090cc4b65f1676e203243cc
+Digest: sha256:5dd0d3e6e255...
 Status: Downloaded newer image for hello-world:latest
 
 Hello from Docker!
@@ -825,7 +825,7 @@ print(f"pandas {pd.__version__}")
 :::
 
 ## The Dockerfile
-### Five instructions and five layers
+### Six instructions, five build steps
 
 :::{style="margin-top: 15px; font-size: 20px;"}
 :::{.columns}
@@ -858,7 +858,8 @@ docker build -t datasci350-example .
 :::
 
 :::{.column width="48%"}
-- `docker build` runs the instructions in sequence, [layer by layer]{.alert}, and each one adds a layer
+- `docker build` runs the instructions [in order]{.alert}
+- `COPY` and `RUN` add layers to the image. `CMD` only records the start command
 
 :::{style="text-align: center; font-size: 17px; margin-top: 10px; margin-bottom: 10px;"}
 | Instruction | What it does | Runs when |
@@ -888,7 +889,7 @@ The official Python image on Docker Hub: <https://hub.docker.com/_/python>
 :::{style="margin-top: 20px; font-size: 20px;"}
 :::{.columns}
 :::{.column width="56%"}
-:::{style="font-size: 18px;"}
+:::{style="font-size: 20px;"}
 ```text
 docker build --progress=plain -t datasci350-example .
 
@@ -919,8 +920,8 @@ docker build --progress=plain -t datasci350-example .
 :::
 
 :::{.column width="44%"}
-- The five numbered steps, `[1/5]` to `[5/5]`, match the five `Dockerfile` instructions
-- Step `[1/5]` took [64.4 seconds]{.alert} because Docker downloaded the 30 MB `python:3.14-slim` base image. That happens once per machine
+- The five numbered steps, `[1/5]` to `[5/5]`, are every instruction except `CMD`
+- Step `[1/5]` took [64.4 seconds]{.alert} because Docker downloaded the `python:3.14-slim` base image, about 44 MB compressed. That happens once per machine
 - Step `[4/5]` is the `pip install`, and its [51.9 seconds]{.alert} is the slow part of every rebuild
 - The whole build came to about [two minutes]{.alert}, almost all of it downloading
 - `docker images` shows what came out:
@@ -976,7 +977,7 @@ docker build -t datasci350-example .
 - That is why `COPY requirements.txt` sits above `COPY hello.py`: editing your script invalidates only the last layer, and the slow `pip install` stays cached
 - Put `COPY . .` at the top and any edit re-installs every package
 - Your project starter's `Dockerfile` uses the same ordering, for the same reason
-- Docker also reorders independent steps, which is why the cached run reports `#6` as step `[3/5]`
+- The `#` numbers are log IDs, so a cached run can list steps out of order. The `[n/5]` labels give the real order
 :::
 :::
 :::
@@ -1026,6 +1027,12 @@ latest: digest: sha256:b24fd8fc20ef... size: 856
 ```
 
 - The name before the slash is your account, so use your own username
+- `docker push` sends only your laptop's chip type. Optional, if you share an image with people on other computers, build for both chips:
+
+```{verbatim}
+docker buildx build --platform linux/amd64,linux/arm64 \
+  -t danilofreire/datasci350-example:latest --push .
+```
 :::
 :::
 :::
@@ -1054,14 +1061,15 @@ docker pull danilofreire/datasci350-example:latest
 docker run --rm danilofreire/datasci350-example:latest
 
 latest: Pulling from danilofreire/datasci350-example
-Digest: sha256:b24fd8fc20ef...
+Digest: sha256:0e5a94a5aebd...
 Status: Downloaded newer image
 Hello, DATASCI350!
 numpy  2.5.2
 pandas 3.0.5
 ```
 
-- They need Docker installed and nothing else: no Python, no NumPy, no matching operating system
+- They need Docker and nothing else: no Python, no NumPy
+- The image is published for both Intel/AMD (`amd64`) and Apple Silicon (`arm64`) chips, so it runs on Windows, Linux and any Mac
 - Our example is tiny, and the shape is the same for a real project: your report renders inside the image the way this script runs
 - That is what the container part of the project grade tests. [I run `docker build` and `docker run` on a clean machine, and either your report appears or it does not]{.alert}
 - [Lecture 25]{.alert} builds the project container instruction by instruction
@@ -1079,7 +1087,7 @@ pandas 3.0.5
 2. Open a terminal inside that folder
 3. Run `docker build -t datasci350-example .`
 4. Run `docker run --rm datasci350-example`. Three lines appear
-5. Open `requirements.txt`. Add the line `polars==1.44.0`
+5. Open `requirements.txt`. Add the line `polars==1.44.2`
 6. Open `hello.py`. Import `polars` and print `pl.__version__`
 7. Run `docker build -t datasci350-example .` again
 8. Read the output. Note which steps say `CACHED`
@@ -1099,22 +1107,22 @@ Solution: [[Appendix 01]{.button}](#sec-appendix-01)
 :::{style="margin-top: 20px; font-size: 21px;"}
 :::{.columns}
 :::{.column width="50%"}
-- [Dependency management]{.alert} is writing down the software your code assumes: Lecture 10's third ingredient
-- The Python 2 `print` statement showed the failure: the script was fine and the environment moved
-- [`venv` and `pip`]{.alert}: an isolated Python, `pip freeze` writing `==` pins, `pip install -r` reading them back
-- [Conda]{.alert}: environments and packages together, `--from-history` for a file that travels, [build strings]{.alert} for one that stays home
+- [Dependency management]{.alert}: writing down the software your code assumes
+- Python 2 `print`: the script was fine, but the environment changed
+- [`venv` and `pip`]{.alert}: `pip freeze` writes pins, `pip install -r` reads them
+- [Conda]{.alert}: `--from-history` travels, [build strings]{.alert} stay home
 :::
 
 :::{.column width="50%"}
-- [uv]{.alert}: `pyproject.toml` and `uv.lock`, `uv sync` for collaborators, `uv export` when a Dockerfile needs `requirements.txt`
-- [Containers]{.alert}: an image is the recipe, a container is a running instance, and a registry is where images live
-- We built one from `python:3.14-slim` in about two minutes, and [layer caching]{.alert} brought the rebuild down to 0.754 seconds
-- Docker Desktop is free at your scale, and [Podman, Colima, OrbStack, and Rancher Desktop]{.alert} run the same commands
+- [uv]{.alert}: `pyproject.toml` + `uv.lock`, then `uv sync`
+- [Containers]{.alert}: image = recipe, container = running instance, registry = storage
+- [Layer caching]{.alert}: two-minute build, 0.754-second rebuild
+- Docker Desktop is free; [Podman, Colima, OrbStack]{.alert} run the same commands
 :::
 :::
 
 :::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 15px;"}
-The container you push is the deliverable. On my Macbook I will run `docker build` and then `docker run`, and your report either appears or it does not 😅
+Your container is the deliverable: I run `docker build` and `docker run`, and your report appears or it does not 😅
 :::
 :::
 
@@ -1152,7 +1160,7 @@ Before then:
 ## Appendix 01: Exercise solution {#sec-appendix-01}
 ### What the rebuild printed
 
-:::{style="margin-top: 5px; font-size: 16px;"}
+:::{style="margin-top: 5px; font-size: 20px;"}
 :::{.columns}
 :::{.column width="50%"}
 [Steps 5 and 6]{.alert}, the two edited files:
@@ -1161,7 +1169,7 @@ Before then:
 # requirements.txt
 numpy==2.5.2
 pandas==3.0.5
-polars==1.44.0
+polars==1.44.2
 ```
 
 ```{verbatim}
@@ -1184,10 +1192,10 @@ docker run --rm datasci350-example
 Hello, DATASCI350!
 numpy  2.5.2
 pandas 3.0.5
-polars 1.44.0
+polars 1.44.2
 ```
 
-- The image grew from 406MB to [684MB]{.alert} on disk
+- The image grew from 406MB to [638MB]{.alert} on disk
 :::
 
 :::{.column width="50%"}
@@ -1202,16 +1210,16 @@ polars 1.44.0
 
 #8 [4/5] RUN pip install --no-cache-dir -r
     requirements.txt
-#8 227.5 Successfully installed numpy-2.5.2
-    pandas-3.0.5 polars-1.44.0 [...]
-#8 DONE 228.1s
+#8 32.94 Successfully installed numpy-2.5.2
+    pandas-3.0.5 polars-1.44.2 [...]
+#8 DONE 33.1s
 
 #9 [5/5] COPY hello.py .
 #9 DONE 0.1s
 ```
 
 - One layer stayed cached and three rebuilt. The miss at `#7` forced every later layer to run again
-- Most of those 228 seconds went on `polars`, which the first build never fetched
+- Most of those 33 seconds went on `polars`, which the first build never fetched
 - [Step 10]{.alert}: with the `COPY` lines swapped, editing `hello.py` alone invalidates `COPY hello.py` and re-runs `pip install` for nothing
 
 :::{style="margin-top: 15px;"}
@@ -1247,7 +1255,7 @@ That version does not exist for your Python. Check the pin against [PyPI](https:
 
 [`toomanyrequests: You have reached your pull rate limit`]{.alert}
 
-Docker Hub allows 100 anonymous pulls per hour from one address. Run `docker login` with your free account and pull again.
+Docker Hub allows 100 anonymous pulls every six hours from one address. Run `docker login` with your free account (200 pulls) and pull again.
 
 [`failed to read dockerfile: open Dockerfile: no such file or directory`]{.alert}
 

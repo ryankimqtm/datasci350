@@ -27,6 +27,7 @@ $endif$
 % Add the following packages to support kableExtra
 \usepackage{booktabs}
 \usepackage{longtable}
+\newcounter{none} % for unnumbered tables (Pandoc 3.8+)
 \usepackage{array}
 \usepackage{multirow}
 \usepackage{wrapfig}
@@ -241,6 +242,11 @@ $endif$
 % Tightlist
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Extra preamble supplied by the document (include-in-header)
+$for(header-includes)$
+$header-includes$
+$endfor$
 
 % Begin document
 \begin{document}

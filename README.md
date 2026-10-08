@@ -3,21 +3,20 @@
 ## Course Description
 
 Welcome to [DATASCI 350](https://github.com/danilofreire/datasci350)! This course
-introduces key tools in modern data science, focusing on three essential
-aspects: reliability, reproducibility, and robustness. We will cover command
-line interfaces, version control with [Git](https://git-scm.com/) and
-[GitHub](https://github.com/), and literate programming using
-[Quarto](https://quarto.org/) and [Jupyter Notebooks](https://jupyter.org/).
-You will also learn about data storage and manipulation with
-[SQL](https://www.w3schools.com/sql/) and [Pandas](https://pandas.pydata.org/),
-data visualisation using [Matplotlib](https://matplotlib.org/),
-[Seaborn](https://seaborn.pydata.org/) and
-[plotnine](https://plotnine.readthedocs.io/), and parallel computing with
-[Dask](https://www.dask.org/). We will explore artificial intelligence-assisted
-programming with [GitHub Copilot](https://github.com/features/copilot) and
-finish with [Docker](https://www.docker.com/) and containerisation. Throughout
-the course, you will learn how to use these tools to improve your data science
-workflow and create more reliable, reproducible, and robust analyses.
+introduces key tools in modern data science, with a focus on reliable and
+reproducible work. We start with the
+[command line](https://en.wikipedia.org/wiki/Command-line_interface), version
+control with [Git](https://git-scm.com/) and [GitHub](https://github.com/), and
+reproducible reports with [Quarto](https://quarto.org/) and
+[Jupyter Notebooks](https://jupyter.org/). You will then work with language
+models: first running one on your own laptop with [Ollama](https://ollama.com/),
+then calling hosted models from Python, and finally building a small retrieval
+system over your own documents. We will rent machines in the cloud with
+[Amazon Web Services](https://aws.amazon.com/), collect data from web APIs with
+[requests](https://requests.readthedocs.io/), and query and process it at scale
+with [DuckDB](https://duckdb.org/) and [Dask](https://www.dask.org/). We finish
+with dependency management, virtual environments, and containers with
+[Docker](https://www.docker.com/).
 
 ## Contact Information
 
@@ -25,20 +24,18 @@ workflow and create more reliable, reproducible, and robust analyses.
   - Email: [`danilofreire@gmail.com`](mailto:danilofreire@gmail.com)
   - Office hours: By appointment at any time (online or in person)
 
-- Teaching Assistants:
-  - [Alix Morales](mailto:alix.morales@emory.edu) (in class)
-  - [Harris Wang](mailto:harris.wang@emory.edu) (grader)
-  - Feel free to email them to arrange a meeting
-
 ## Learning Outcomes
 
 By the end of this course, students will be able to:
 
-- Use data science tools for project collaboration and version control
-- Collect data from web APIs and web pages, and process it at scale
-- Create clear data visualisations and write well-documented code
-- Use AI tools to help with programming tasks
-- Understand the basics of containerisation and parallel computing
+- Use the command line to manage files, directories, and scripts
+- Track changes and collaborate on code with Git and GitHub
+- Create reproducible reports and presentations with Quarto
+- Use local and hosted language models responsibly to help with programming tasks
+- Run code on cloud servers with Amazon Web Services
+- Collect data from web APIs and query it with SQL in DuckDB
+- Speed up data processing with parallel computing
+- Package projects with virtual environments and Docker containers
 
 ## Repository Structure
 
@@ -52,6 +49,19 @@ This repository is organised as follows:
 - [`syllabus.pdf`](https://github.com/danilofreire/datasci350/blob/main/syllabus/syllabus.pdf): Course syllabus in PDF format
 
 The course website is available at <https://danilofreire.github.io/datasci350/>.
+
+## Website
+
+The site is a Quarto website project in this repository. The `.qmd` files at the root, in `tutorials/` and in `lectures/` render into `docs/`, which GitHub Pages serves from the `main` branch. To update the site:
+
+```bash
+QUARTO_PYTHON=~/miniconda3/bin/python3 quarto render
+git add docs _freeze
+git commit -m "docs(website): describe the change"
+git push
+```
+
+Pushing to `main` publishes the site. Python decks use Quarto's freeze, so code only re-runs when its source changes; commit `_freeze/` together with `docs/`.
 
 ## Downloading the Repository
 

@@ -30,4 +30,4 @@ pandas 3.0.5
 
 ## The exercise
 
-Add `polars==1.44.0` to `requirements.txt`, import `polars` in `hello.py`, and print `pl.__version__`. Rebuild and read which steps say `CACHED`. The solution is in Appendix 01 of the slides.
+Add `polars==1.44.2` to `requirements.txt`, import `polars` in `hello.py`, and print `pl.__version__`. Rebuild and read which steps say `CACHED`. The solution is in Appendix 01 of the slides.

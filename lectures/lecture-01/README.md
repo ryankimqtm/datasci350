@@ -14,7 +14,7 @@ Welcome to DATASCI 350! This first lecture introduces the course, shows you why 
 
 ## Tools you will meet
 
-Command line and bash; Git and GitHub; AI coding agents (GitHub Copilot, Claude Code, Gemini CLI, and Codex CLI); Quarto and Jupyter; `requests` and Beautiful Soup; pandas, Polars, DuckDB, and Dask; uv and Docker. You do not need to know any of these yet.
+Command line and bash; Git and GitHub; AI coding agents (GitHub Copilot, Claude Code, Gemini CLI, and Codex CLI); Quarto and Jupyter; `requests` and Beautiful Soup; pandas, SQLite, DuckDB, and Dask; uv and Docker. You do not need to know any of these yet.
 
 ## Before the next class
 

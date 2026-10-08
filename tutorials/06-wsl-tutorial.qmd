@@ -1,5 +1,6 @@
 ---
 title: "DATASCI 350 - Setting Up WSL on Windows"
+aliases: ["/06-wsl-tutorial.html"]
 lang: en-GB
 author: 
   - Danilo Freire

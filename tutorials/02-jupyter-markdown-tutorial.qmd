@@ -1,5 +1,6 @@
 ---
 title: "DATASCI 350 - Jupyter Notebook and Markdown Tutorial"
+aliases: ["/02-jupyter-markdown-tutorial.html"]
 lang: en-GB
 author: 
   - Danilo Freire

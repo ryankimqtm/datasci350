@@ -9,7 +9,7 @@ format:
     transition: slide
     scrollable: true
     code-line-numbers: true
-    embed-resources: true
+    embed-resources: false
     footer: "Footer text"
 editor:
   render-on-save: true

@@ -35,7 +35,7 @@ The account starts with $100 in credits, and the console offers up to $100 more 
 
 The best moment is on page 8. Textract returns the header as "SCHEDULE FOR HILLARY RODAHM CLINTON", and that spelling is correct: the typist made the mistake in 2001. Anyone searching the archive for "Rodham" walks straight past the page.
 
-The appendix keeps the older walkthrough for Amazon Transcribe, which turns audio into text the same way. You need it for the homework.
+The appendix keeps the older walkthrough for Amazon Transcribe, which turns audio into text the same way.
 
 ## Before the next class
 

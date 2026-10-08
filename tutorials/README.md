@@ -10,8 +10,9 @@ This folder contains several tutorials for the DATASCI 350 course. Below you wil
 - [04 - SQL Essentials with DuckDB](04-duckdb-sql-tutorial.pdf) ([QMD version](04-duckdb-sql-tutorial.qmd))
 - [05 - Web Scraping with Python](05-web-scraping-tutorial.pdf) ([QMD version](05-web-scraping-tutorial.qmd))
 - [06 - Setting Up WSL on Windows](06-wsl-tutorial.pdf) ([QMD version](06-wsl-tutorial.qmd))
+- [07 - Polars for Data Analysis](07-polars-tutorial.pdf) ([QMD version](07-polars-tutorial.qmd))
 
-Tutorials 01 to 03 set up the tools the course uses, and you should read them in order at the start of the semester. Tutorial 06 is for Windows users, and it is worth doing before Lecture 03. Tutorials 04 and 05 cover material that is no longer taught in the lectures, and you can read them whenever you need them.
+Tutorials 01 to 03 set up the tools the course uses, and you should read them in order at the start of the semester. Tutorial 06 is for Windows users, and it is worth doing before Lecture 03. Tutorials 04, 05 and 07 cover material that is not taught in the lectures, and you can read them whenever you need them.
 
 ## File Formats
 
@@ -27,7 +28,7 @@ You can either read the tutorials directly on GitHub or download them to your co
 ## Additional Resources
 
 - `article-template.latex`: A LaTeX template for articles
-- `data/wdi_panel.parquet`: The World Bank dataset used by the DuckDB tutorial
+- `data/wdi_panel.parquet`: The World Bank dataset used by the DuckDB tutorial (04) and the Polars tutorial (07)
 - `data/scraping/`: Cached web pages used by the web-scraping tutorial, so every example runs offline
 - `testing-ipython`: A Jupyter Notebook for showing Markdown and code cells
 - `testing-anaconda.py`: A Python script for testing Anaconda installation

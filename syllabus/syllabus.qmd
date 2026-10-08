@@ -31,7 +31,7 @@ editor:
 
 # Course Description
 
-Welcome to [DATASCI 350](https://github.com/danilofreire/datasci350)! This course introduces key tools in modern data science, focusing on three essential aspects: reliability, reproducibility, and robustness. We will cover the [command-line interface](https://en.wikipedia.org/wiki/Command-line_interface), version control with [Git](https://git-scm.com/) and [GitHub](https://github.com/), and reproducible reports using [Quarto](https://quarto.org/) and [Jupyter Notebooks](https://jupyter.org/). You will then work with language models, first running one on your own laptop with [Ollama](https://ollama.com/), then calling hosted models from Python, and finally building a small retrieval system over your own documents. We will rent machines in the cloud with [Amazon Web Services](https://aws.amazon.com/), collect data from web APIs with [requests](https://requests.readthedocs.io/), and process it at scale with [Polars](https://pola.rs/), [DuckDB](https://duckdb.org/), and [Dask](https://www.dask.org/). We finish with [Docker](https://www.docker.com/) and containerisation. 
+Welcome to [DATASCI 350](https://github.com/danilofreire/datasci350)! This course introduces key tools in modern data science, with a focus on reliable and reproducible work. We start with the [command line](https://en.wikipedia.org/wiki/Command-line_interface), version control with [Git](https://git-scm.com/) and [GitHub](https://github.com/), and reproducible reports with [Quarto](https://quarto.org/) and [Jupyter Notebooks](https://jupyter.org/). You will then work with language models: first running one on your own laptop with [Ollama](https://ollama.com/), then calling hosted models from Python, and finally building a small retrieval system over your own documents. We will rent machines in the cloud with [Amazon Web Services](https://aws.amazon.com/), collect data from web APIs with [requests](https://requests.readthedocs.io/), and query and process it at scale with [DuckDB](https://duckdb.org/) and [Dask](https://www.dask.org/). We finish with dependency management, virtual environments, and containers with [Docker](https://www.docker.com/). 
 
 By working with real-world datasets and problems, students will gain hands-on experience using these tools and methods to extract insights from data. This course will develop technical skills and critical thinking needed to solve complex data challenges. Upon completion, students will be prepared to apply these tools to their own research and professional work.
 
@@ -39,18 +39,20 @@ By working with real-world datasets and problems, students will gain hands-on ex
 
 By the end of this course, students will be able to:
 
-- Use the command line interface to manage files and directories.
-- Work with version control systems to track changes in code and collaborate with others.
-- Create reproducible reports and presentations.
-- Use language models and coding agents responsibly to assist with programming tasks.
-- Collect data from web APIs and web pages, and process it at scale.
-- Understand the basics of containerisation and parallel computing.
+- Use the command line to manage files, directories, and scripts.
+- Track changes and collaborate on code with Git and GitHub.
+- Create reproducible reports and presentations with Quarto.
+- Use local and hosted language models responsibly to help with programming tasks.
+- Run code on cloud servers with Amazon Web Services.
+- Collect data from web APIs and query it with SQL in DuckDB.
+- Speed up data processing with parallel computing.
+- Package projects with virtual environments and Docker containers.
  
 # Course Requirements
 
 Some knowledge of programming is recommended, and familiarity with basic data manipulation and visualisation techniques is helpful. However, no prior experience with the tools covered in the course is required.
 
-In terms of software, you will need to install the following tools: [Anaconda distribution of Python 3.x](https://www.anaconda.com/), [VS Code](https://code.visualstudio.com/), [Git](https://git-scm.com/), [GitHub Desktop](https://github.com/apps/desktop), [Quarto](https://quarto.org/), [Ollama](https://ollama.com/), and [Docker](https://www.docker.com/). Several lectures also need Python packages that Anaconda does not ship. Install them with `pip install ollama openai python-dotenv requests pyarrow polars duckdb dask joblib`. You will open two free accounts during the course, one on [OpenRouter](https://openrouter.ai/) for Lecture 14 and one on [Amazon Web Services](https://aws.amazon.com/) for Lectures 16 and 17. Neither costs anything if you follow the steps in the lecture READMEs.
+In terms of software, you will need to install the following tools: [Anaconda distribution of Python 3.x](https://www.anaconda.com/), [VS Code](https://code.visualstudio.com/), [Git](https://git-scm.com/), [GitHub Desktop](https://github.com/apps/desktop), [Quarto](https://quarto.org/), [Ollama](https://ollama.com/), and [Docker](https://www.docker.com/). Several lectures also need Python packages that Anaconda does not ship. Install them with `pip install ollama openai python-dotenv requests pyarrow duckdb dask joblib`. You will open two free accounts during the course, one on [OpenRouter](https://openrouter.ai/) for Lecture 14 and one on [Amazon Web Services](https://aws.amazon.com/) for Lectures 16 and 17. Neither costs anything if you follow the steps in the lecture READMEs.
 
 Please feel free to reach out if you have any questions about the course content or your readiness to take the class.
 
@@ -90,7 +92,6 @@ This course is designed to be self-contained, providing all the necessary resour
 - [Ollama Documentation](https://docs.ollama.com/)
 - [OpenRouter Documentation](https://openrouter.ai/docs)
 - [Requests Documentation](https://requests.readthedocs.io/)
-- [Polars Documentation](https://docs.pola.rs/)
 - [DuckDB Documentation](https://duckdb.org/docs/)
 - [Dask Documentation](https://docs.dask.org/en/latest/)
 - [AWS Documentation](https://docs.aws.amazon.com/)
@@ -106,7 +107,7 @@ We will mainly use [Python](https://www.python.org) in this course. Python is a 
 
 You can write your Python code in any text editor, but I recommend [VS Code](https://code.visualstudio.com/) with the [Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python). [Pycharm](https://www.jetbrains.com/pycharm/) is also well-regarded by developers. If you are feeling adventurous, you can also use [Neovim](https://neovim.io/) with the [coc-pyright](https://github.com/fannheyward/coc-pyright) plugin. That is, if [you can exit the editor](https://stackoverflow.blog/2017/05/23/stack-overflow-helping-one-million-developers-exit-vim/). :)
 
-We will collect our own data rather than query a database. Lectures 18 and 19 use [requests](https://requests.readthedocs.io/) to pull data from web APIs, and we save the results as CSV and parquet files. If you want to learn SQL, work through the self-study [DuckDB tutorial](https://danilofreire.github.io/datasci350/04-duckdb-sql-tutorial.html) in the course repository. DATASCI 151 also covers SQL basics in more depth than we could here.
+We will collect our own data rather than query a database. Lectures 18 and 19 use [requests](https://requests.readthedocs.io/) to pull data from web APIs, and we save the results as CSV and parquet files. Lecture 22 revises SQL with [DuckDB](https://duckdb.org/), which runs inside Python and queries those files directly. If you want more practice, work through the self-study [DuckDB tutorial](https://danilofreire.github.io/datasci350/04-duckdb-sql-tutorial.html) in the course repository. DATASCI 151 also covers SQL basics in more depth than we could here.
 
 We will also use [Jupyter Notebooks](https://jupyter.org/) and [Quarto](https://quarto.org) in class. Jupyter itself comes pre-installed with Anaconda, but please install the [Jupyter extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter&ssr=false) as well. To install Quarto, please follow the instructions on the [official website](https://quarto.org). We will have a hands-on session to learn how to use both of them (but I assume you are already familiar with Jupyter).
 
@@ -123,7 +124,7 @@ To help you get started, I have prepared [six tutorials](https://danilofreire.gi
 - [Web scraping with Python](https://danilofreire.github.io/datasci350/05-web-scraping-tutorial.html)
 - [Setting up WSL on Windows](https://danilofreire.github.io/datasci350/06-wsl-tutorial.html)
 
-Read tutorials 01 to 03 in order at the start of the semester. Windows users should also read tutorial 06 before Lecture 03. Tutorials 04 and 05 cover material we do not teach in class, and you can read them whenever you need them.
+Read tutorials 01 to 03 in order at the start of the semester. Windows users should also read tutorial 06 before Lecture 03. Tutorials 04, 05 and 07 cover material we do not teach in class, and you can read them whenever you need them. Tutorial 07 covers Polars, the option the class voted against in Lecture 02.
 
 # Office Hours
 
@@ -201,7 +202,7 @@ Suggested references:
 
 - Lecture 03: [The Command-Line Interface (CLI), Shell Basics, and File Management](https://danilofreire.github.io/datasci350/lectures/lecture-03/03-command-line.html).
 - [**Assignment 01**](https://github.com/danilofreire/datasci350/blob/main/assignments/01-assignment.ipynb).
-- [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=9a77f4a0-f1ea-498a-b85f-1a8993922f82&hostId=05eb977d-4f8a-440e-9e45-95212b29d103)
+- [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=20204c2f-db9c-4a06-9835-4a076d31f98a&hostId=05eb977d-4f8a-440e-9e45-95212b29d103)
 
 Suggested references:
 
@@ -256,6 +257,7 @@ Suggested references:
 ### September 22, 2026:
 
 - Lecture 08: [Review session for Quiz 01](https://danilofreire.github.io/datasci350/lectures/lecture-08/08-review.html). This session revises everything covered so far and prepares students for Quiz 01 on September 24, which is examinable on Lectures 02-07.
+- [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=102f38b6-9834-4aaf-ad12-15a91fa160de&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 ## Module 03: Reproducible Research with Quarto
 
@@ -314,7 +316,6 @@ Suggested references:
 
 - Lecture 13: [Quiz 02: Reproducible Research and Quarto (6%)](https://github.com/danilofreire/datasci350-quiz02/). Covers Lectures 10 and 11.
 - **Assignment 05 due (5%).**
-- [**Assignment 06**](https://github.com/danilofreire/datasci350/blob/main/assignments/06-assignment.ipynb).
 
 ### October 13, 2026: Fall Break (No Classes)
 
@@ -322,6 +323,7 @@ Suggested references:
 ### October 15, 2026:
 
 - Lecture 14: [Calling Models from Your Own Code](https://danilofreire.github.io/datasci350/lectures/lecture-14/14-ai.html).
+- [**Assignment 06**](https://github.com/danilofreire/datasci350/blob/main/assignments/06-assignment.ipynb).
 
 Note: create a free [OpenRouter](https://openrouter.ai/) account and API key before this class, and set the key's spending limit to $0.00. The steps are in the lecture README.
 
@@ -336,7 +338,7 @@ Suggested references:
 
 - Lecture 15: [Retrieval-Augmented Generation and Fine-Tuning](https://danilofreire.github.io/datasci350/lectures/lecture-15/15-rag-finetuning.html).
 
-Note: install or update Ollama before this class, then run `pip install ollama numpy`. The steps are in the lecture README.
+Note: install or update Ollama before this class, then run `pip install ollama`. The steps are in the lecture README.
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=8691380c-2ccb-49fa-aab1-471754aeb24c&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
@@ -422,16 +424,17 @@ Suggested references:
 
 ### November 12, 2026:
 
-- Lecture 22: [Scaling Data Analysis in Practice](https://danilofreire.github.io/datasci350/lectures/lecture-22/22-scaling-in-practice.html).
+- Lecture 22: [SQL Revision with DuckDB](https://danilofreire.github.io/datasci350/lectures/lecture-22/22-sql-revision.html).
 - **Assignment 08 due (5%).**
 - [**Assignment 09**](https://github.com/danilofreire/datasci350/blob/main/assignments/09-assignment.ipynb).
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=a2403e39-2c84-473b-8e78-ea0889581b0c&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 Suggested references:
 
-- [Polars User Guide](https://docs.pola.rs/).
 - [DuckDB Documentation](https://duckdb.org/docs/).
-- [Dask: Best Practices](https://docs.dask.org/en/stable/best-practices.html).
+- [DuckDB Python API](https://duckdb.org/docs/stable/clients/python/overview).
+- [Python sqlite3 Documentation](https://docs.python.org/3/library/sqlite3.html).
+- [SQL Essentials with DuckDB](https://danilofreire.github.io/datasci350/04-duckdb-sql-tutorial.html). Note: the course tutorial, with every clause from the lecture in more depth.
 
 ## Module 08: Containers and Reproducibility
 
@@ -468,12 +471,12 @@ Suggested references:
 
 ### December 1, 2026:
 
-- Lecture 26: [Course Revision](https://danilofreire.github.io/datasci350/lectures/lecture-26/26-revision.html).
+- Lecture 26: [Revision: Scaling, SQL and Containers](https://danilofreire.github.io/datasci350/lectures/lecture-26/26-revision.html). Covers Lectures 21, 22, 23, and 25, with SQL practice exercises and project Q&A.
 - [Kahoot Quiz](https://play.kahoot.it/v2/?quizId=d19e2d39-f38c-4a1e-9d5d-c3113bd3ad36&hostId=05eb977d-4f8a-440e-9e45-95212b29d103).
 
 ### December 3, 2026:
 
-- Lecture 27: [Quiz 05: Scaling, Docker and Containers (6%)](https://github.com/danilofreire/datasci350-quiz05/). Covers Lectures 21, 22, 23, and 25.
+- Lecture 27: [Quiz 05: Scaling, SQL, Docker and Containers (6%)](https://github.com/danilofreire/datasci350-quiz05/). Covers Lectures 21, 22, 23, and 25.
 - **Assignment 10 due (5%).**
 
 ### December 8, 2026:

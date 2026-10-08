@@ -1,5 +1,6 @@
 ---
 title: "DATASCI 350 - SQL Essentials with DuckDB"
+aliases: ["/04-duckdb-sql-tutorial.html"]
 lang: en-GB
 author: 
   - Danilo Freire
@@ -365,7 +366,7 @@ WHERE country LIKE 'United%'
 """).df()
 ```
 
-SQLite needed a `COLLATE NOCASE` trick to ignore case. DuckDB gives you `ILIKE`, which matches the same pattern while ignoring upper and lower case.
+In SQLite, `LIKE` ignores case for ASCII letters by default. In DuckDB it is case-sensitive, and `ILIKE` is the version that matches the same pattern while ignoring upper and lower case.
 
 ```{python}
 #| echo: true
@@ -625,7 +626,7 @@ The left join is the one you will reach for most, because it keeps the table you
 
 ## Right and full joins
 
-SQLite could not write these joins directly. It needed a swapped `LEFT JOIN`, and a `UNION` of two joins for the full case. DuckDB supports both natively, so the query says what it means.
+Older versions of SQLite could not write these joins directly. They needed a swapped `LEFT JOIN`, and a `UNION` of two joins for the full case. SQLite added both in 2022 (version 3.39), and DuckDB has always had them, so the query says what it means.
 
 A `RIGHT JOIN` keeps every row from the right table. South Korea now stays, with no GDP value.
 

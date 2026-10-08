@@ -33,7 +33,7 @@ The CSV and parquet files under `data/` are not stored in the repository. The de
 
 ## Before the next class
 
-Run the two exercises. Lecture 22 benchmarks Polars and DuckDB against pandas and Dask on the WDI panel you built in Module 06, so bring your timings.
+Run the two exercises. Lecture 22 revises SQL with DuckDB on the WDI panel you built in Module 06, and times the same group-by in DuckDB, pandas and Dask, so bring your timings. Polars is covered in tutorial 07.
 
 The serial, `map` and `joblib` material is adapted from [the Yale Center for Research Computing](https://github.com/ycrc/parallel_python), with thanks.
 

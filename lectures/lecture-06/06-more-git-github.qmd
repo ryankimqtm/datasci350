@@ -8,7 +8,7 @@ author:
     affiliations: "Department of Data and Decision Sciences <br> Emory University"
 format:
   clean-revealjs:
-    self-contained: true
+    self-contained: false
     footer: "[More Git and GitHub](https://danilofreire.github.io/datasci350/lectures/lecture-06/06-more-git-github.html)"
 transition: slide
 transition-speed: default
@@ -45,6 +45,8 @@ editor:
 :::{.column width="50%"}
 :::{style="text-align: center;"}
 [![](figures/xkcd2.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/xkcd2.png"}
+
+Source: [xkcd.com](https://xkcd.com/1296/)
 :::
 :::
 :::
@@ -57,13 +59,14 @@ editor:
 :::{.column width="50%"}
 Today we will cover
 
+- The GitHub CLI (`gh`), and using two GitHub accounts
 - How to `push` and `pull` changes to and from remote repositories
 - How to use `.gitignore` to avoid tracking certain files
 - Creating and managing branches
 - How to `clone` and `fork` repositories on GitHub
 - Syncing forked repositories on GitHub
 - How to create `issues` and `pull requests` on GitHub
-- Other cool GitHub features, such as Gists, Pages, Actions, and CLI
+- Other cool GitHub features, such as Gists, Pages, and Actions
 :::
 
 :::{.column width="50%"}
@@ -77,7 +80,7 @@ Today we will cover
 
 ## How to rename your branch from `master` to `main`
 
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 24px;"}
 :::{.columns}
 :::{.column width="50%"}
 - Many of you may have a default branch called `master` instead of `main`
@@ -97,6 +100,9 @@ git branch -m master main
 # Push the renamed branch to GitHub
 git push -u origin main
 
+# Make main the default branch on GitHub
+gh repo edit --default-branch main
+
 # Delete the old master branch on GitHub
 git push origin --delete master
 ```
@@ -108,18 +114,83 @@ git push origin --delete master
 :::
 :::
 
+## GitHub in the command line
+
+:::{style="margin-top: 30px; font-size: 21px;"}
+:::{.columns}
+:::{.column width="50%"}
+- [GitHub CLI](https://cli.github.com/) is a command-line tool that brings GitHub to your terminal
+- Install on Mac: `brew install gh`
+- Install on WSL/Linux: [follow these instructions (Debian/Ubuntu)](https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian)
+- GitHub CLI creates repositories, issues, pull requests, and more
+- Create, clone, and fork repositories:
+  - `gh repo create my-project`: new repository
+  - `gh repo clone danilofreire/my-project`: copy [to your computer]{.alert}
+  - `gh repo fork torvalds/linux`: copy [to your GitHub account]{.alert}
+- Have a look at the [GitHub CLI manual](https://cli.github.com/manual/) for more information
+- [Please install it!]{.alert} It will save you a lot of time in the future, and make you look like a pro 😎
+:::
+
+:::{.column width="50%"}
+:::{style="text-align: center;"}
+[![](figures/cli.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/cli.png"}
+
+- If you need to authenticate, run `gh auth login` and follow the instructions (it will open a browser window)
+:::
+:::
+:::
+:::
+
+## Using two GitHub accounts in the terminal
+
+:::{style="margin-top: 30px; font-size: 23px;"}
+:::{.columns}
+:::{.column width="50%"}
+- Personal and Emory accounts? You can use both
+- `--global` sets defaults for all repositories; omit it to set values [for one repository only]{.alert}
+- `gh` stores several accounts and switches between them
+- `gh auth login`: log in to an account
+- `gh auth status`: check which account is active
+- `gh auth switch`: change the active account
+- `gh auth logout`: log out of the current account
+:::
+
+:::{.column width="50%"}
+- Log in to both accounts once:
+
+```bash
+gh auth login        # first account
+gh auth login        # second account
+gh auth setup-git    # let Git use these logins
+```
+
+- In a repository owned by the second account:
+
+```bash
+git config user.name "Your Name"
+git config user.email your@emory.edu
+gh auth switch       # change the active account
+git push
+```
+
+- Run `gh auth switch` again before pushing to the other account
+- More information: [here](https://github.com/cli/cli/blob/trunk/docs/multiple-accounts.md) and [here](https://docs.github.com/en/github-cli/github-cli/using-multiple-accounts)
+:::
+:::
+:::
+
 # Pushing changes to a remote repository 🚀 {background-color="#1B3A6B"}
 
 ## Pushing changes to a remote repository
 
-:::{style="margin-top: 30px; font-size: 24px;"}
+:::{style="margin-top: 30px; font-size: 27px;"}
 :::{.columns}
 :::{.column width="50%"}
 - Last class we learned to `add` and `commit`. Both stay on your machine
 - To share your work, you need a [remote repository]{.alert}, usually on GitHub
 - `git push` uploads your commits to it
 - `git pull` downloads what other people have added
-- That is the whole idea. The rest is detail
+- That is the whole idea. The rest is detail 😉
 :::
 
 :::{.column width="50%"}
@@ -135,7 +206,7 @@ git push origin --delete master
 :::{style="margin-top: 30px; font-size: 28px;"}
 - Let's go back to our `my-project` local repository
 - Check the last commit with `git log`
-- Now, let's `push` our changes to a remote repository on GitHub
+- Now, let's `push` our changes to GitHub
 - First, we need to create a repository on GitHub
 - Go to [GitHub](https://github.com) and click on the `+` sign on the top right corner
 - Select `New repository`
@@ -143,7 +214,7 @@ git push origin --delete master
 - Click on `Create repository`
 :::
 
-## {background-image="figures/new-repo.png"}
+## {background-image="figures/new-repo.png" background-size="100% 100%"}
 
 ## {background-image="figures/create-repo.png"}
 
@@ -254,7 +325,7 @@ git push origin --delete master
 :::{.columns}
 :::{.column width="50%"}
 - What if my coauthor and I change the same line?
-- Different files, or different lines in the same file: Git merges them for you 👍
+- Different files, or lines far apart in the same file: Git merges them for you 👍
 - The [same line]{.alert}: Git cannot guess which one you want, so it asks you
 - This is a [merge conflict]{.alert}. It is normal, and it is not a disaster
 - You resolve it by opening the file and choosing, or with a tool like `git mergetool`
@@ -273,10 +344,10 @@ git push origin --delete master
 
 ## Changing the same file on GitHub
 
-:::{style="margin-top: 30px; font-size: 24px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- I've changed the same line of code on GitHub
+- I've changed the same line of code on GitHub and committed the changes on the website
 
 [![](figures/changes-github.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/changes-github.png"}
 
@@ -286,8 +357,14 @@ git push origin --delete master
 :::{.column width="50%"}
 - Oh no!
 
-:::{style="text-align: center;"}
+:::{style="text-align: center; margin-top: -20px;"}
 [![](figures/conflict.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/conflict.png"}
+:::
+
+:::{style="font-size: 18px;"}
+- `pull.rebase false` -- [merges](https://git-scm.com/docs/git-merge): keeps both histories and adds a merge commit. [Safest choice]{.alert}
+- `pull.rebase true` -- [rebases](https://git-scm.com/book/en/v2/Git-Branching-Rebasing): replays your commits on top of GitHub's for a linear history. Avoid it on commits you already pushed
+- `pull.ff only` -- [fast-forwards](https://git-scm.com/docs/git-pull#Documentation/git-pull.txt---ff-only) only: you decide what to do
 :::
 :::
 :::
@@ -338,7 +415,7 @@ Delete the markers along with the text you do not want
 :::
 
 :::{.column width="50%"}
-- There are other ways to resolve conflicts, such as using `git mergetool`
+- There are other ways to resolve conflicts, such as using `git mergetool` ([here](https://git-scm.com/docs/git-mergetool) for more information)
 - You can also use a graphical tool, such as [Sourcetree](https://www.sourcetreeapp.com) or [GitHub Desktop](https://desktop.github.com)
 - But it is good to know how to resolve conflicts manually 😊
 
@@ -359,8 +436,8 @@ Delete the markers along with the text you do not want
 :::{.columns}
 :::{.column width="50%"}
 - Branches are a way to work on different features or versions of your project
-- The default branch is called `main` on GitHub, and `master` in older repositories
-- However, you can create new branches to work on new features or versions [without affecting the `master` branch]{.alert}
+- The default branch is called `main` on GitHub, and `master` in older repositories and in Git's own default
+- However, you can create new branches to work on new features or versions [without affecting the `main` branch]{.alert}
 - You can create a new branch with the command `git branch branch-name`
 - And you can switch to the new branch with the command `git checkout branch-name`
   - Or you can use `git switch branch-name` if you have Git 2.23 or later
@@ -372,7 +449,7 @@ Delete the markers along with the text you do not want
 [![](figures/branches.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/branches.png"}
 :::
 
-- Branches may or may not be merged back to the `master` branch
+- Branches may or may not be merged back to the `main` branch
 - You can also delete branches after merging them
 :::
 :::
@@ -406,22 +483,22 @@ Delete the markers along with the text you do not want
 :::{.columns}
 :::{.column width="50%"}
 - Now the branch is already on GitHub
-- Let's merge the changes to the `master` branch
-  - `git checkout master`
+- Let's merge the changes to the `main` branch
+  - `git checkout main` (or `master`)
   - `git merge feature-1`
   - `git push`
 
 - Done! Let's see what happened
 
-- You can delete the branch with `git branch -d feature-1`
-- To delete the branch on GitHub, use `git push origin --delete feature-1`
+- You can delete the branch with this command: `git branch -d feature-1`
+- To delete the branch on GitHub, use this one: `git push origin -d feature-1`
 :::
 
 :::{.column width="50%"}
 :::{style="text-align: center;"}
 [![](figures/merge-branch.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/merge-branch.png"}
 
-More about branches [here](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell).
+More about branches [here](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)
 :::
 :::
 :::
@@ -437,8 +514,8 @@ More about branches [here](https://git-scm.com/book/en/v2/Git-Branching-Branches
 Three ways back, from safest to most destructive:
 
 - [Look around]{.alert}: `git checkout <hash>`. You are now in [detached HEAD]{.alert}, so anything you commit belongs to no branch
-- [Keep your work]{.alert}: `git switch -c new-branch <hash>` starts a branch at that commit. Usually what you want
-- [Move the branch itself]{.alert}: `git reset --hard <hash>` rewinds your branch and [throws away every commit after it]{.alert}
+- [Keep your work]{.alert}: `git switch -c new-branch <hash>` starts a branch at that commit. [Usually what you want](https://git-scm.com/docs/git-switch)
+- [Move the branch itself]{.alert}: `git reset --hard <hash>` rewinds your branch, drops every later commit, and [deletes uncommitted changes for good]{.alert}
 
 - `git switch main` brings you back to the present
 :::
@@ -446,7 +523,7 @@ Three ways back, from safest to most destructive:
 :::{.column width="55%"}
 - Hashes are hexadecimal, so `0-9` and `a-f` only
 - `a1b2c3d` is enough. The full form is 40 characters, like `470636f38e409f4f322c48183e19633ebb550625`
-- Copy them, do not retype them
+- [Copy them, do not retype them]{.alert}
 - Git keeps almost everything, so a lost commit can usually be recovered with `git reflog`
 - On a shared project, branch rather than reset
 
@@ -467,7 +544,7 @@ Three ways back, from safest to most destructive:
 - `-D` forces the deletion, even when the work was never merged
 
 :::{style="margin-top: 20px;"}
-- [Rarely needed]{.alert}: replacing `main` altogether. Delete it, rename your current branch to `main`, then push
+- [Rarely needed]{.alert}: replacing `main` altogether. Delete it, rename your current branch to `main`, then `git push --force`
 - [Never on a shared repository]{.alert}. Everyone else's work still points at the branch you deleted
 :::
 :::
@@ -493,7 +570,7 @@ Three ways back, from safest to most destructive:
 - It creates a folder named after the repository
 - Your copy stays [connected to the original]{.alert}
 - So if the repository is not yours, [you cannot push to it]{.alert}
-- Use it when you already have push rights and want to work locally
+- Use it for your own repositories, or to download someone else's code
 :::
 
 :::{.column width="45%"}
@@ -529,7 +606,8 @@ Three ways back, from safest to most destructive:
 :::{style="margin-top: 30px; font-size: 28px;"}
 - Forking from GitHub is easy, but it requires a few steps
 - Forking [is not part of Git]{.alert}, but it is part of GitHub
-  - That's why you cannot do it from the command line!
+  - That's why you cannot do it with Git! No `git fork` command exists
+  - But you can fork from the terminal with `gh repo fork owner/repo`, as we saw earlier
 - To fork a repository, go to the repository on GitHub and click on the `Fork` button on the top right corner
 - Then, you can clone your forked repository to your computer as you did before
 :::
@@ -558,6 +636,13 @@ Three ways back, from safest to most destructive:
 :::{.column width="50%"}
 - A fork does not update itself. The original keeps moving without you
 - [The easy way]{.alert}: on GitHub, click "Sync fork" and confirm. Commit your own work first
+- [With `gh`]{.alert}: 
+
+```bash
+gh repo sync your-user/your-fork
+git pull
+```
+
 - [From the terminal]{.alert}, point at the original once, then pull from it whenever you like:
 
 ```bash
@@ -582,17 +667,19 @@ git push
 
 ## Issues and pull requests
 
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 21px;"}
 :::{.columns}
 :::{.column width="50%"}
 - [Issues]{.alert} are a way to track bugs, enhancements, or other tasks in a repository
 - You can create an issue by clicking on the `Issues` tab on GitHub and then on the `New issue` button
+- With `gh`: `gh issue create --title "Plot is empty" --body "Details"`
 
 :::{style="margin-top: 30px;"}
-- [Pull requests]{.alert} are a way to suggest changes after you have forked and changed a repository
+- [Pull requests]{.alert} are a way to suggest changes from a fork or a branch
 - You can create a pull request by clicking on the `Pull requests` tab on GitHub and then on the `New pull request` button
+- Or in the terminal, from your branch: `gh pr create --fill` (title and body come from your commits)
 - The repository owner can then review your changes and merge them
-- And that's how open-source projects work! 🤓🎉
+- And [that's how open-source projects work!]{.alert} 🤓🎉
 :::
 :::
 
@@ -623,13 +710,16 @@ Pull requests
 - [Gists](https://gist.github.com) are a great way to share code snippets, notes, or other text
 - You can create a Gist by clicking on the `+` sign on the top right corner of GitHub and then on `New gist`
 - Paste any text or code and save it
-- You can also create secret Gists that are not indexed by search engines
+- Or in the terminal: `gh gist create notes.py` (secret by default; add `--public` to list it)
 - Gists also benefit from version control, so you can see the history of changes and revert to previous versions
+- Check it out: <https://gist.github.com>
 :::
 
 :::{.column width="50%"}
 :::{style="text-align: center;"}
 [![](figures/gist.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/gist.png"}
+
+<https://gist.github.com/danilofreire/d4fe27efe13b779b11c3424821331c4a>
 :::
 :::
 :::
@@ -653,6 +743,8 @@ Pull requests
 :::{.column width="50%"}
 :::{style="text-align: center;"}
 [![](figures/pages.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/pages.png"}
+
+More information here: <https://pages.github.com/>
 :::
 :::
 :::
@@ -673,6 +765,8 @@ Pull requests
 :::{.column width="50%"}
 :::{style="text-align: center;"}
 [![](figures/actions.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/actions.png"}
+
+Read more: <https://github.com/features/actions>
 :::
 :::
 :::
@@ -682,28 +776,6 @@ Pull requests
 
 :::{style="margin-top: 30px; font-size: 24px; text-align: center;"}
 [![](figures/actions2.png){width="82%"}](#){data-modal-type="image" data-modal-url="figures/actions2.png"}
-:::
-
-## GitHub in the command line
-
-:::{style="margin-top: 30px; font-size: 24px;"}
-:::{.columns}
-:::{.column width="50%"}
-- [GitHub CLI](https://cli.github.com/) is a command-line tool that brings GitHub to your terminal
-- You can install it with `brew install gh`
-- GitHub CLI creates repositories, issues, pull requests, and more
-- I use it both to create repositories and clone/fork them
-  - `gh repo create my-project`
-  - `gh repo clone danilofreire/my-project`
-- Have a look at the [GitHub CLI manual](https://cli.github.com/manual/) for more information
-:::
-
-:::{.column width="50%"}
-:::{style="text-align: center;"}
-[![](figures/cli.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/cli.png"}
-:::
-:::
-:::
 :::
 
 ## GitHub Copilot 🤖
@@ -736,7 +808,8 @@ Pull requests
 - `git switch -c new-branch <hash>` is the safe way to revisit an old commit
 - [Clone]{.alert} copies a repository to your computer. [Fork]{.alert} copies it to your account
 - [Issues]{.alert} track what needs doing, [pull requests]{.alert} propose the change itself
-- Pages, Actions, Gists, and the CLI are all built on the same repository
+- `gh` brings repositories, issues, pull requests, and Gists to your terminal
+- Pages, Actions, and Gists are all built on the same repository
 :::
 
 ## Next class

@@ -1,1 +1,1 @@
-print("Hello, QTM350!")
+print("Hello, DATASCI350!")

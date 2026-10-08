@@ -7,7 +7,7 @@ author:
     affiliations: "Department of Data and Decision Sciences <br> Emory University"
 format:
   clean-revealjs:
-    self-contained: true
+    self-contained: false
     code-overflow: wrap
     footer: "[Parallel Computing](https://danilofreire.github.io/datasci350/lectures/lecture-21/21-parallel-computing.html)"
 transition: slide
@@ -35,22 +35,21 @@ editor:
 :::{.columns}
 :::{.column width="50%"}
 - A web API is a [contract]{.alert} between your code and a server
-- We sent HTTP requests and read the JSON that came back
-- We handled [pagination]{.alert} and wrapped the whole download in `get_wdi()`
-- Pages without an API need `requests` and `BeautifulSoup` instead
-- We saved every result as a [parquet file]{.alert}, which keeps column types and compresses well
-- Today we ask what happens when those files get [really big!]{.alert}
+- We built URLs, read status codes, and followed paths through [JSON]{.alert}
+- `curl` and `requests` fetched the data
+- A `for` loop turned the reply into a DataFrame
+- We saved a [snapshot]{.alert}, so the analysis gives the same numbers every time
+- Today: what happens when the data get [really big?]{.alert}
 :::
 
 :::{.column width="50%"}
-- This module is called [Scaling and Performance]{.alert} because "parallelise" is only one of the answers
-- Sometimes parallelism really is the right move
-- Sometimes the fix is a [better algorithm]{.alert}
-- Sometimes we need a [faster engine]{.alert} (next lecture)
-- We will cover all three strategies across these two lectures
+- This module is about [scaling]{.alert}: making code cope with more data
+- Sometimes the answer is [parallel code]{.alert}: several cores working at once
+- Sometimes it is a [better algorithm]{.alert}
+- Sometimes it is a [faster engine]{.alert}, like DuckDB (next lecture)
 
-:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 20px;"}
-[Worth noticing]{.alert}: the parquet files we wrote in Module 06 are exactly the format Dask reads 
+:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 20px;"}
+Lecture 19's course panel, `wdi_panel.parquet`, uses the parquet format we meet later today
 :::
 :::
 :::
@@ -64,17 +63,16 @@ editor:
 :::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- [Serial vs parallel execution]{.alert}
-  - `map` function and embarrassingly parallel problems
-- [Big O notation]{.alert} and what parallelism can (and cannot) fix
-- [Amdahl's law]{.alert}: the speed-up ceiling
+- [Serial and parallel]{.alert} code, and the `map` function
+- [`joblib`]{.alert} and [`concurrent.futures`]{.alert}: parallel work on your laptop
+- [Big O notation]{.alert}: what parallelism can and cannot fix
+- [Amdahl's law]{.alert}: the limit on speed-up
 - [The GIL]{.alert}: why threads do not always help in Python
-- [`joblib`]{.alert} and [`concurrent.futures`]{.alert} for single-node parallelism
-- [`Dask`]{.alert} for scalable computing
-  - Lazy evaluation: arrays and DataFrames
-  - Reading and writing CSV and Parquet files
-  - `dask.delayed` for custom pipelines
-- [Best practices]{.alert}: when to parallelise and when not to
+- [Dask]{.alert} for data bigger than your memory
+  - Lazy arrays and DataFrames
+  - CSV and parquet files
+  - `dask.delayed` for your own functions
+- [Best practices]{.alert}: when to parallelise, and when not to
 :::
 
 :::{.column width="50%"}
@@ -88,78 +86,58 @@ editor:
 
 # Serial vs parallel algorithms  {background-color="#1B3A6B"}
 
-## Serial execution
+## Serial execution and the `map` function
 ### One line finishes before the next one starts
-
-:::{style="margin-top: 30px; font-size: 22pt;"}
-- A typical Python program runs its lines one after another, in order:
-
-```{python}
-#| echo: true
-#| eval: true
-#| cache: true 
-# Import packages
-import numpy as np
-
-# Define an array of numbers
-foo = np.array([0, 1, 2, 3, 4, 5])
-
-# Define a function that squares numbers
-def bar(x):
-    return x * x
-
-# Loop over each element and perform an action on it
-for element in foo:
-    # Print the result of bar
-    print(bar(element))
-```
-:::
-
-## The `map` function
-### Apply one function to every element of a list
 
 :::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- We will use a tool called `map` later in this lecture
-- It applies one function to each element of a list or array
-- Here is a version I wrote by hand so you can see the loop inside it:
+- Python normally runs one line after another, in order
+- This loop calls `bar` on each number, one at a time:
 
-:::{style="font-size: 1.2em;"}
+:::{style="font-size: 1.1em;"}
 ```{python}
 #| echo: true
 #| eval: true
-#| cache: true 
-# (Very) inefficient function
-def my_map(function, array):
-    # create a container for the results
-    output = []
+#| cache: true
+import numpy as np
 
-    # loop over each element
-    for element in array:
-        
-        # add the intermediate result
-        output.append(function(element))
-    
-    # return the now-filled container
-    return output
+# An array of six numbers
+foo = np.array([0, 1, 2, 3, 4, 5])
+
+# A function that squares a number
+def bar(x):
+    return x * x
+
+# Call bar on each element, in order
+for element in foo:
+    print(bar(element))
 ```
 :::
 :::
 
 :::{.column width="50%"}
-:::{style="font-size: 1.2em; margin-top: 20px;"}
+- [`map`]{.alert} applies one function to every element of a list
+- Here is my own version, so you can see the loop inside:
+
+:::{style="font-size: 1.1em;"}
 ```{python}
 #| echo: true
 #| eval: true
 #| cache: true
+def my_map(function, array):
+    output = []                 # empty list for the results
+    for element in array:
+        output.append(function(element))
+    return output
+
 my_map(bar, foo)
-``` 
+```
 :::
 
-- [Python already provides a `map` function in its standard library](https://www.w3schools.com/python/ref_func_map.asp), so you never have to write mine:
+- Python has a [built-in `map`](https://www.w3schools.com/python/ref_func_map.asp):
 
-:::{style="font-size: 1.2em;"}
+:::{style="font-size: 1.1em;"}
 ```{python}
 #| echo: true
 #| eval: true
@@ -168,26 +146,24 @@ list(map(bar, foo))
 ```
 :::
 
-- The built-in version returns the same answer and runs much faster than mine (it is implemented in C), so use it instead
-
-::: 
+- Same answer, one line. Use the built-in one
+:::
 :::
 :::
 
 ## Using `joblib` for parallel computing
 ### Two functions turn a loop into parallel work
 
-:::{style="margin-top: 30px; font-size: 21px;"}
+:::{style="margin-top: 30px; font-size: 20px;"}
 :::{.columns}
 :::{.column width="50%"}
-- Each step of our `map` call is [independent]{.alert}, so nothing stops us running the steps at the same time
-- [`joblib`](https://joblib.readthedocs.io/) gives us two functions for that
-- `Parallel(n_jobs=k)` runs `k` tasks at the same time
-- `delayed(f)` wraps `f` so that joblib can schedule the call instead of running it immediately
-- You combine them with a generator expression, as shown on the right
-- `n_jobs=-1` asks joblib to use [all available CPU cores]{.alert}
-- joblib handles process creation, data transfer and result collection for you
-- More details in the [joblib documentation](https://joblib.readthedocs.io/en/stable/index.html)
+- Each call to `bar` is [independent]{.alert}, so the calls can run at the same time
+- Your CPU has several [cores]{.alert}. Each core runs one task at a time
+- [`joblib`](https://joblib.readthedocs.io/) sends tasks to [worker processes]{.alert}: separate copies of Python, one per core
+- `Parallel(n_jobs=6)` runs up to six tasks at once. `n_jobs=-1` uses all cores
+- `delayed(bar)` wraps `bar`, so joblib runs it later, on a worker
+- `delayed(bar)(x) for x in foo` makes one task per element
+- That is a [generator expression]{.alert}: a `for` loop inside brackets
 :::
 
 :::{.column width="50%"}
@@ -201,7 +177,6 @@ list(map(bar, foo))
 # Install joblib if you haven't done so yet
 # !pip install joblib
 
-# Import joblib functions 
 from joblib import Parallel, delayed
 
 results = Parallel(n_jobs=6)(
@@ -211,8 +186,8 @@ results
 ```
 :::
 
-- `joblib` starts six workers and gives each one a different element of `foo`
-- The results match the serial version exactly, because the work itself has not changed
+- Each worker gets a different element of `foo`
+- The results match the serial version, because the work is the same
 :::
 :::
 :::
@@ -220,13 +195,13 @@ results
 ## Serial vs parallel execution
 ### Four heavy calls, timed for real
 
-:::{style="margin-top: 30px; font-size: 22px;"}
+:::{style="margin-top: 30px; font-size: 20px;"}
 :::{.columns}
 :::{.column width="50%"}
-- `calculation` runs ten heavy operations on ten million random numbers
-- Each call is fully independent of the others, which makes this problem [embarrassingly parallel](https://en.wikipedia.org/wiki/Embarrassingly_parallel)
-- We time three things with `%timeit`: one call as a baseline, four calls in serial, and four calls in parallel
-
+- `calculation` runs ten heavy steps on ten million random numbers
+- The calls do not depend on each other. The problem is [embarrassingly parallel](https://en.wikipedia.org/wiki/Embarrassingly_parallel)
+- [`%timeit`](https://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-timeit){.alert} runs a line several times and reports the average time. It works in Jupyter only
+- `%%timeit` (two `%` signs) times a whole cell
 - [One call:]{.alert}
 
 :::{style="font-size: 1.2em;"}
@@ -248,7 +223,8 @@ def calculation(size=10000000):
 :::
 
 :::{.column width="50%"}
-- [Four calls, serial:]{.alert}
+- [Four calls, one after another:]{.alert}
+- `_` is the usual name for a loop variable we do not use
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -260,7 +236,7 @@ def calculation(size=10000000):
 ```
 :::
 
-- [Four calls, parallel:]{.alert}
+- [Four calls, in parallel:]{.alert}
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -275,7 +251,7 @@ Parallel(n_jobs=4)(
 ```
 :::
 
-- On my machine the parallel version does not reach a full 4× speed-up, [because starting the workers and moving the results back costs time.]{.alert} The saving is still real
+- It is not a full 4× speed-up, because [starting workers and collecting results takes time]{.alert}. The saving is still real
 :::
 :::
 :::
@@ -288,11 +264,12 @@ Parallel(n_jobs=4)(
 :::{style="margin-top: 30px; font-size: 21px;"}
 :::{.columns}
 :::{.column width="50%"}
-- [`concurrent.futures` comes with Python](https://docs.python.org/3/library/concurrent.futures.html)
-- A slow task is slow for one of two reasons: [the processor is busy, or the processor is idle while your code waits for an answer]{.alert}
-- [CPU-bound]{.alert}: the processor is busy with a task. Only more processors help, so use [`ProcessPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ProcessPoolExecutor), which works like `joblib`
-- [I/O-bound]{.alert}: the processor is idle, waiting for a web server, a disk, or a database to answer. Use [`ThreadPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor)
-- Both copy the `map` interface: a function and an iterable
+- [`concurrent.futures`](https://docs.python.org/3/library/concurrent.futures.html) comes with Python: nothing to install
+- Slow code is either [computing]{.alert} or [waiting]{.alert}
+- Computing ([CPU-bound]{.alert}): use processes, with [`ProcessPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ProcessPoolExecutor)
+- Waiting ([I/O-bound]{.alert}): use threads, with [`ThreadPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor)
+- A [thread]{.alert} is a light worker that shares its process's memory
+- `with` starts the workers and stops them at the end
 
 :::{style="font-size: 1.1em;"}
 ```{python}
@@ -302,15 +279,15 @@ from concurrent.futures import ProcessPoolExecutor
 
 with ProcessPoolExecutor(max_workers=4) as executor:
     results = list(executor.map(bar, foo))
-
-results
-# [0, 1, 4, 9, 16, 25]
 ```
 :::
+
+- In a notebook on macOS or Windows, [import `bar` from a `.py` file]{.alert}. Workers cannot see functions defined in a cell. joblib avoids this
 :::
 
 :::{.column width="50%"}
-- Waiting needs no second processor, so cheap threads do the job and no processes are spawned:
+- Threads start fast, and waiting needs no extra core
+- Each URL asks the [World Bank API](https://datahelpdesk.worldbank.org/knowledgebase/articles/898581-api-basic-call-structures) for one country's population
 
 :::{style="font-size: 1.1em;"}
 ```{python}
@@ -319,33 +296,34 @@ results
 from concurrent.futures import ThreadPoolExecutor
 import requests
 
-urls = [
-    "https://api.worldbank.org/v2/country/BRA/indicator/SP.POP.TOTL?format=json",
-    "https://api.worldbank.org/v2/country/IND/indicator/SP.POP.TOTL?format=json",
-    "https://api.worldbank.org/v2/country/USA/indicator/SP.POP.TOTL?format=json",
-]
+base = "https://api.worldbank.org/v2/country/"
+end = "/indicator/SP.POP.TOTL?format=json&per_page=100"
+urls = [base + "BRA" + end,
+        base + "IND" + end,
+        base + "USA" + end]
 
 def fetch(url):
-    return requests.get(url).json()
+    return requests.get(url, timeout=30).json()
 
 with ThreadPoolExecutor(max_workers=3) as executor:
     results = list(executor.map(fetch, urls))
 ```
 :::
 
-- In lecture 19 you downloaded World Bank indicators one country at a time
-- This is the same `get_wdi()` pattern, with all three requests now running at the same time
+- Lecture 19 sent one request at a time. Here, all three wait at once
 :::
 :::
 :::
 
 ## When to use which?
-### sklearn and joblib
+### joblib inside scikit-learn, and a summary
 
-:::{style="margin-top: 30px; font-size: 23px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- [joblib]{.alert} suits numeric loops and [scikit-learn.](https://scikit-learn.org/stable/) `sklearn` calls joblib internally whenever you set `n_jobs=-1`:
+- [joblib]{.alert} suits numeric loops and [scikit-learn](https://scikit-learn.org/stable/)
+- scikit-learn uses joblib when you set `n_jobs=-1`
+- [`load_digits()`](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html) loads 1,797 small images of handwritten digits
 
 :::{style="font-size: 1.1em;"}
 ```{python}
@@ -372,7 +350,7 @@ print(f"Time: {elapsed:.2f}s (all cores)")
 :::
 
 :::{.column width="50%"}
-- [`concurrent.futures`]{.alert} suits I/O parallelism, and anywhere you cannot install extra packages
+- [`concurrent.futures`]{.alert} suits downloads, and machines where you cannot install packages
 
 :::{style="margin-top: 30px; margin-bottom: 30px;"}
 | Scenario | Tool |
@@ -383,8 +361,8 @@ print(f"Time: {elapsed:.2f}s (all cores)")
 | Bigger than RAM, clusters | `Dask` (next section) |
 :::
 
-:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 20px;"}
-[Every tool does the same thing]{.alert}: split the work, run it on separate workers, then collect the results
+:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 20px;"}
+[Every tool follows the same steps]{.alert}: split the work, run it on separate workers, then collect the results
 :::
 :::
 :::
@@ -398,12 +376,11 @@ print(f"Time: {elapsed:.2f}s (all cores)")
 :::{style="margin-top: 30px; font-size: 24px;"}
 :::{.columns}
 :::{.column width="50%"}
-- [Big O notation]{.alert} describes how the runtime grows as the input grows
+- [Big O notation](https://en.wikipedia.org/wiki/Big_O_notation) describes how the runtime grows as the input grows
 - [O(1)]{.alert} means constant: reading one array element costs the same whatever the array size
 - [O(n)]{.alert} means linear: a single loop takes twice as long when the input doubles
 - [O(n²)]{.alert} means quadratic: a nested loop takes four times as long when the input doubles
-- Our `calculation` function called on `n` inputs is [O(n)]{.alert}
-- Two calls take about twice as long as one, and a hundred calls take about a hundred times as long
+- Calling `calculation` on `n` inputs is [O(n)]{.alert}: a hundred calls take a hundred times as long as one
 :::
 
 :::{.column width="50%"}
@@ -423,7 +400,7 @@ parallel_time = (num_images * 2) / 4  # 4 cores, ideal speedup
 
 plt.figure(figsize=(8, 5))
 plt.plot(num_images, sequential_time, 'o-', label='Serial O(n)', linewidth=2, markersize=8)
-plt.plot(num_images, parallel_time, 's-', label='Parallel O(n/4)', linewidth=2, markersize=8)
+plt.plot(num_images, parallel_time, 's-', label='Parallel on 4 cores (still O(n))', linewidth=2, markersize=8)
 plt.xlabel('Number of Images', fontsize=12)
 plt.ylabel('Time (seconds)', fontsize=12)
 plt.title('O(n) Scaling: Serial vs Parallel', fontsize=14, fontweight='bold')
@@ -438,19 +415,18 @@ plt.show()
 :::
 
 ## What parallelism does to complexity
+### Cores divide the time, but the growth rate stays the same
 
-:::{style="margin-top: 30px; font-size: 22px;"}
+:::{style="margin-top: 30px; font-size: 21px;"}
 :::{.columns}
 :::{.column width="50%"}
-- With `p` cores, an O(n) problem becomes [O(n/p + overhead)]{.alert}
-- Four cores give you close to a 4× saving, minus whatever the coordination costs
-- The best candidates are [embarrassingly parallel O(n) tasks]{.alert}
-- Running `n` independent calculations qualifies
-- Applying the same function to `n` separate inputs qualifies too
-- What both have in common is no shared state and no dependency between tasks
+- With `p` cores, an O(n) task takes about [n/p time plus overhead]{.alert}. It is still O(n)
+- Four cores make it almost 4× faster, minus the cost of running the workers
+- The best candidates are [embarrassingly parallel O(n) tasks]{.alert}, such as one function applied to `n` separate inputs
+- These tasks share no data and do not wait for each other
 
-:::{style="background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 20px;"}
-Parallelism never changes the Big O class. It divides the constant in front of it. An O(n²) algorithm running on eight cores is still an O(n²) algorithm; you only reach "too slow" a little later
+:::{style="background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 20px;"}
+Parallelism never changes the Big O class. It only divides the time by a constant, so O(n²) on eight cores is still O(n²)
 :::
 :::
 
@@ -476,9 +452,12 @@ print(f"{len(pairwise_sum(data)):,} operations")
 ```
 :::
 
-- A thousand elements already means a million operations
-- At `n = 100_000` the same code is 10 billion operations, and no core count rescues that
-- Other poor candidates are steps that depend on previous results, algorithms with shared state, and problems limited by memory rather than by the CPU
+- 1,000 elements give 1 million operations
+- `n = 100_000` gives 10 billion. Eight cores still leave 1.25 billion each
+- Other poor candidates:
+  - Steps that need results from a previous step
+  - Tasks that share the same data
+  - Tasks limited by memory, not by the CPU
 :::
 :::
 :::
@@ -487,12 +466,14 @@ print(f"{len(pairwise_sum(data)):,} operations")
 
 :::{style="margin-top: 30px; font-size: 22px;"}
 1. Install the packages with `pip install joblib numpy` if you have not done so already
-2. Run the serial version below and write down the time it prints
+2. Run the serial version below and write down the time it prints. `np.arange(1000000)` makes an array of the numbers 0 to 999,999
 
 :::{style="font-size: 1.2em;"}
 ```{python}
 #| echo: true
 #| eval: false
+import numpy as np
+
 def square(x):
     return x**2
 
@@ -504,7 +485,7 @@ numbers = np.arange(1000000)
 ```
 :::
 
-3. Now run the parallel version and write down its time as well. Be patient: this one takes a while
+3. Now run the parallel version and write down its time as well. Be patient, as this one takes a while
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -517,7 +498,7 @@ from joblib import Parallel, delayed
 ```
 :::
 
-4. Compare the two times and decide which version you would ship
+4. Compare the two times and decide which version you would use
 
 [[Appendix 01]{.button}](#sec:appendix01)
 :::
@@ -530,11 +511,12 @@ from joblib import Parallel, delayed
 :::{style="margin-top: 30px; font-size: 23px;"}
 :::{.columns}
 :::{.column width="50%"}
-- Every program has a [serial share]{.alert}: the setup, the merging of results, and any step that must wait for the one before it
-- [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law) says that share caps your maximum speed-up, however many cores you add
-- The formula is $\text{speedup} = \dfrac{1}{s + \dfrac{p}{N}}$, where $s$ is the serial fraction, $p = 1 - s$ is the parallel fraction, and $N$ is the number of cores
-- Take a program that is 90% parallel, so $s = 0.1$, running on 8 cores
-- The arithmetic gives $\frac{1}{0.1 + 0.9/8} = \frac{1}{0.2125} \approx 4.7\times$, well short of the $8\times$ you might have hoped for
+- Some parts of a program [cannot run in parallel]{.alert}: setup, merging results, or steps that wait for the one before
+- That part is the [serial share]{.alert} $s$. The rest, $p = 1 - s$, can be split across cores
+- More cores only speed up $p$, so $s$ sets a ceiling ([Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law))
+- $\text{speedup} = \dfrac{1}{s + \dfrac{p}{N}}$, with $N$ = number of cores
+- Example: 90% parallel ($s = 0.1$) on 8 cores gives $\frac{1}{0.1 + 0.9/8} = \frac{1}{0.2125} \approx 4.7\times$, not $8\times$
+- Even with infinite cores, the serial 10% remains, so the limit is $1/0.1 = 10\times$
 :::
 
 :::{.column width="50%"}
@@ -579,24 +561,26 @@ plt.show()
 :::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- CPython, the Python you are running, has a [Global Interpreter Lock (GIL)](https://en.wikipedia.org/wiki/Global_Interpreter_Lock)
-- The GIL lets only [one thread]{.alert} execute Python code at a time, however many cores you have
-- Threads still help while your code [waits]{.alert}, because the lock is released during downloads and API calls
-- They do nothing while your code [computes]{.alert}, because the lock keeps the other threads idle
-- CPU-bound work needs [processes]{.alert}: each process is a separate Python with its own GIL
-- [NumPy](https://numpy.org/), [Polars](https://polars.dev/) and [DuckDB](https://duckdb.org/) [release the GIL]{.alert} while their C and Rust code runs, so they use all cores with no processes to manage
-- A [free-threaded build]{.alert} without the GIL is official since Python 3.14 ([PEP 779](https://peps.python.org/pep-0779/)), but it is not the default
+- CPython, the usual Python, has a [Global Interpreter Lock (GIL)](https://en.wikipedia.org/wiki/Global_Interpreter_Lock)
+- Only [one thread]{.alert} runs Python code at a time
+- Threads help code that [waits]{.alert}: the lock is released during downloads
+- Threads do not help code that [computes]{.alert}
+- For computing, use [processes]{.alert}, each with its own GIL
+- [NumPy](https://numpy.org/) [releases the GIL]{.alert} in its C code, so threads can help there
+- [Polars](https://polars.dev/) and [DuckDB](https://duckdb.org/) use all cores on their own
+- Python 3.14 offers a [free-threaded build]{.alert} without the GIL ([PEP 779](https://peps.python.org/pep-0779/)), but not by default
 :::
 
 :::{.column width="50%"}
-- How the GIL maps onto the tools you already know:
+- Which tool for which task:
 
-:::{style="font-size: 19px;"}
+:::{style="font-size: 20px;"}
 | Task | Use | Why |
 |------|-----|-----|
-| Number crunching | [Processes]{.alert} (`joblib`, `ProcessPoolExecutor`) | Sidesteps the GIL |
+| Number crunching | [Processes]{.alert} (`joblib`, `ProcessPoolExecutor`) | Each has its own GIL |
 | Downloading many URLs | [Threads]{.alert} (`ThreadPoolExecutor`) | GIL released while waiting |
-| NumPy / Polars / DuckDB | [Either or neither]{.alert} | Heavy work runs in C/Rust, outside the GIL |
+| NumPy | [Threads can help]{.alert} | GIL released in C code |
+| Polars / DuckDB | [Neither]{.alert} | Already use all cores |
 | `sklearn` with `n_jobs=-1` | Processes (via `joblib`) | Each fold trains independently |
 :::
 :::
@@ -611,13 +595,13 @@ plt.show()
 :::{style="margin-top: 20px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="52%"}
-- [Dask](https://dask.org/) is a parallel computing library for Python
-- It scales the previous sections to [datasets bigger than RAM](https://docs.dask.org/en/stable/best-practices.html){.alert} and to [clusters](https://docs.dask.org/en/stable/deploying.html) bigger than one machine
-- You write ordinary [NumPy](https://numpy.org/) and [pandas](https://pandas.pydata.org/) code; Dask handles the parallelism
-- Its [task scheduler](https://docs.dask.org/en/stable/scheduling.html){.alert} splits your work into a graph of small tasks and spreads them across your cores
-- Its big data collections are [arrays](https://docs.dask.org/en/stable/array.html){.alert}, [DataFrames](https://docs.dask.org/en/stable/dataframe.html){.alert} and [lists](https://docs.dask.org/en/stable/bag.html){.alert} that behave like the ones you know
-- Active development, with a release most months: [version 2026.8.0](https://github.com/dask/dask/releases/tag/2026.8.0) was released in August 2026
-- Next lecture: when do you actually need Dask, and when does a faster single-machine engine win?
+- [Dask](https://dask.org/) is a Python library for parallel computing
+- It handles [data bigger than your RAM](https://docs.dask.org/en/stable/best-practices.html){.alert}, and runs on [clusters](https://docs.dask.org/en/stable/deploying.html) of many machines
+- You write [NumPy](https://numpy.org/) or [pandas](https://pandas.pydata.org/) code, and Dask runs it in parallel
+- Its [task scheduler](https://docs.dask.org/en/stable/scheduling.html){.alert} splits the work into small tasks and spreads them over your cores
+- It offers [arrays](https://docs.dask.org/en/stable/array.html){.alert}, [DataFrames](https://docs.dask.org/en/stable/dataframe.html){.alert} and [bags](https://docs.dask.org/en/stable/bag.html){.alert} (parallel lists)
+- It is actively developed ([2026.8.0](https://github.com/dask/dask/releases/tag/2026.8.0), August 2026)
+- Next lecture times the same group-by in DuckDB, pandas and Dask
 :::
 
 :::{.column width="48%"}
@@ -627,8 +611,8 @@ plt.show()
 :::{style="font-size: 17px;"}
 <https://www.dask.org/>
 :::
-:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 15px; text-align: left;"}
-`joblib` parallelises your functions and leaves the data where it was. [Dask chunks the data itself,]{.alert} so a Dask array or DataFrame can be larger than your RAM
+:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 15px; text-align: left;"}
+`joblib` splits the work into function calls. [Dask also splits the data into chunks]{.alert}, so the data can be bigger than your RAM
 :::
 :::
 :::
@@ -636,14 +620,12 @@ plt.show()
 :::
 
 ## Dask arrays
-### NumPy arrays split into chunks that run in parallel
+### NumPy arrays split into chunks, and nothing runs until `.compute()`
 
 :::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- Let's import Dask and see how it works
-
-:::{style="font-size: 1.3em; margin-top: 30px; margin-bottom: 30px"}
+:::{style="font-size: 1.2em;"}
 ```{python}
 #| echo: true
 #| eval: true
@@ -653,16 +635,9 @@ import dask.array as da
 ```
 :::
 
-- A [Dask array](https://docs.dask.org/en/stable/array.html) is a parallel version of a [NumPy array](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html)
-- It splits one large array into [chunks]{.alert}, and every chunk is an ordinary NumPy array
-- Dask processes those chunks in parallel across your CPU cores
-- You choose the chunk size when you create the array, and here each block is 100 by 100
-- The API matches NumPy, so `a.sum()`, `a.mean()` and slicing all work as you expect
-:::
-
-:::{.column width="50%"}
-- Let's build a Dask array from a large NumPy array
-- The Dask array `a` is a lazy wrapper around the original data, split into 100 by 100 chunks
+- A [Dask array](https://docs.dask.org/en/stable/array.html) splits a large array into [chunks]{.alert}
+- Each chunk is a [NumPy array](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html), processed in parallel
+- Here each chunk is 100 by 100:
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -675,17 +650,11 @@ a
 ```
 :::
 :::
-:::
-:::
 
-## Dask arrays
-### Nothing runs until you call `.compute()`
-
-:::{style="margin-top: 30px; font-size: 21px;"}
-- Dask arrays are [lazy](https://en.wikipedia.org/wiki/Lazy_evaluation), so nothing is computed until you call `.compute()`
-- That lets you build a full computation graph, an execution plan, before any work starts
-- Dask can then [optimise the graph and cut memory use]{.alert} before it executes anything
-- Let's slice the Dask array `a` to get the first 10 rows of the sixth column
+:::{.column width="50%"}
+- Dask arrays are [lazy](https://en.wikipedia.org/wiki/Lazy_evaluation): Dask plans the steps but does not run them yet
+- Planning first helps Dask [save memory]{.alert}
+- Slicing gives a plan, not numbers:
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -696,7 +665,7 @@ a[:10, 5] # first 10 rows of the 6th column
 ```
 :::
 
-- The `.compute()` method is what finally asks Dask for the numbers
+- `.compute()` runs the plan:
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -707,13 +676,14 @@ a[:10, 5].compute()
 ```
 :::
 :::
+:::
+:::
 
 ## Dask arrays
+### Most NumPy operations work, and big ones can run faster
 
-:::{style="margin-top: 20px; font-size: 20px;"}
-- Dask arrays support most of the NumPy operations you already use
-- Arithmetic works elementwise, so `+`, `*`, `exp` and `log` behave normally
-- Reductions along an axis work too, including `sum()`, `mean()` and `std()`
+:::{style="margin-top: 20px; font-size: 21px;"}
+- Maths (`+`, `*`, `exp`, `log`) and summaries (`sum()`, `mean()`, `std()`) work as in NumPy
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -724,7 +694,7 @@ a.sum().compute()
 ```
 :::
 
-- Let's time the same operation in NumPy on 100 million numbers
+- The same operation on 100 million numbers, first in NumPy:
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -737,7 +707,7 @@ np_arr = np.random.random(size)
 ```
 :::
 
-- And now the same operation in Dask, with the chunk size left to Dask
+- Then in Dask, with automatic chunks:
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -749,8 +719,8 @@ da_arr = da.random.random(size, chunks='auto')
 ```
 :::
 
-:::{style="background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 15px;"}
-[Not a rule]{.alert}: Dask wins here because `sqrt` and `sin` split cacross chunks. On data that fits in memory, building the graph and moving chunks often makes Dask [slower]{.alert}. Run `%timeit` to see the difference
+:::{style="background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 15px;"}
+[Not a rule]{.alert}: here NumPy uses one core and Dask uses several. On small data, Dask is often [slower]{.alert}
 :::
 :::
 
@@ -760,11 +730,10 @@ da_arr = da.random.random(size, chunks='auto')
 :::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- Dask also gives you a parallel version of the [pandas DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html)
-- One [Dask DataFrame](https://docs.dask.org/en/stable/dataframe.html) is many pandas DataFrames, [split along the index](https://docs.dask.org/en/stable/dataframe-design.html)
-- Let's look at an example
+- A [Dask DataFrame](https://docs.dask.org/en/stable/dataframe.html) is many small [pandas DataFrames](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html), [split by row](https://docs.dask.org/en/stable/dataframe-design.html)
+- [`dask.datasets.timeseries()`](https://docs.dask.org/en/stable/api.html#dask.datasets.timeseries) makes random example data: one row per second from 1 to 30 January 2000
 
-:::{style="font-size: 28px; margin-top: 20px; margin-bottom: 20px;"}
+:::{style="font-size: 1.2em; margin-top: 20px; margin-bottom: 20px;"}
 ```{python}
 #| echo: true
 #| eval: true
@@ -774,9 +743,9 @@ df = dask.datasets.timeseries()
 ```
 :::
 
-- This is a small synthetic dataset of about 240 MB
-- Dask DataFrames are [lazy](https://docs.dask.org/en/stable/graphs.html){.alert} in the same way Dask arrays are
-- Nothing is printed but ellipses, because no rows have been read yet
+- It uses about 120 MB in memory
+- Dask DataFrames are [lazy](https://docs.dask.org/en/stable/graphs.html){.alert}, like Dask arrays
+- The table shows `...`, because no rows have been computed yet
 :::
 
 :::{.column width="50%"}
@@ -790,9 +759,9 @@ df
 ```
 :::
 
-- The column names and [dtypes](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dtypes.html) are known even so
+- Dask already knows the column names and [dtypes](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dtypes.html), the type of each column
 
-:::{style="font-size: 28px;"}
+:::{style="font-size: 26px;"}
 ```{python}
 #| echo: true
 #| eval: true
@@ -807,11 +776,11 @@ df.dtypes
 ## Dask dataframes
 ### Filtering and grouping look exactly like pandas
 
-:::{style="margin-top: 30px; font-size: 20px;"}
+:::{style="margin-top: 30px; font-size: 21px;"}
 :::{.columns}
 :::{.column width="50%"}
-- Dask DataFrames support a large subset of the pandas API
-- A few operations, such as `head()`, display data without being asked
+- Dask DataFrames support most of the pandas API
+- `head()` is not lazy: it computes the first rows straight away
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -829,7 +798,7 @@ df.head()
 :::
 
 :::{.column width="50%"}
-- Here we keep the rows where `y > 0` and take the standard deviation of `x` within each group
+- Keep the rows where `y > 0`, then take the standard deviation of `x` for each `name`
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -842,8 +811,8 @@ df3
 ```
 :::
 
-- Notice that `df3` still shows no numbers
-- Calling `.compute()` runs the plan and hands back a pandas Series
+- `df3` still shows no numbers
+- `.compute()` runs the plan and returns a pandas Series
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -860,11 +829,11 @@ df3.compute()
 ## Dask dataframes
 ### `.persist()` keeps a computed result in memory
 
-:::{style="margin-top: 30px; font-size: 20px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
 - Aggregations work the same way
-- Here we take the sum of `x` and the maximum of `y` within each `name`
+- The sum of `x` and the maximum of `y`, for each `name`:
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -878,9 +847,9 @@ df4.compute()
 :::
 
 :::{.column width="50%"}
-- If the result fits in RAM, `.persist()` computes it once and holds it in memory
-- Later computations on persisted data skip the loading and the recomputation
-- Persist a small aggregate, never the raw 240 MB frame you have not filtered yet
+- `.persist()` computes a result once and keeps it in memory
+- Later steps reuse it instead of computing it again
+- Persist small results, not the full 120 MB table
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -898,15 +867,14 @@ df5.head()
 ## Combining Dask and Pandas
 ### The workflow ends with a small pandas DataFrame
 
-:::{style="margin-top: 20px; font-size: 21px;"}
+:::{style="margin-top: 20px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- Dask and pandas are designed to hand work to each other
-- Dask does the heavy lifting over data that will not fit in memory
-- `.compute()` then returns an ordinary pandas DataFrame for the last few steps
-- Most Dask code reads almost identically to pandas code, so moving between them costs you very little
+- Dask does the heavy work on data too big for memory
+- `.compute()` returns an ordinary pandas DataFrame for the last steps
+- Dask code reads like pandas, so switching is easy
 
-:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 15px;"}
+:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 15px;"}
 Load and filter in Dask, aggregate down to something small, call `.compute()`, then finish in pandas
 :::
 :::
@@ -921,17 +889,16 @@ import dask.dataframe as dd
 
 df = dask.datasets.timeseries()
 
-# Step 1-2: filter and aggregate with Dask
-summary = (
-    df[df.x > 0]
-    .groupby("name")
-    .agg({"x": "mean", "y": "std"})
-)
+# Step 1: filter with Dask
+positive = df[df.x > 0]
 
-# Step 3: bring to Pandas
+# Step 2: aggregate with Dask
+summary = positive.groupby("name").agg({"x": "mean", "y": "std"})
+
+# Step 3: bring the small result to pandas
 pdf = summary.compute()
 
-# Step 4: use Pandas normally
+# Step 4: use pandas normally
 pdf.sort_values("x", ascending=False).head(5)
 ```
 :::
@@ -989,16 +956,18 @@ da_data_large = da.random.random(size, chunks=5_000_000)  # 2 chunks
 :::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- CSV is still the most common format in data science, and for good reasons
-- Pandas reads CSV well, but it loads the [entire file into memory]{.alert} first
-- On a large file that can mean several gigabytes of RAM for a question about one column
-- Dask offers a [more careful way](https://docs.dask.org/en/latest/dataframe-create.html) to read and write CSV
-- The `name_function` argument below turns one DataFrame into one file per day
-- Writing `data/*.csv` gives us 30 files for January 2000
+- CSV is still the most common data format
+- pandas loads the [whole file into memory]{.alert} first
+- A big file can fill your RAM, even if you need one column
+- Dask reads and writes CSV in [partitions]{.alert}: [pieces of the table](https://docs.dask.org/en/latest/dataframe-create.html)
+- Here, one partition per day. Dask replaces the `*` in `'data/*.csv'` with each name
+- `name(i)` turns partition `i` into a date
+- Result: 30 files, 1 to 30 January 2000
+- The `;` hides the file list that `to_csv` returns
 :::
 
 :::{.column width="50%"}
-:::{style="font-size: 20px; margin-top: 20px; margin-bottom: 20px;"}
+:::{style="font-size: 22px; margin-top: 20px; margin-bottom: 20px;"}
 ```{python}
 #| echo: true
 #| eval: true
@@ -1015,12 +984,14 @@ df
 import os
 import datetime
 
+# Create the data folder if it does not exist
 if not os.path.exists('data'):
     os.mkdir('data')
 
 def name(i):
-    return str(datetime.date(2000, 1, 1)
-               + i * datetime.timedelta(days=1))
+    first_day = datetime.date(2000, 1, 1)
+    day = first_day + datetime.timedelta(days=i)
+    return str(day)
 
 df.to_csv('data/*.csv', name_function=name);
 ```
@@ -1035,10 +1006,10 @@ df.to_csv('data/*.csv', name_function=name);
 :::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- The `data` directory now holds 30 CSV files, one per day in January 2000, and 182 MB in total
-- `dd.read_csv` takes a glob pattern and treats the whole set as one DataFrame
-- Dask reads the files in parallel and loads only the parts a computation needs
-- Pandas would need all 182 MB in memory before it could answer anything
+- The `data` folder now has 30 CSV files, 182 MB in total
+- `dd.read_csv` accepts a [glob pattern]{.alert}: `2000-*-*.csv` matches them all
+- Dask reads them as one DataFrame
+- It reads a few at a time, in parallel, so memory use stays low
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -1052,7 +1023,7 @@ df
 :::
 
 :::{.column width="50%"}
-- Here is a group-by across all 30 files, timed for real
+- A group-by across all 30 files:
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -1072,10 +1043,9 @@ df
 :::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- CSV works, but newer formats such as [Parquet](https://parquet.apache.org/) have taken over for analytical work
-- Parquet stores data [by column rather than by row]{.alert}, so a query can read one column and ignore the rest
-- It also compresses: the month of CSVs we just wrote is 182 MB, and the same data as parquet is 86 MB
-- That is 53% smaller, on this dataset, with no loss of information
+- [Parquet](https://parquet.apache.org/) has replaced CSV for most analysis
+- It stores data [by column]{.alert}, so a query can skip the columns it does not need
+- It compresses too: 182 MB of CSV becomes 86 MB of parquet (53% smaller)
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -1088,7 +1058,7 @@ df.to_parquet('data/2000-01.parquet')
 :::
 
 :::{.column width="50%"}
-- Reading it back, we can name the columns we want
+- We can read back only the columns we need:
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -1101,7 +1071,7 @@ df
 ```
 :::
 
-- Now the same group-by, on parquet instead of CSV
+- The same group-by, on parquet:
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -1122,7 +1092,7 @@ df
 :::{.columns}
 :::{.column width="50%"}
 - CSV is [row-based]{.alert}, so reading one column still means scanning every row
-- Parquet is [column-based]{.alert}, so it reads the columns you named and skips the others
+- Parquet is [column-based]{.alert}, so it reads the columns you name and skips the others
 
 | Feature | CSV | Parquet |
 |---------|-----|---------|
@@ -1134,21 +1104,28 @@ df
 :::
 
 :::{.column width="50%"}
+- pandas reads both formats too:
+
 :::{style="font-size: 1.2em;"}
-```python
+```{python}
+#| echo: true
+#| eval: true
+#| cache: true
 import pandas as pd
 
-# CSV: reads everything, infers types
-df = pd.read_csv("sales.csv")
+# CSV: reads every column, guesses the types
+one_day = pd.read_csv("data/2000-01-01.csv")
+print(one_day.shape)
 
-# Parquet: reads only what you need
-df = pd.read_parquet("sales.parquet",
-                     columns=["date", "revenue"])
+# Parquet: reads only the columns you name
+month = pd.read_parquet("data/2000-01.parquet",
+                        columns=["name", "x"])
+print(month.shape)
 ```
 :::
 
-:::{style="background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 15px;"}
-[CSV is not obsolete]{.alert}: reach for parquet when you have [many columns]{.alert} and query only a few, or when the file passes 100 MB. Stay with CSV for small files, one-off exports, and anything a collaborator will open in Excel
+:::{style="background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 15px;"}
+[CSV is not obsolete]{.alert}. Use parquet for files over 100 MB, or with [many columns]{.alert} when you need only a few. Keep CSV for small files and anything a colleague will open in Excel
 :::
 :::
 :::
@@ -1159,13 +1136,12 @@ df = pd.read_parquet("sales.parquet",
 ## Dask delayed
 ### A decorator schedules any function you already have
 
-:::{style="margin-top: 30px; font-size: 21px;"}
+:::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- Sometimes you do not want a whole Dask DataFrame or Dask array
-- You want to parallelise one function, or one small part of a script
-- `dask.delayed` does exactly that, and it works on functions you have already written
-- Here are four serial calls to a deliberately heavy function
+- `dask.delayed` parallelises functions you already have
+- No Dask DataFrame or array needed
+- First, four calls in a row:
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -1184,7 +1160,8 @@ def calculation(size=10000000):
 :::
 
 :::{.column width="50%"}
-- The only change is the `@dask.delayed` decorator above the function
+- A [decorator]{.alert} is an `@` line above a `def`. It changes what the function does
+- With `@dask.delayed`, calling the function creates a task instead of running it
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -1207,8 +1184,7 @@ for _ in range(4):
 ```
 :::
 
-- Nothing in the body of the function changed
-- Calling `delayed_calculation()` builds a task instead of running one, so `dask.compute(*results)` is what triggers the work
+- `dask.compute(*results)` runs all four tasks. The `*` passes the list items one by one
 :::
 :::
 :::
@@ -1219,7 +1195,7 @@ for _ in range(4):
 :::{style="margin-top: 20px; font-size: 21px;"}
 :::{.columns}
 :::{.column width="55%"}
-- Three delayed functions, chained over three input sizes, give us nine tasks in three independent branches
+- Three functions on three input sizes: nine tasks in three branches
 
 :::{style="font-size: 1.2em;"}
 ```{python}
@@ -1242,10 +1218,9 @@ def aggregate_data(data):
         'max': np.max(data)
     }
 
-# Compare execution
 sizes = [1000000, 2000000, 3000000]
 
-# Dask execution
+# Build the tasks (nothing runs yet)
 dask_results = []
 for size in sizes:
     data = generate_data(size)
@@ -1261,7 +1236,7 @@ for size in sizes:
 :::{.column width="45%"}
 <style>.taskgraph img { max-height: 290px; width: auto; }</style>
 
-- `dask.visualize()` draws the graph without running any of it
+- `dask.visualize()` draws the plan without running it
 
 :::{.taskgraph style="font-size: 1.2em; text-align: center;"}
 ```{python}
@@ -1277,8 +1252,8 @@ dask.visualize(*dask_results)
 ```
 :::
 
-:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 10px;"}
-Dask sees all nine tasks before it runs any of them. The three branches never touch each other, so they go to separate workers
+:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 10px;"}
+Dask sees all nine tasks first. The branches are independent, so they can run on separate workers
 :::
 :::
 :::
@@ -1287,19 +1262,16 @@ Dask sees all nine tasks before it runs any of them. The three branches never to
 ## The Dask dashboard
 ### Watching the task stream at `localhost:8787`
 
-:::{style="margin-top: 20px; font-size: 21px;"}
+:::{style="margin-top: 20px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="52%"}
-- Starting a `dask.distributed.Client()` opens a diagnostics dashboard on port 8787
-- The task stream on the right is the same three-stage pipeline, run in a loop so the picture fills up
-- Each row is one worker thread, and each coloured bar is one task it ran
-- The three colours are `generate_data`, `transform_data` and `aggregate_data`
-- Bars at the same horizontal position in different rows ran at the same moment
-- The dashboard is the fastest way to find out whether your work is actually parallel
-
-:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 15px;"}
-White space in a row means that worker had nothing to do. Large gaps usually mean your chunks are too big, so there are fewer tasks than workers
-:::
+- `from dask.distributed import Client`, then `client = Client()`, opens a dashboard at `localhost:8787`
+- Install it first: `pip install "dask[distributed]" bokeh`
+- The picture shows our three-step pipeline, run in a loop
+- Each row is one worker, and each coloured bar is one task
+- Purple is `generate_data`, teal is `transform_data`, and green is `aggregate_data`
+- Bars stacked on top of each other ran at the same time
+- It is the quickest way to check that your work really runs in parallel
 :::
 
 :::{.column width="48%"}
@@ -1307,7 +1279,10 @@ White space in a row means that worker had nothing to do. Large gaps usually mea
 [![](figures/dask-dashboard-task-stream-2026.png){width="100%"}](#){data-modal-type="image" data-modal-url="figures/dask-dashboard-task-stream-2026.png"}
 
 :::{style="font-size: 17px;"}
-The Dask dashboard at `localhost:8787` while this computation ran on my laptop
+Dashboard at `localhost:8787`, running on my laptop
+:::
+:::{style="background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 15px;"}
+White space means an idle worker. Big gaps usually mean the chunks are too big, so there are fewer tasks than workers
 :::
 :::
 :::
@@ -1319,25 +1294,25 @@ The Dask dashboard at `localhost:8787` while this computation ran on my laptop
 ## Best practices
 ### Cheaper fixes to try before you parallelise
 
-:::{style="margin-top: 20px; font-size: 21px;"}
+:::{style="margin-top: 20px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- [Measure first]{.alert}: `%timeit` and `cProfile` will tell you where the time goes, and Amdahl's law tells you what that share is worth
-- [Ask two questions]{.alert}: are the tasks independent of each other, and is each one heavy enough to pay for starting a worker? If either answer is no, do not parallelise
-- [Pick the right algorithm]{.alert}: an $O(n \log n)$ solution beats a parallelised $O(n^2)$ one on any interesting input
-- [Pick the right engine]{.alert}: Polars or DuckDB may finish the job faster than a parallelised pandas, as we will see next lecture
-- [Start small]{.alert}: NumPy or pandas may already have a fast function for what you wrote by hand
-- [Sample first]{.alert}: ask whether the question really needs all of those terabytes
+- [Measure first]{.alert}: `%timeit` and `cProfile` find the slow part. Amdahl's law says what fixing it is worth
+- [Check the tasks]{.alert}: are they independent, and big enough to be worth a worker?
+- [Better algorithm]{.alert}: $O(n \log n)$ beats parallel $O(n^2)$ on large inputs
+- [Better engine]{.alert}: DuckDB may beat parallel pandas (next lecture)
+- [Built-ins first]{.alert}: NumPy or pandas may already have a fast function
+- [Sample first]{.alert}: do you need all the data?
 :::
 
 :::{.column width="50%"}
-- [Switch to parquet]{.alert}: the format change alone bought us a large speed-up a few slides ago
-- [Call `.compute()` and `.persist()` sparingly]{.alert}: every call triggers execution, so batch the work into one
-- [Experiment with chunk sizes]{.alert}: try a few by hand, or start from `chunks='auto'`
-- The Dask team keeps a longer list at [Dask best practices](https://docs.dask.org/en/latest/best-practices.html)
+- [Use parquet]{.alert}: our parquet group-by was about 10× faster than CSV
+- [Call `.compute()` and `.persist()` rarely]{.alert}: each call runs the whole plan
+- [Try a few chunk sizes]{.alert}, or start with `chunks='auto'`
+- More tips in the [Dask best practices](https://docs.dask.org/en/latest/best-practices.html)
 
-:::{style="background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 19px; margin-top: 15px;"}
-[The mistake I see most often]{.alert}: students parallelise before they profile. Run `%timeit` first. If the hot spot turns out to be disk reads or an $O(n^2)$ loop, more cores will not save you, and you will have spent an afternoon finding that out
+:::{style="background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 20px; margin-top: 15px;"}
+[Most common mistake]{.alert}: parallelising before measuring. More cores will not fix a slow disk or an $O(n^2)$ loop
 :::
 :::
 :::
@@ -1350,18 +1325,18 @@ The Dask dashboard at `localhost:8787` while this computation ran on my laptop
 :::{style="margin-top: 30px; font-size: 22px;"}
 :::{.columns}
 :::{.column width="50%"}
-- [Serial and parallel execution]{.alert}: `map`, embarrassingly parallel problems, and `joblib` for the easy cases
-- [`concurrent.futures`]{.alert} ships with Python: `ProcessPoolExecutor` for CPU work, `ThreadPoolExecutor` for waiting
-- [Big O notation]{.alert}: parallelism cuts the constant factor and leaves the complexity class alone
-- [Amdahl's law]{.alert}: the serial share caps your speed-up, so measure it before you buy cores
-- [The GIL]{.alert}: threads help while Python waits, processes help while Python computes, and NumPy sidesteps both
+- [Serial and parallel code]{.alert}: `map`, embarrassingly parallel problems, `joblib`
+- [`concurrent.futures`]{.alert}: processes for CPU work, threads for waiting
+- [Big O notation]{.alert}: parallelism divides the time, but the growth rate stays the same
+- [Amdahl's law]{.alert}: the serial share caps the speed-up
+- [The GIL]{.alert}: threads for waiting, processes for computing
 :::
 
 :::{.column width="50%"}
-- [Dask]{.alert} gives you lazy arrays and DataFrames for data bigger than RAM
-- [`dask.delayed`]{.alert} parallelises functions you have already written, and `dask.visualize` shows the plan
-- [Parquet]{.alert} cut our January 2000 data from 182 MB to 86 MB and made the group-by much faster
-- Next lecture, [Scaling Data Analysis in Practice]{.alert}, puts Polars and DuckDB against pandas and Dask on the WDI panel. They use every core by default, with nothing to configure
+- [Dask]{.alert}: lazy arrays and DataFrames for data bigger than RAM
+- [`dask.delayed`]{.alert} parallelises your own functions, and `dask.visualize` shows the plan
+- [Parquet]{.alert}: our January 2000 data went from 182 MB to 86 MB, with a much faster group-by
+- Next lecture, [SQL Revision with DuckDB]{.alert}: SQL on the WDI panel, and the same group-by in DuckDB, pandas and Dask
 
 :::{style="font-size: 18px;"}
 | Engine | Language | Parallel? | Out-of-core? |
@@ -1372,7 +1347,8 @@ The Dask dashboard at `localhost:8787` while this computation ran on my laptop
 | Dask | Python | All cores + clusters | Yes |
 :::
 
-- To try SQL on DataFrames before then, see [`tutorials/04-duckdb-sql-tutorial.qmd`](https://danilofreire.github.io/datasci350/04-duckdb-sql-tutorial.html)
+- Polars is covered in [tutorial 07](https://danilofreire.github.io/datasci350/07-polars-tutorial.html)
+- SQL on DataFrames before then: [`tutorials/04-duckdb-sql-tutorial.qmd`](https://danilofreire.github.io/datasci350/04-duckdb-sql-tutorial.html)
 :::
 :::
 :::
@@ -1383,8 +1359,6 @@ The Dask dashboard at `localhost:8787` while this computation ran on my laptop
 ### Solution to the joblib exercise
 
 :::{style="margin-top: 30px; font-size: 24px;"}
-- Here is the solution to the exercise
-
 ```{python}
 #| echo: true
 #| eval: true
@@ -1409,7 +1383,9 @@ from joblib import Parallel, delayed
 %timeit Parallel(n_jobs=4)(delayed(square)(x) for x in numbers)
 ```
 
-- [Expected result]{.alert}: the parallel version is [slower]{.alert} here. `square(x)` finishes so fast that joblib's process-spawning overhead swamps the work. Parallel computing pays off when each task is heavy
+- [Expected result]{.alert}: the parallel version is [slower]{.alert} here
+- `square(x)` finishes so fast that the cost of sending a million tiny tasks to the workers swamps the work
+- Parallel computing pays off when each task is heavy
 
 [[Back to exercise]{.button}](#sec:exercise01)
 :::
@@ -1419,7 +1395,7 @@ from joblib import Parallel, delayed
 
 :::{style="margin-top: 30px; font-size: 22px;"}
 - Ten million random numbers, computing `mean(sqrt(x^2))` at four chunk sizes
-- The middle setting wins on my laptop, and the timings below say by how much
+- Medium chunks (2 million) win on my laptop
 
 ```{python}
 #| echo: true

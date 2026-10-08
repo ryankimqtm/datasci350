@@ -1,5 +1,6 @@
 ---
 title: "DATASCI 350 - Web Scraping with Python"
+aliases: ["/05-web-scraping-tutorial.html"]
 lang: en-GB
 author: 
   - Danilo Freire

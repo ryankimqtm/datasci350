@@ -1,0 +1,2147 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
+
+  <meta name="author" content="Danilo Freire">
+  <title>DATASCI 350 – DATASCI 350 - Data Science Computing</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-2ae8a0dcce565690374c94722aabe1a4.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/multimodal/multimodal.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">DATASCI 350 - Data Science Computing</h1>
+  <p class="subtitle">Lecture 18 - Web APIs and JSON</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Danilo Freire 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:danilo.freire@emory.edu">danilo.freire@emory.edu</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Department of Data and Decision Sciences <br> Emory University
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="hey-there-i-hope-youre-all-doing-well" class="title-slide slide level1 center" data-background-color="#1B3A6B">
+<h1>Hey, there! 😊 <br> I hope you’re all doing well!</h1>
+
+</section>
+
+<section>
+<section id="brief-recap" class="title-slide slide level1 center" data-background-color="#1B3A6B">
+<h1>Brief recap 📚</h1>
+
+</section>
+<section id="lecture-17-a-machine-in-the-cloud" class="slide level2">
+<h2>Lecture 17: a machine in the cloud</h2>
+<h3 id="what-we-did-on-aws">What we did on AWS</h3>
+<div style="margin-top: 30px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>Launched an EC2 <span class="alert"><code>t3.micro</code></span> running Ubuntu 26.04</li>
+<li>Connected with a <span class="alert">key pair</span> and <code>ssh -i</code></li>
+<li>Installed software with <code>apt</code></li>
+<li>Moved files with <code>scp</code> and <code>wget</code></li>
+<li>Ran Jupyter on the instance through a forwarded port</li>
+<li>Met <span class="alert">AWS CloudShell</span>, the browser terminal</li>
+<li>Stopping pauses compute, but the disk still charges. Terminating deletes the machine</li>
+<li>A <code>t3.micro</code> left running costs <span class="alert">about $12 a month</span></li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div style="text-align: center; margin-top: -20px;">
+<p><a href="#/" data-modal-type="image" data-modal-url="figures/aws-logo.jpeg"><img data-src="figures/aws-logo.jpeg" style="width:100.0%"></a></p>
+<p>Source: <a href="https://k21academy.com/aws-cloud/overview-of-amazon-web-services-concepts/">K21</a></p>
+</div>
+</div></div>
+</div>
+</section>
+<section id="check-your-aws-account" class="slide level2">
+<h2>Check your AWS account!</h2>
+<h3 id="confirm-that-the-bill-reads-zero">Confirm that the bill reads zero</h3>
+<div style="margin-top: 30px; font-size: 23px;">
+<div class="columns">
+<div class="column" style="width:42%;">
+<ul>
+<li>Check that no instance is still running</li>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/terminating-instances.html">Terminate your EC2 instances</a> and <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/delete-bucket.html">delete your S3 buckets</a></li>
+<li>Open the <a href="https://console.aws.amazon.com/billing/home?#/">Billing and Cost Management Dashboard</a>. The total should be zero</li>
+<li>Charged by mistake? Ask for a refund:
+<ul>
+<li>Open the <a href="https://console.aws.amazon.com/support/home">AWS Support Center</a> and click <code>Create case</code></li>
+<li>Choose <code>Account and billing support</code> and explain what happened</li>
+<li>Replies are usually quick. Email me if you get stuck</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:58%;">
+<div style="text-align: center; margin-top: -20px;">
+<p><a href="#/" data-modal-type="image" data-modal-url="figures/aws-billing.png"><img data-src="figures/aws-billing.png" style="width:100.0%"></a></p>
+<p>Billing and Cost Management Home</p>
+</div>
+</div></div>
+</div>
+</section>
+<section id="final-project-what-you-will-build" class="slide level2">
+<h2>Final project: what you will build</h2>
+<h3 id="a-data-pipeline-from-api-to-report">A data pipeline, from API to report</h3>
+<div style="margin-top: 20px; font-size: 23px;">
+<div class="columns">
+<div class="column" style="width:52%;">
+<ul>
+<li>Pull data from a web API with <code>requests</code></li>
+<li>Process it with <span class="alert">pandas or DuckDB</span></li>
+<li>Save a snapshot in <code>data/raw/</code>. The report reads only that snapshot</li>
+<li>Quarto report: 1,500 to 2,500 words, two or more visualisations, visible code</li>
+<li>Ship it in a <span class="alert">Docker container</span>, with the <span class="alert">code on GitHub</span></li>
+<li><span class="alert">Track A</span> (default): the <a href="https://datahelpdesk.worldbank.org/knowledgebase/topics/125589">World Bank Indicators API</a>, no key needed</li>
+<li><span class="alert">Track B</span>: a free, well-documented public API without OAuth, cleared with me first</li>
+<li>Groups of <span class="alert">three to four</span>. Email me the names by <span class="alert">Thursday 5 November</span>, or I assign you at random</li>
+</ul>
+</div><div class="column" style="width:48%;">
+<div style="text-align: center;">
+<p><a href="#/" data-modal-type="image" data-modal-url="figures/project-starter-2026.png"><img data-src="figures/project-starter-2026.png" style="width:100.0%"></a></p>
+<div style="font-size: 17px;">
+<p>The starter repository: <a href="https://github.com/danilofreire/datasci350-project-starter" class="uri">https://github.com/danilofreire/datasci350-project-starter</a></p>
+</div>
+</div>
+<div style="margin-top: 15px; font-size: 21px;">
+<ul>
+<li>Due <span class="alert">Tuesday 8 December</span>. Send the repository link on Canvas</li>
+<li>Full instructions: <a href="https://github.com/danilofreire/datasci350/blob/main/project/project-instructions.pdf">project-instructions.pdf</a></li>
+</ul>
+</div>
+</div></div>
+</div>
+</section>
+<section id="final-project-how-it-is-graded" class="slide level2">
+<h2>Final project: how it is graded</h2>
+<h3 id="where-the-20-goes-and-what-i-do-not-grade">Where the 20% goes, and what I do not grade</h3>
+<div style="margin-top: 20px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>The project is worth <span class="alert">20%</span> of your course grade</li>
+</ul>
+<div style="margin-top: 30px; font-size: 28px; margin-bottom: 30px;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Reproducibility</td>
+<td>30%</td>
+</tr>
+<tr class="even">
+<td>Analysis quality</td>
+<td>30%</td>
+</tr>
+<tr class="odd">
+<td>Communication</td>
+<td>20%</td>
+</tr>
+<tr class="even">
+<td>Code quality</td>
+<td>10%</td>
+</tr>
+<tr class="odd">
+<td>Git workflow</td>
+<td>10%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="margin-top: 15px;">
+<ul>
+<li>Sophistication is not graded. Careful descriptive work beats a regression you cannot explain</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Every member commits to the shared repository, and I read the <span class="alert">commit history</span></li>
+<li><span class="alert">No meaningful contribution means a zero for the project</span></li>
+<li>Clearly unequal shares <span class="alert">change individual grades</span></li>
+<li>The report ends with a <span class="alert">contribution statement</span>, which I check against the repository</li>
+</ul>
+<div style="margin-top: 20px; background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 23px;">
+<p>If <code>docker run</code> on my machine does not reproduce your report, your project does not exist 😅</p>
+</div>
+</div></div>
+</div>
+</section></section>
+<section>
+<section id="todays-lecture" class="title-slide slide level1 center" data-background-color="#1B3A6B">
+<h1>Today’s lecture 📚</h1>
+
+</section>
+<section id="you-have-already-used-an-api" class="slide level2">
+<h2>You have already used an API</h2>
+<h3 id="lecture-14-when-you-talked-to-a-language-model">Lecture 14, when you talked to a language model</h3>
+<div style="margin-top: 30px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>Remember <a href="https://danilofreire.github.io/datasci350/lectures/lecture-14/14-ai.html">Lecture 14</a>?</li>
+<li>You saved an API key in a <code>.env</code> file</li>
+<li>Python sent your prompt to a model on OpenRouter</li>
+<li>The model’s reply came back</li>
+<li>That was an <span class="alert">API call</span></li>
+<li>The <code>openai</code> library hid the details</li>
+<li>Today we see what happens underneath</li>
+<li>The same idea works for weather, economic data, census records, and more!</li>
+</ul>
+</div><div class="column" style="width:55%;">
+<div style="margin-top: 20px; font-size: 22px;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="co"># Lecture 14</span></span>
+<span id="cb1-2"><a></a>client <span class="op">=</span> OpenAI(</span>
+<span id="cb1-3"><a></a>    base_url<span class="op">=</span><span class="st">"https://openrouter.ai/api/v1"</span>,</span>
+<span id="cb1-4"><a></a>    api_key<span class="op">=</span>os.environ[<span class="st">"OPENROUTER_API_KEY"</span>],</span>
+<span id="cb1-5"><a></a>)</span>
+<span id="cb1-6"><a></a></span>
+<span id="cb1-7"><a></a>response <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb1-8"><a></a>    model<span class="op">=</span><span class="st">"google/gemma-4-31b-it:free"</span>,</span>
+<span id="cb1-9"><a></a>    messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"Hi!"</span>}],</span>
+<span id="cb1-10"><a></a>)</span>
+<span id="cb1-11"><a></a><span class="bu">print</span>(response.choices[<span class="dv">0</span>].message.content)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>base_url</code> is a web address. By the end of today you will know what the library sent there, and what came back</p>
+</div>
+</div></div>
+</div>
+</section>
+<section id="lecture-overview" class="slide level2">
+<h2>Lecture overview</h2>
+<h3 id="what-we-will-cover-today">What we will cover today</h3>
+<div style="margin-top: 20px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="alert">1. What an API is</span></p>
+<ul>
+<li>A contract between two programs</li>
+<li>The client and the server</li>
+<li>Why data scientists care</li>
+</ul>
+<p><span class="alert">2. URLs and status codes</span></p>
+<ul>
+<li>The parts of a URL, and building one step by step</li>
+<li>The codes a server sends back</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><span class="alert">3. JSON</span></p>
+<ul>
+<li>The format almost every API answers in</li>
+<li>How to find one value inside a nested reply</li>
+</ul>
+<p><span class="alert">4. APIs from the terminal</span></p>
+<ul>
+<li><code>curl</code>, a browser for your terminal</li>
+<li>Saving a reply to a file</li>
+</ul>
+<p><span class="alert">5. A first taste of Python</span></p>
+<ul>
+<li>Four lines that do what <code>curl</code> did. Lecture 19 takes them apart</li>
+</ul>
+</div></div>
+</div>
+</section></section>
+<section>
+<section id="what-is-an-api" class="title-slide slide level1 center" data-background-color="#1B3A6B">
+<h1>What is an API?</h1>
+
+</section>
+<section id="an-api-is-a-contract" class="slide level2">
+<h2>An API is a contract</h2>
+<h3 id="ask-in-this-exact-way-get-an-answer-in-that-exact-shape">Ask in this exact way, get an answer in that exact shape</h3>
+<div style="margin-top: 20px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li><span class="alert">API</span> stands for <a href="https://en.wikipedia.org/wiki/Application_programming_interface">Application Programming Interface</a></li>
+<li>It is a <span class="alert">contract between two programs</span></li>
+<li>For example, <a href="https://datahelpdesk.worldbank.org/knowledgebase/topics/125589">the World Bank API</a> turns a URL ending in <code>/country/BRA/indicator/SP.POP.TOTL</code> into <a href="https://api.worldbank.org/v2/country/BRA/indicator/SP.POP.TOTL?format=json">Brazil’s population, year by year</a></li>
+<li>Neither side needs to know how the other works inside</li>
+<li>Their database, language, and servers are <span class="alert">none of your business</span> 😂</li>
+</ul>
+</div><div class="column" style="width:55%;">
+<div style="text-align: center; margin-top: -30px;">
+<p><a href="#/" data-modal-type="image" data-modal-url="figures/api-contract-diagram-vertical.png"><img data-src="figures/api-contract-diagram-vertical.png" style="width:65.0%"></a></p>
+</div>
+</div></div>
+</div>
+</section>
+<section id="the-restaurant" class="slide level2">
+<h2>The restaurant</h2>
+<h3 id="a-tired-metaphor-but-it-works">A tired metaphor, but it works</h3>
+<div style="margin-top: 30px; font-size: 28px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>An API works like a <span class="alert">restaurant</span> 😅</li>
+<li>The <span class="alert">menu</span> tells you what you may ask for</li>
+<li>You <span class="alert">order</span> in terms the kitchen recognises</li>
+<li>The <span class="alert">dish</span> arrives in a predictable form</li>
+<li>You never enter the kitchen</li>
+<li>Order something off the menu and you get an error, never a surprise dish</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div style="text-align: center; font-size: 18px; margin-top: -30px;">
+<p><a href="#/" data-modal-type="image" data-modal-url="figures/api-restaurant-2026.jpg"><img data-src="figures/api-restaurant-2026.jpg" style="width:100.0%"></a></p>
+<p>Source: <a href="https://www.manutan.com/blog/en/glossary/api-definition-and-application-in-procurement">Manutan</a></p>
+</div>
+<div style="font-size: 24px; margin-top: 20px;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Restaurant</th>
+<th>API</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Menu</td>
+<td>Documentation</td>
+</tr>
+<tr class="even">
+<td>Order</td>
+<td>HTTP request</td>
+</tr>
+<tr class="odd">
+<td>Kitchen</td>
+<td>Server</td>
+</tr>
+<tr class="even">
+<td>Dish</td>
+<td>JSON response</td>
+</tr>
+<tr class="odd">
+<td>“We’re out of that”</td>
+<td><code>404 Not Found</code></td>
+</tr>
+<tr class="even">
+<td>“One order per customer”</td>
+<td>Rate limit</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div>
+</div>
+</section>
+<section id="client-and-server" class="slide level2">
+<h2>Client and server</h2>
+<div style="margin-top: 40px; font-size: 27px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>You have played <span class="alert">both roles</span> this semester</li>
+<li>The <span class="alert">client</span> asks: your laptop, script, or browser</li>
+<li>The <span class="alert">server</span> answers: a machine in a data centre, waiting for requests</li>
+<li>On Tuesday you <span class="alert">launched a server</span> on <a href="https://aws.amazon.com/ec2/">EC2</a></li>
+<li>The <a href="https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation">World Bank API</a> is the same idea, with a bigger budget and (hopefully!) better uptime 😂</li>
+<li>There is nothing magical about it. <a href="https://aws.amazon.com/ec2/">It is someone else’s computer</a> 🤓</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div style="margin-top: -20px;">
+<div class="cell" data-reveal="true" data-fig-width="6" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+    participant C as Your laptop
+    participant S as api.worldbank.org
+    C-&gt;&gt;S: GET /v2/country/BRA/...
+    Note right of S: look up data
+    S--&gt;&gt;C: 200 OK + JSON
+    C-&gt;&gt;C: parse and analyse
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+</section>
+<section id="web-apis-specifically" class="slide level2">
+<h2>Web APIs specifically</h2>
+<h3 id="what-makes-an-api-a-web-api">What makes an API a web API</h3>
+<div style="margin-top: 20px; font-size: 24px;">
+<ul>
+<li>“API” is a broad word. <code>pandas</code> has an API, and so does your operating system</li>
+<li>This module is about <a href="https://en.wikipedia.org/wiki/Web_API">web APIs</a>:
+<ul>
+<li>The request is an <span class="alert">HTTP request to a URL</span>, like the ones your browser sends</li>
+<li>The response is usually <span class="alert">JSON</span>, a text format we meet shortly</li>
+</ul></li>
+<li>So <span class="alert">any language that can fetch a URL and read text can use one</span>: Python, R, JavaScript, or <code>curl</code></li>
+<li>Terms you will see in documentation:
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Representational_State_Transfer">REST (Representational State Transfer)</a>: each URL names a resource (<code>/country/BRA</code>). Most public data APIs follow it</li>
+<li><a href="https://en.wikipedia.org/wiki/Web_API#Endpoints">Endpoint</a>: one URL pattern the API offers, such as <code>/v2/country/{code}/indicator/{code}</code></li>
+<li><a href="https://en.wikipedia.org/wiki/Rate_limiting">Rate limit</a>: how many requests you may send per unit of time</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="why-this-matters-for-data-science" class="slide level2">
+<h2>Why this matters for data science</h2>
+<h3 id="public-data-and-the-script-that-goes-and-gets-it">Public data, and the script that goes and gets it</h3>
+<div style="margin-top: 20px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<h4 id="the-data-are-already-out-there">The data are already out there</h4>
+<ul>
+<li>Many organisations share data through APIs:
+<ul>
+<li><a href="https://datahelpdesk.worldbank.org/knowledgebase/topics/125589">The World Bank</a>, <a href="https://data.imf.org/en/Resource-Pages/IMF-API">the IMF</a>, <a href="https://www.census.gov/data/developers/data-sets.html">the US Census Bureau</a>, <a href="https://data.ecb.europa.eu/help/api/overview">the ECB</a>, <a href="https://ec.europa.eu/eurostat/web/main/data/web-services">Eurostat</a>, <a href="https://www.ncei.noaa.gov/cdo-web/webservices/v2">NOAA</a></li>
+<li><a href="https://docs.github.com/en/rest">GitHub</a>, <a href="https://www.mediawiki.org/wiki/API:Main_page">Wikipedia</a>, and <a href="https://atlas.emory.edu/">Emory’s course catalogue (Atlas)</a></li>
+<li>Most national statistics offices</li>
+</ul></li>
+<li>The <a href="https://api.worldbank.org/v2/indicator?format=json">World Bank API</a> alone has <span class="alert">29,544 indicators</span> for 217 countries</li>
+<li>Most of these data are free</li>
+<li>A script can collect exactly the data you need</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h4 id="scripts-are-always-better-than-clicking">Scripts are always better than clicking</h4>
+<ul>
+<li>A script records <span class="alert">every step</span> of how you got the data</li>
+<li>Run it again next year to get the new numbers</li>
+<li>A colleague who runs it gets the same dataset</li>
+<li>A reviewer can check every step on GitHub</li>
+<li><a href="https://danilofreire.github.io/datasci350/lectures/lecture-10/10-quarto.html">Lecture 10</a> asked for “the raw inputs, or a script that fetches them”</li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="three-kinds-of-api-you-will-meet" class="slide level2">
+<h2>Three kinds of API you will meet</h2>
+<h3 id="keyless-key-required-and-the-ones-that-send-a-bill">Keyless, key-required, and the ones that send a bill</h3>
+<div style="margin-top: 30px; font-size: 21px;">
+<div class="columns">
+<div class="column" style="width:60%;">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kind</th>
+<th>What it costs you</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="alert">Open and keyless</span></td>
+<td>Nothing. Just fetch the URL</td>
+<td>Open-Meteo, World Bank, National Weather Service, USGS earthquakes, GitHub</td>
+</tr>
+<tr class="even">
+<td><span class="alert">Free but key-required</span></td>
+<td>A signup form, then a key in every request</td>
+<td>NASA, OpenWeatherMap, OpenRouter’s free models, GitHub for higher limits</td>
+</tr>
+<tr class="odd">
+<td><span class="alert">Paid</span></td>
+<td>A key and a bill</td>
+<td>OpenRouter’s paid models, most commercial data vendors</td>
+</tr>
+</tbody>
+</table>
+<div style="margin-top: 30px;">
+<ul>
+<li>An <span class="alert">API key</span> is a password for programs. It tells the server who is asking</li>
+<li><a href="https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api">GitHub answers keyless requests</a>, up to <span class="alert">60 per hour per IP address</span></li>
+<li>Today we stay in the first row, so nobody needs an account</li>
+</ul>
+</div>
+</div><div class="column" style="width:40%;">
+<div style="text-align: center;">
+<p><a href="#/" data-modal-type="image" data-modal-url="figures/github-api-2026.png"><img data-src="figures/github-api-2026.png" style="width:100.0%"></a></p>
+<div style="font-size: 19px;">
+<p><code>api.github.com/users/danilofreire</code>, fetched with no key at all (click to enlarge)</p>
+</div>
+</div>
+</div></div>
+</div>
+</section></section>
+<section>
+<section id="urls-and-status-codes" class="title-slide slide level1 center" data-background-color="#1B3A6B">
+<h1>URLs and status codes 🔗</h1>
+
+</section>
+<section id="anatomy-of-a-url" class="slide level2">
+<h2>Anatomy of a URL</h2>
+<h3 id="four-parts-you-will-see-in-every-request">Four parts you will see in every request</h3>
+<div style="margin-top: 30px; font-size: 25px;">
+<ul>
+<li>Every API call starts with a URL, and every URL has the same parts</li>
+<li><a href="https://api.worldbank.org/v2/country/BRA/indicator/NY.GDP.PCAP.KD?format=json&amp;date=2014:2025">Here is a real one</a>: Brazil’s GDP per person, 2014 to 2025</li>
+</ul>
+<div style="margin-top: 25px; text-align: center; font-size: 26px; font-family: monospace; line-height: 1.8;">
+<p><span style="color: #1B3A6B; font-weight: bold;">https</span><span style="color: #999;">://</span><span style="color: #C1272D; font-weight: bold;">api.worldbank.org</span><span style="color: #2E7D32; font-weight: bold;">/v2/country/BRA/indicator/NY.GDP.PCAP.KD</span><span style="color: #999;">?</span><span style="color: #E65100; font-weight: bold;">format=json&amp;date=2014:2025</span></p>
+</div>
+<div style="margin-top: 30px; font-size: 26px;">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Name</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span style="color: #1B3A6B; font-weight: bold;">https</span></td>
+<td>scheme</td>
+<td>Which protocol. Almost always <code>https</code></td>
+</tr>
+<tr class="even">
+<td><span style="color: #C1272D; font-weight: bold;">api.worldbank.org</span></td>
+<td>host</td>
+<td>Which machine to ask</td>
+</tr>
+<tr class="odd">
+<td><span style="color: #2E7D32; font-weight: bold;">/v2/country/BRA/indicator/…</span></td>
+<td>path</td>
+<td>Which data on that machine</td>
+</tr>
+<tr class="even">
+<td><span style="color: #999; font-weight: bold;">?</span></td>
+<td>separator</td>
+<td>Ends the path. Everything after it is the query string</td>
+</tr>
+<tr class="odd">
+<td><span style="color: #E65100; font-weight: bold;">format=json&amp;date=2014:2025</span></td>
+<td>query string</td>
+<td>Options, as <code>key=value</code> pairs joined by <code>&amp;</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="building-a-url" class="slide level2">
+<h2>Building a URL</h2>
+<div style="margin-top: 40px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:60%;">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Add this</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><code>https://api.worldbank.org/v2</code></td>
+<td>The API’s <span class="alert">base URL</span>, version 2</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><code>/country/BRA</code></td>
+<td>Brazil, by its three-letter code</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><code>/indicator/NY.GDP.PCAP.KD</code></td>
+<td>GDP per person, in constant US dollars</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><code>?format=json</code></td>
+<td>Start the options. Send JSON, not XML</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><code>&amp;date=2014:2025</code></td>
+<td>Only these years</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The <span class="alert">path</span> (steps 1 to 3) says <span class="alert">what</span> you want</li>
+<li>The <span class="alert">query string</span> (steps 4 and 5) says <span class="alert">how</span> you want it</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<ul>
+<li>Swap <code>BRA</code> for <code>URY</code> and you get Uruguay</li>
+<li>Swap the indicator for <code>SP.POP.TOTL</code> and you get population</li>
+<li>Indicator codes are listed at <a href="https://data.worldbank.org/indicator">data.worldbank.org/indicator</a></li>
+<li>In <code>NY.GDP.PCAP.KD</code>:
+<ul>
+<li><code>NY</code> = national accounts (income)</li>
+<li><code>GDP</code> = gross domestic product</li>
+<li><code>PCAP</code> = per capita</li>
+<li><code>KD</code> = constant US dollars</li>
+</ul></li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="reading-the-query-string" class="slide level2">
+<h2>Reading the query string</h2>
+<h3 id="everything-after-the-question-mark">Everything after the question mark</h3>
+<div style="margin-top: 20px; font-size: 25px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>The query string starts at the <span class="alert"><code>?</code></span></li>
+<li>Each option is <code>key=value</code>, and <span class="alert"><code>&amp;</code></span> joins them</li>
+</ul>
+<div style="margin-left: 50px;">
+<pre><code>?format=json&amp;date=2014:2025&amp;per_page=100
+ ^^^^^^^^^^^ ^^^^^^^^^^^^^^ ^^^^^^^^^^^^
+ option 1    option 2       option 3</code></pre>
+</div>
+<ul>
+<li><span class="alert">Order does not matter</span>: <code>?a=1&amp;b=2</code> and <code>?b=2&amp;a=1</code> are the same request</li>
+<li>Leave out an option and the API uses its <span class="alert">default</span></li>
+<li>Misspell a key and the API usually <span class="alert">ignores it</span> without telling you</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<ul>
+<li>Some characters already have a job in a URL: <code>?</code>, <code>&amp;</code>, <code>=</code>, <code>#</code>, and the space</li>
+<li>To put one inside a value, you <span class="alert">percent-encode</span> it</li>
+<li>A space becomes <code>%20</code>, and a <code>/</code> becomes <code>%2F</code></li>
+<li>So <code>America/New_York</code> travels as <code>America%2FNew_York</code></li>
+<li>Python’s <code>requests</code> library does this for you, so you rarely type it</li>
+<li>The full table is in <a href="#/sec:appendix04">Appendix 04</a></li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="status-codes" class="slide level2">
+<h2>Status codes</h2>
+<h3 id="how-to-tell-if-it-worked">How to tell if it worked</h3>
+<div style="margin-top: 20px; font-size: 23px;">
+<ul>
+<li>Every response carries a three-digit number saying how it went</li>
+<li>The first digit sums it up: <code>2xx</code> worked, <code>4xx</code> is your mistake, <code>5xx</code> is theirs</li>
+</ul>
+<div style="font-size: 20px;">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Code</th>
+<th>Name</th>
+<th>What it really means</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span style="color: #2E7D32; font-weight: bold;"><code>200</code></span></td>
+<td>OK</td>
+<td>It worked. Go ahead and read the data</td>
+</tr>
+<tr class="even">
+<td><code>301</code> / <code>302</code></td>
+<td>Moved</td>
+<td>The data lives elsewhere now. Browsers and <code>requests</code> follow these for you</td>
+</tr>
+<tr class="odd">
+<td><span style="color: #E65100; font-weight: bold;"><code>400</code></span></td>
+<td>Bad Request</td>
+<td>Your URL is malformed. Check the query string</td>
+</tr>
+<tr class="even">
+<td><span style="color: #E65100; font-weight: bold;"><code>401</code></span></td>
+<td>Unauthorized</td>
+<td>You need a key, or yours is wrong</td>
+</tr>
+<tr class="odd">
+<td><span style="color: #E65100; font-weight: bold;"><code>403</code></span></td>
+<td>Forbidden</td>
+<td>Your key works, but it does not give you access to this</td>
+</tr>
+<tr class="even">
+<td><span style="color: #E65100; font-weight: bold;"><code>404</code></span></td>
+<td>Not Found</td>
+<td>Nothing at that path. Usually a typo</td>
+</tr>
+<tr class="odd">
+<td><span style="color: #C1272D; font-weight: bold;"><code>429</code></span></td>
+<td>Too Many Requests</td>
+<td>You are asking too fast. Slow down</td>
+</tr>
+<tr class="even">
+<td><span style="color: #C1272D; font-weight: bold;"><code>500</code></span></td>
+<td>Internal Server Error</td>
+<td>Their problem. Wait and retry</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="margin-top: 15px; background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 10px; font-size: 19px;">
+<p>Some APIs, like the World Bank, answer errors with <span class="alert"><code>200</code></span> and hide the failure in the reply. A status check alone is not enough. We will see this in the terminal soon</p>
+</div>
+</div>
+</section>
+<section id="get-and-post" class="slide level2">
+<h2>GET and POST</h2>
+<h3 id="two-main-verbs">Two main verbs</h3>
+<div style="margin-top: 20px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<h4 id="get-please-send-me-this"><code>GET</code>: “please send me this”</h4>
+<ul>
+<li>Asks for data and changes nothing</li>
+<li>The whole request fits in the URL</li>
+<li>Your browser sends one for every page you visit</li>
+<li>Safe to repeat: fetching twice changes nothing on the server</li>
+<li><span class="alert">About 95% of what you will do in this course</span></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h4 id="post-here-is-some-data"><code>POST</code>: “here is some data”</h4>
+<ul>
+<li>Sends data to the server</li>
+<li>The data travels in the request <span class="alert">body</span>, not the URL</li>
+<li>Used for logins, uploads, and long inputs</li>
+<li>In Lecture 14, the <code>openai</code> library sent your prompt as a <code>POST</code></li>
+<li>A paragraph of text does not belong in a URL</li>
+</ul>
+</div></div>
+<div style="margin-top: 25px;">
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods">Other methods</a> exist (<code>PUT</code>, <code>DELETE</code>, <code>PATCH</code>), but you rarely need them to read public data</p>
+</div>
+</div>
+</section>
+<section id="try-it-in-the-browser-first" class="slide level2">
+<h2>Try it in the browser first</h2>
+<h3 id="the-address-bar-is-an-http-client-you-already-know">The address bar is an HTTP client you already know</h3>
+<div style="margin-top: 20px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>Before writing any code, <span class="alert">paste the URL into your browser</span> (<a href="https://api.open-meteo.com/v1/forecast/?latitude=33.75&amp;longitude=-84.39&amp;current=temperature_2m">try this one</a>)</li>
+<li>The browser sends a <code>GET</code> and shows the raw reply</li>
+<li><span class="alert">JSON on screen</span>: the URL is right. If your code fails later, the problem is in the code</li>
+<li><span class="alert">An error on screen</span>: the URL is wrong, and no code will fix it</li>
+<li>This habit will save you hours of debugging</li>
+<li>Firefox shows JSON as a tree you can open and close, which helps with long replies</li>
+</ul>
+</div><div class="column" style="width:55%;">
+<div style="text-align: center;">
+<p><a href="#/" data-modal-type="image" data-modal-url="figures/openmeteo-browser-2026.png"><img data-src="figures/openmeteo-browser-2026.png" style="width:100.0%"></a></p>
+<div style="font-size: 20px;">
+<p>Open-Meteo answering a plain <code>GET</code> from the address bar, no code involved</p>
+</div>
+</div>
+</div></div>
+</div>
+</section>
+<section id="sec:exercise01" class="slide level2 scrollable">
+<h2>Try it yourself! 🤓</h2>
+<h3 id="five-minutes-in-the-browser.-do-everything-manually">Five minutes, in the browser. Do everything manually!</h3>
+<div style="margin-top: 30px; font-size: 22px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ol type="1">
+<li>Open the <a href="https://open-meteo.com/en/docs#api_documentation">Open-Meteo documentation</a>. The API is free</li>
+<li>Start from the base URL <code>https://api.open-meteo.com/v1/forecast</code></li>
+<li>Find the parameters for the <span class="alert">current temperature</span>. Two are required, and a third asks for current conditions</li>
+<li>Use Atlanta’s coordinates: latitude <code>33.75</code>, longitude <code>-84.39</code></li>
+<li><span class="alert">Write the query string yourself, without copying the full URL from the docs</span></li>
+<li>Paste your URL into the browser address bar and press Enter</li>
+<li>Change the coordinates to another city and reload the page</li>
+</ol>
+</div><div class="column" style="width:45%;">
+<div style="margin-top: -15px;">
+<p><span class="alert">What to look for</span></p>
+<ul>
+<li>A page of JSON, with a temperature somewhere inside it</li>
+<li>The units the API reports back alongside the number</li>
+<li>A different temperature once the coordinates change</li>
+<li>Now delete the <code>longitude</code> option. What does the page say?</li>
+</ul>
+<div style="margin-top: 25px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;">
+<p>Stuck, or want to compare your URL with mine?</p>
+<p><a href="#/sec:appendix01"><span class="button">Appendix 01</span></a></p>
+</div>
+</div>
+</div></div>
+</div>
+</section></section>
+<section>
+<section id="json" class="title-slide slide level1 center" data-background-color="#1B3A6B">
+<h1>JSON 📦</h1>
+
+</section>
+<section id="what-json-is" class="slide level2">
+<h2>What JSON is</h2>
+<h3 id="plain-text-that-every-language-can-read">Plain text that every language can read</h3>
+<div style="margin-top: 20px; font-size: 22px;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><span class="alert">JSON</span> means <a href="https://en.wikipedia.org/wiki/JSON">JavaScript Object Notation</a>. The name records its origin, <a href="https://www.geeksforgeeks.org/javascript/json-vs-javascript-object/">not where it is used today</a></li>
+<li>It is <span class="alert">plain text</span>, so any editor opens it</li>
+<li>Almost every web API uses it, because <span class="alert">every language can read it</span></li>
+<li>It holds <span class="alert">data only</span>: no code, functions, or classes</li>
+<li>Two building blocks, nested as deep as needed:
+<ul>
+<li>An <span class="alert">object</span> <code>{ }</code> holds <code>"key": value</code> pairs</li>
+<li>An <span class="alert">array</span> <code>[ ]</code> holds values in order</li>
+</ul></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb3-1"><a></a><span class="fu">{</span></span>
+<span id="cb3-2"><a></a>  <span class="dt">"city"</span><span class="fu">:</span> <span class="st">"Atlanta"</span><span class="fu">,</span></span>
+<span id="cb3-3"><a></a>  <span class="dt">"temperature"</span><span class="fu">:</span> <span class="fl">29.6</span><span class="fu">,</span></span>
+<span id="cb3-4"><a></a>  <span class="dt">"raining"</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb3-5"><a></a>  <span class="dt">"sensors"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"a1"</span><span class="ot">,</span> <span class="st">"b2"</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb3-6"><a></a>  <span class="dt">"last_checked"</span><span class="fu">:</span> <span class="kw">null</span></span>
+<span id="cb3-7"><a></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div style="margin-top: -15px;">
+<p>Each JSON type has a Python twin</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>JSON</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>{...}</code> object</td>
+<td><code>dict</code> (dictionary)</td>
+</tr>
+<tr class="even">
+<td><code>[...]</code> array</td>
+<td><code>list</code></td>
+</tr>
+<tr class="odd">
+<td><code>"text"</code></td>
+<td><code>str</code> (string)</td>
+</tr>
+<tr class="even">
+<td><code>42</code>, <code>3.14</code></td>
+<td><code>int</code>, <code>float</code></td>
+</tr>
+<tr class="odd">
+<td><code>true</code> / <code>false</code></td>
+<td><code>True</code> / <code>False</code></td>
+</tr>
+<tr class="even">
+<td><code>null</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<div style="margin-top: 20px;">
+<ul>
+<li>Keys are <span class="alert">always text in double quotes</span></li>
+<li>No comma after the last item</li>
+<li>In the example, <code>"sensors"</code> is an array inside an object</li>
+</ul>
+</div>
+</div>
+</div></div>
+</div>
+</section>
+<section id="a-real-reply" class="slide level2">
+<h2>A real reply</h2>
+<h3 id="what-open-meteo-sent-back-for-atlanta">What Open-Meteo sent back for Atlanta</h3>
+<div style="margin-top: 30px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:52%;">
+<div style="font-size: 20px;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb4-1"><a></a><span class="fu">{</span></span>
+<span id="cb4-2"><a></a>  <span class="dt">"latitude"</span><span class="fu">:</span> <span class="fl">33.759865</span><span class="fu">,</span></span>
+<span id="cb4-3"><a></a>  <span class="dt">"longitude"</span><span class="fu">:</span> <span class="fl">-84.39586</span><span class="fu">,</span></span>
+<span id="cb4-4"><a></a>  <span class="dt">"timezone"</span><span class="fu">:</span> <span class="st">"America/New_York"</span><span class="fu">,</span></span>
+<span id="cb4-5"><a></a>  <span class="dt">"elevation"</span><span class="fu">:</span> <span class="fl">316.0</span><span class="fu">,</span></span>
+<span id="cb4-6"><a></a>  <span class="dt">"current_units"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-7"><a></a>    <span class="dt">"time"</span><span class="fu">:</span> <span class="st">"iso8601"</span><span class="fu">,</span></span>
+<span id="cb4-8"><a></a>    <span class="dt">"temperature_2m"</span><span class="fu">:</span> <span class="st">"°C"</span><span class="fu">,</span></span>
+<span id="cb4-9"><a></a>    <span class="dt">"wind_speed_10m"</span><span class="fu">:</span> <span class="st">"km/h"</span></span>
+<span id="cb4-10"><a></a>  <span class="fu">},</span></span>
+<span id="cb4-11"><a></a>  <span class="dt">"current"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-12"><a></a>    <span class="dt">"time"</span><span class="fu">:</span> <span class="st">"2026-08-21T16:00"</span><span class="fu">,</span></span>
+<span id="cb4-13"><a></a>    <span class="dt">"temperature_2m"</span><span class="fu">:</span> <span class="fl">33.2</span><span class="fu">,</span></span>
+<span id="cb4-14"><a></a>    <span class="dt">"wind_speed_10m"</span><span class="fu">:</span> <span class="fl">4.4</span></span>
+<span id="cb4-15"><a></a>  <span class="fu">}</span></span>
+<span id="cb4-16"><a></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div style="font-size: 17px;">
+<p>Shortened from the saved reply, <a href="https://github.com/danilofreire/datasci350/blob/main/lectures/lecture-18/data/openmeteo_atlanta.json"><code>openmeteo_atlanta.json</code></a></p>
+</div>
+</div><div class="column" style="width:48%;">
+<ul>
+<li>The outer <code>{ }</code> is an object. It has nine keys, and six are shown here</li>
+<li>Two of them, <span class="alert"><code>current</code></span> and <span class="alert"><code>current_units</code></span>, hold <span class="alert">objects of their own</span></li>
+<li>That is what “nested” means: a box inside a box</li>
+<li>The temperature is inside <code>current</code>. Its unit is inside <code>current_units</code></li>
+<li><code>time</code> is text, because JSON has no date type</li>
+<li>The API moved our coordinates slightly, to the nearest point on its own grid</li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="finding-a-value-follow-the-path" class="slide level2">
+<h2>Finding a value: follow the path</h2>
+<h3 id="one-step-per-level-from-the-outside-in">One step per level, from the outside in</h3>
+<div style="margin-top: 20px; font-size: 23px;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>To reach a value, write down the <span class="alert">steps</span> from the outside in</li>
+<li>In an <span class="alert">object</span>, a step is a <span class="alert">key name</span></li>
+<li>In an <span class="alert">array</span>, a step is a <span class="alert">position</span>, counting from 0</li>
+<li>Temperature in the Open-Meteo reply:</li>
+</ul>
+<div style="text-align: center; font-size: 26px; margin: 15px 0;">
+<p><code>current</code> → <code>temperature_2m</code> → <span class="alert">33.2</span></p>
+</div>
+<ul>
+<li>Its unit:</li>
+</ul>
+<div style="text-align: center; font-size: 26px; margin: 15px 0;">
+<p><code>current_units</code> → <code>temperature_2m</code> → <span class="alert">°C</span></p>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Arrays need positions. In this reply:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb5-1"><a></a><span class="fu">{</span><span class="dt">"sensors"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"a1"</span><span class="ot">,</span> <span class="st">"b2"</span><span class="ot">]</span><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="text-align: center; font-size: 26px; margin: 15px 0;">
+<p><code>sensors</code> → <code>0</code> → <span class="alert">“a1”</span></p>
+<p><code>sensors</code> → <code>1</code> → <span class="alert">“b2”</span></p>
+</div>
+<ul>
+<li>Positions start at <span class="alert">0</span>, as in Python</li>
+<li>In Python, each step becomes a pair of square brackets: <code>data["current"]["temperature_2m"]</code></li>
+<li>Get the path right first. The Python is then easy</li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="the-world-banks-little-surprise" class="slide level2">
+<h2>The World Bank’s little surprise</h2>
+<h3 id="metadata-first-data-second-in-a-two-element-array">Metadata first, data second, in a two-element array</h3>
+<div style="margin-top: 20px; font-size: 22px;">
+<div class="columns">
+<div class="column" style="width:52%;">
+<div style="font-size: 20px;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb6-1"><a></a><span class="ot">[</span></span>
+<span id="cb6-2"><a></a>  <span class="fu">{</span><span class="dt">"page"</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span> <span class="dt">"pages"</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span> <span class="dt">"per_page"</span><span class="fu">:</span> <span class="dv">100</span><span class="fu">,</span></span>
+<span id="cb6-3"><a></a>   <span class="dt">"total"</span><span class="fu">:</span> <span class="dv">12</span><span class="fu">,</span> <span class="dt">"lastupdated"</span><span class="fu">:</span> <span class="st">"2026-07-13"</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb6-4"><a></a>  <span class="ot">[</span></span>
+<span id="cb6-5"><a></a>    <span class="fu">{</span><span class="dt">"country"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"id"</span><span class="fu">:</span> <span class="st">"BR"</span><span class="fu">,</span> <span class="dt">"value"</span><span class="fu">:</span> <span class="st">"Brazil"</span><span class="fu">},</span></span>
+<span id="cb6-6"><a></a>     <span class="dt">"date"</span><span class="fu">:</span> <span class="st">"2025"</span><span class="fu">,</span></span>
+<span id="cb6-7"><a></a>     <span class="dt">"value"</span><span class="fu">:</span> <span class="fl">9747.99557762692</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb6-8"><a></a>    <span class="fu">{</span><span class="dt">"country"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"id"</span><span class="fu">:</span> <span class="st">"BR"</span><span class="fu">,</span> <span class="dt">"value"</span><span class="fu">:</span> <span class="st">"Brazil"</span><span class="fu">},</span></span>
+<span id="cb6-9"><a></a>     <span class="dt">"date"</span><span class="fu">:</span> <span class="st">"2024"</span><span class="fu">,</span></span>
+<span id="cb6-10"><a></a>     <span class="dt">"value"</span><span class="fu">:</span> <span class="fl">9566.74518687619</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb6-11"><a></a>    <span class="er">...</span></span>
+<span id="cb6-12"><a></a>  <span class="ot">]</span></span>
+<span id="cb6-13"><a></a><span class="ot">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div style="font-size: 17px;">
+<p>Shortened from <a href="https://github.com/danilofreire/datasci350/blob/main/lectures/lecture-18/data/wb_gdp_bra.json"><code>wb_gdp_bra.json</code></a>, the reply to our Brazil URL</p>
+</div>
+</div><div class="column" style="width:48%;">
+<ul>
+<li>The outer brackets are an <span class="alert">array</span>, not an object</li>
+<li>Position <code>0</code> is <span class="alert">metadata</span>: how many records, and when the data was last updated</li>
+<li>Position <code>1</code> is the <span class="alert">data</span>: one object per year, newest first</li>
+<li>The 2025 value: <code>1</code> → <code>0</code> → <code>value</code></li>
+<li>The country name: <code>1</code> → <code>0</code> → <code>country</code> → <code>value</code></li>
+<li>Look at the shape <span class="alert">before</span> you write any code</li>
+</ul>
+<div style="text-align: center; margin-top: 10px;">
+<p><a href="#/" data-modal-type="image" data-modal-url="figures/worldbank-response-2026.png"><img data-src="figures/worldbank-response-2026.png" style="width:90.0%"></a></p>
+</div>
+</div></div>
+</div>
+</section>
+<section id="sec:exercise02" class="slide level2 scrollable">
+<h2>Try it yourself! 🤓</h2>
+<h3 id="five-minutes-on-paper.-write-the-paths">Five minutes, on paper. Write the paths</h3>
+<div style="margin-top: 20px; font-size: 21px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>A reply from a fictional course API:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb7-1"><a></a><span class="fu">{</span></span>
+<span id="cb7-2"><a></a>  <span class="dt">"department"</span><span class="fu">:</span> <span class="st">"Data and Decision Sciences"</span><span class="fu">,</span></span>
+<span id="cb7-3"><a></a>  <span class="dt">"term"</span><span class="fu">:</span> <span class="st">"Fall 2026"</span><span class="fu">,</span></span>
+<span id="cb7-4"><a></a>  <span class="dt">"courses"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb7-5"><a></a>    <span class="fu">{</span><span class="dt">"code"</span><span class="fu">:</span> <span class="st">"DATASCI 350"</span><span class="fu">,</span></span>
+<span id="cb7-6"><a></a>     <span class="dt">"title"</span><span class="fu">:</span> <span class="st">"Data Science Computing"</span><span class="fu">,</span></span>
+<span id="cb7-7"><a></a>     <span class="dt">"enrolled"</span><span class="fu">:</span> <span class="dv">40</span><span class="fu">,</span></span>
+<span id="cb7-8"><a></a>     <span class="dt">"instructor"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span> <span class="st">"Danilo Freire"</span><span class="fu">,</span></span>
+<span id="cb7-9"><a></a>                    <span class="dt">"office"</span><span class="fu">:</span> <span class="st">"PAIS 480"</span><span class="fu">}}</span><span class="ot">,</span></span>
+<span id="cb7-10"><a></a>    <span class="fu">{</span><span class="dt">"code"</span><span class="fu">:</span> <span class="st">"DATASCI 101"</span><span class="fu">,</span></span>
+<span id="cb7-11"><a></a>     <span class="dt">"title"</span><span class="fu">:</span> <span class="st">"Introduction to AI Applications"</span><span class="fu">,</span></span>
+<span id="cb7-12"><a></a>     <span class="dt">"enrolled"</span><span class="fu">:</span> <span class="dv">65</span><span class="fu">,</span></span>
+<span id="cb7-13"><a></a>     <span class="dt">"instructor"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span> <span class="st">"Danilo Freire"</span><span class="fu">,</span></span>
+<span id="cb7-14"><a></a>                    <span class="dt">"office"</span><span class="fu">:</span> <span class="st">"PAIS 480"</span><span class="fu">}}</span></span>
+<span id="cb7-15"><a></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb7-16"><a></a>  <span class="dt">"updated"</span><span class="fu">:</span> <span class="kw">null</span></span>
+<span id="cb7-17"><a></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<p>Write the path to each value, like <code>term</code> → “Fall 2026”:</p>
+<ol type="1">
+<li>The <span class="alert">title of the second course</span></li>
+<li>The <span class="alert">office of the first course’s instructor</span></li>
+<li>The <span class="alert">number enrolled</span> in each course. What is the total?</li>
+<li>The value of <code>updated</code>. What Python type will it become?</li>
+<li>Which keys hold an array, and which hold an object?</li>
+</ol>
+<div style="margin-top: 20px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;">
+<p>Stuck, or want to compare your paths with mine?</p>
+<p><a href="#/sec:appendix02"><span class="button">Appendix 02</span></a></p>
+</div>
+</div></div>
+</div>
+</section></section>
+<section>
+<section id="apis-from-the-terminal" class="title-slide slide level1 center" data-background-color="#1B3A6B">
+<h1>APIs from the terminal 💻</h1>
+
+</section>
+<section id="curl-a-browser-for-your-terminal" class="slide level2">
+<h2><code>curl</code>: a browser for your terminal</h2>
+<h3 id="you-met-it-in-module-02.-now-it-talks-to-apis">You met it in Module 02. Now it talks to APIs</h3>
+<div style="margin-top: 20px; font-size: 22px;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><code>curl</code> sends a <code>GET</code> to a URL and prints the reply</li>
+<li>It comes with macOS, Linux, and WSL. Check with <code>curl --version</code>
+<ul>
+<li>Missing in WSL? Run <code>sudo apt install curl</code></li>
+<li>On macOS, <code>brew install curl</code> gets a newer version, but the built-in one works fine</li>
+</ul></li>
+<li><span class="alert">Put the URL in double quotes</span>. Without them, the shell treats <code>&amp;</code> and <code>?</code> as its own symbols</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a></a><span class="ex">curl</span> <span class="st">"https://api.open-meteo.com/v1/forecast?latitude=33.75&amp;longitude=-84.39&amp;current=temperature_2m"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a></a>{"latitude":33.759865,"longitude":-84.39586,</span>
+<span id="cb9-2"><a></a>"generationtime_ms":0.0399,"utc_offset_seconds":0,</span>
+<span id="cb9-3"><a></a>"timezone":"GMT","timezone_abbreviation":"GMT",</span>
+<span id="cb9-4"><a></a>"elevation":316.0,"current_units":{"time":"iso8601",</span>
+<span id="cb9-5"><a></a>"interval":"seconds","temperature_2m":"°C"},</span>
+<span id="cb9-6"><a></a>"current":{"time":"2026-09-27T06:30","interval":900,</span>
+<span id="cb9-7"><a></a>"temperature_2m":15.8}}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>The reply is correct, but it arrives as one long line</li>
+<li>Pipe it (<code>|</code>) into Python’s JSON tool to indent it:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a></a><span class="ex">curl</span> <span class="at">-s</span> <span class="st">"https://api.open-meteo.com/v1/forecast?latitude=33.75&amp;longitude=-84.39&amp;current=temperature_2m"</span> <span class="kw">|</span> <span class="ex">python3</span> <span class="at">-m</span> json.tool</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a></a>{</span>
+<span id="cb11-2"><a></a>    "latitude": 33.759865,</span>
+<span id="cb11-3"><a></a>    ...</span>
+<span id="cb11-4"><a></a>    "current": {</span>
+<span id="cb11-5"><a></a>        "time": "2026-09-27T06:30",</span>
+<span id="cb11-6"><a></a>        "interval": 900,</span>
+<span id="cb11-7"><a></a>        "temperature_2m": 15.8</span>
+<span id="cb11-8"><a></a>    }</span>
+<span id="cb11-9"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>-s</code> means “silent”: no progress bar</li>
+<li><code>python3 -m json.tool</code> reads JSON and prints it with indentation
+<ul>
+<li><code>-m</code> means “module”: it runs a tool that ships with Python, so there is nothing to install</li>
+</ul></li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="status-codes-from-the-terminal" class="slide level2">
+<h2>Status codes from the terminal</h2>
+<h3 id="i-shows-the-headers-and-the-first-line-is-the-status"><code>-i</code> shows the headers, and the first line is the status</h3>
+<div style="margin-top: 20px; font-size: 22px;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><code>-i</code> asks <code>curl</code> to print the response <span class="alert">headers</span> before the data</li>
+<li>Headers are notes about the reply. <a href="#/sec:appendix05">Appendix 05</a> has more</li>
+<li><code>| head -1</code> keeps only the first line, which holds the status</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a></a><span class="co"># Everything right</span></span>
+<span id="cb12-2"><a></a><span class="ex">curl</span> <span class="at">-si</span> <span class="st">"https://api.open-meteo.com/v1/forecast?latitude=33.75&amp;longitude=-84.39&amp;current=temperature_2m"</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a></a>HTTP/1.1 200 OK</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a></a><span class="co"># longitude missing</span></span>
+<span id="cb14-2"><a></a><span class="ex">curl</span> <span class="at">-si</span> <span class="st">"https://api.open-meteo.com/v1/forecast?latitude=33.75&amp;current=temperature_2m"</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb15-1"><a></a>HTTP/1.1 400 Bad Request</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Now a World Bank request for a country that does not exist, <code>XYZ</code>:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a></a><span class="ex">curl</span> <span class="at">-s</span> <span class="st">"https://api.worldbank.org/v2/country/XYZ/indicator/NY.GDP.PCAP.KD?format=json"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb17-1"><a></a>[{"message":[{"id":"120","key":"Invalid value",</span>
+<span id="cb17-2"><a></a>"value":"The provided parameter value is not valid"}]}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>The status of that reply is <span class="alert"><code>200</code></span></li>
+<li>The World Bank says “OK” and puts the error inside the JSON</li>
+<li>So check the <span class="alert">status</span>, and then <span class="alert">look at the data</span> too</li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="saving-a-reply-to-a-file" class="slide level2">
+<h2>Saving a reply to a file</h2>
+<h3 id="fetch-once-then-work-from-the-copy">Fetch once, then work from the copy</h3>
+<div style="margin-top: 30px; font-size: 23px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li><code>-o</code> means “output”: save the reply to a file instead of printing it</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-o</span> wb_gdp_bra.json <span class="st">"https://api.worldbank.org/v2/country/BRA/indicator/NY.GDP.PCAP.KD?format=json&amp;date=2014:2025"</span></span>
+<span id="cb18-2"><a></a></span>
+<span id="cb18-3"><a></a><span class="fu">ls</span> <span class="at">-lh</span> wb_gdp_bra.json</span>
+<span id="cb18-4"><a></a><span class="ex">python3</span> <span class="at">-m</span> json.tool wb_gdp_bra.json <span class="kw">|</span> <span class="fu">head</span> <span class="at">-12</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb19-1"><a></a>-rw-r--r--  1 danilo  staff  2.7K Sep 27 02:34 wb_gdp_bra.json</span>
+<span id="cb19-2"><a></a>[</span>
+<span id="cb19-3"><a></a>    {</span>
+<span id="cb19-4"><a></a>        "page": 1,</span>
+<span id="cb19-5"><a></a>        "pages": 1,</span>
+<span id="cb19-6"><a></a>        "per_page": 50,</span>
+<span id="cb19-7"><a></a>        "total": 12,</span>
+<span id="cb19-8"><a></a>        "sourceid": "2",</span>
+<span id="cb19-9"><a></a>        "lastupdated": "2026-07-13"</span>
+<span id="cb19-10"><a></a>    },</span>
+<span id="cb19-11"><a></a>    [</span>
+<span id="cb19-12"><a></a>        {</span>
+<span id="cb19-13"><a></a>            "indicator": {</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<ul>
+<li>This is how the files in this lecture’s <a href="https://github.com/danilofreire/datasci350/tree/main/lectures/lecture-18/data"><code>data/</code></a> folder were made</li>
+<li>A saved file <span class="alert">does not change</span>. The live API does</li>
+<li>Your analysis then runs without the network, and gives the same numbers every time</li>
+<li>That is exactly what your project does: the pull script saves a snapshot in <code>data/raw/</code>, and the report reads only that file</li>
+<li>In Lecture 19 we do the same in Python</li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="sec:exercise03" class="slide level2 scrollable">
+<h2>Try it yourself! 🤓</h2>
+<h3 id="ten-minutes-in-the-terminal">Ten minutes, in the terminal</h3>
+<div style="margin-top: 30px; font-size: 23px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ol type="1">
+<li>Build a World Bank URL for <span class="alert">Uruguay’s population</span>, 2014 to 2025
+<ul>
+<li>Country code <code>URY</code>, indicator <code>SP.POP.TOTL</code></li>
+</ul></li>
+<li>Test it in your browser first</li>
+<li>Save the reply with <code>curl</code> to <code>wb_pop_ury.json</code></li>
+<li>Print it with indentation using <code>python3 -m json.tool</code></li>
+<li>Find the <span class="alert">2020</span> value by reading the output</li>
+<li>Write the path to that value</li>
+<li>Bonus: misspell the indicator code. What status and what reply do you get?</li>
+</ol>
+</div><div class="column" style="width:45%;">
+<p><span class="alert">What to look for</span></p>
+<ul>
+<li>Twelve records, newest first</li>
+<li>A population close to 3.4 million</li>
+<li>The same two-element shape as the GDP reply</li>
+<li>A series that stops growing near the end</li>
+</ul>
+<div style="margin-top: 25px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;">
+<p>Stuck, or want to compare your commands with mine?</p>
+<p><a href="#/sec:appendix03"><span class="button">Appendix 03</span></a></p>
+</div>
+</div></div>
+</div>
+</section></section>
+<section>
+<section id="a-first-taste-of-python" class="title-slide slide level1 center" data-background-color="#1B3A6B">
+<h1>A first taste of Python 🐍</h1>
+
+</section>
+<section id="four-lines-of-python" class="slide level2">
+<h2>Four lines of Python</h2>
+<h3 id="the-same-request-from-a-script">The same request, from a script</h3>
+<div style="margin-top: 20px; font-size: 23px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li><a href="https://github.com/psf/requests"><code>requests</code></a> is the Python library for talking to web APIs</li>
+<li>Install it once: <code>pip install requests</code></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="im">import</span> requests</span>
+<span id="cb20-2"><a></a></span>
+<span id="cb20-3"><a></a>url <span class="op">=</span> <span class="st">"https://api.open-meteo.com/v1/forecast?latitude=33.75&amp;longitude=-84.39&amp;current=temperature_2m"</span></span>
+<span id="cb20-4"><a></a></span>
+<span id="cb20-5"><a></a>r <span class="op">=</span> requests.get(url)</span>
+<span id="cb20-6"><a></a><span class="bu">print</span>(r.status_code)</span>
+<span id="cb20-7"><a></a></span>
+<span id="cb20-8"><a></a>data <span class="op">=</span> r.json()</span>
+<span id="cb20-9"><a></a><span class="bu">print</span>(data[<span class="st">"current"</span>][<span class="st">"temperature_2m"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb21-1"><a></a>200</span>
+<span id="cb21-2"><a></a>15.8</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<ul>
+<li><code>requests.get(url)</code> does what <code>curl</code> did: it sends a <code>GET</code> and keeps the reply in <code>r</code></li>
+<li><code>r.status_code</code> is the status code, here <code>200</code></li>
+<li><code>r.json()</code> turns the JSON text into a Python dictionary</li>
+<li><code>data["current"]["temperature_2m"]</code> is the path from earlier, one pair of brackets per step</li>
+<li>The reading is live, so your number will differ</li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="where-this-goes-next" class="slide level2">
+<h2>Where this goes next</h2>
+<h3 id="lecture-19-takes-these-four-lines-apart">Lecture 19 takes these four lines apart</h3>
+<div style="margin-top: 30px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>How Python reads JSON, from a reply or a saved file</li>
+<li>Letting <code>requests</code> build the query string for you</li>
+<li>Checking for errors before you trust the data</li>
+<li>Turning the World Bank reply into a pandas <span class="alert">DataFrame</span></li>
+<li>Saving a snapshot for your project</li>
+<li>Reading the project’s <a href="https://github.com/danilofreire/datasci350-project-starter"><code>pull_data.py</code></a> line by line</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div style="background: rgba(27, 58, 107, 0.08); padding: 20px; border-radius: 10px; font-size: 22px;">
+<p>Everything you did today still applies:</p>
+<ul>
+<li>Test the URL in the browser first</li>
+<li>Check the status code</li>
+<li>Read the shape of the JSON</li>
+<li>Write the path before the code</li>
+</ul>
+</div>
+</div></div>
+</div>
+</section></section>
+<section>
+<section id="conclusion" class="title-slide slide level1 center" data-background-color="#1B3A6B">
+<h1>Conclusion 📚</h1>
+
+</section>
+<section id="what-we-learned-today" class="slide level2">
+<h2>What we learned today</h2>
+<h3 id="how-to-read-a-web-api-and-how-to-get-its-data">How to read a web API, and how to get its data</h3>
+<div style="margin-top: 20px; font-size: 25px;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<h4 id="concepts">Concepts</h4>
+<ul>
+<li>An <span class="alert">API</span> is a contract: ask this way, get that back</li>
+<li>A <span class="alert">URL</span> has a host, a path (what you want), and a <span class="alert">query string</span> (how you want it)</li>
+<li>A <span class="alert">status code</span> says how the request went: <code>2xx</code>, <code>4xx</code>, or <code>5xx</code></li>
+<li><span class="alert">JSON</span> is made of objects and arrays, nested inside each other</li>
+<li>A value is reached by a <span class="alert">path</span>: key names for objects, positions for arrays</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h4 id="habits-worth-keeping">Habits worth keeping</h4>
+<ul>
+<li>Paste the URL into your browser before you write code</li>
+<li>Quote URLs in the terminal</li>
+<li>Check the status, then look at the data anyway</li>
+<li>Read the shape of the reply before you look for a value</li>
+<li>Save a copy of the reply, then work from the file</li>
+<li>Read the documentation’s example request first, then adapt it</li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="next-class" class="slide level2 scrollable">
+<h2>Next class</h2>
+<h3 id="lecture-19-and-what-to-do-before-it">Lecture 19, and what to do before it</h3>
+<div style="margin-top: 20px; font-size: 24px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>Next class we do all of this in Python</li>
+<li>Reading JSON from a reply and from a file</li>
+<li>Building requests with <code>params</code>, and checking them for errors</li>
+<li>From the World Bank reply to a pandas DataFrame</li>
+<li>Your project’s pull script, line by line</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div style="text-align: center; margin-top: -20px;">
+<p><span class="alert">Before then</span></p>
+<ol type="1">
+<li>Install the packages you will need on Tuesday</li>
+<li>Check that your AWS bill reads zero</li>
+<li>Read the project instructions and form a group of three to four</li>
+<li>Finish Exercise 03 if you did not have time in class</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a></a><span class="ex">pip</span> install requests pandas pyarrow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="margin-top: 10px; font-size: 20px;">
+<p>A list of keyless APIs to explore is in <a href="#/sec:appendix06">Appendix 06</a></p>
+</div>
+<div style="margin-top: 15px; font-size: 20px;">
+<p>Group names are due by <span class="alert">Thursday 5 November</span>, and I assign the rest at random</p>
+</div>
+</div>
+</div></div>
+</div>
+</section></section>
+<section>
+<section id="and-thats-all-for-today" class="title-slide slide level1 center" data-background-color="#1B3A6B">
+<h1>And that’s all for today! 😊</h1>
+
+</section>
+<section id="sec:appendix01" class="slide level2">
+<h2>Appendix 01</h2>
+<h3 id="exercise-01-solution">Exercise 01 solution</h3>
+<div style="margin-top: 20px; font-size: 22px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Open-Meteo needs <code>latitude</code> and <code>longitude</code>, and <code>current</code> asks for present conditions</p>
+<pre><code>https://api.open-meteo.com/v1/forecast?latitude=33.75
+&amp;longitude=-84.39&amp;current=temperature_2m</code></pre>
+<p>Adding a timezone makes the time readable:</p>
+<pre><code>https://api.open-meteo.com/v1/forecast?latitude=33.75
+&amp;longitude=-84.39&amp;current=temperature_2m
+&amp;timezone=America%2FNew_York</code></pre>
+<p>Without <code>longitude</code>, the page shows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb25-1"><a></a>{"error":true,"reason":"Parameter 'latitude' and</span>
+<span id="cb25-2"><a></a>'longitude' must have the same number of elements"}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<ul>
+<li>Both coordinates are required. The request fails without either one</li>
+<li>The <code>/</code> in the timezone is written <code>%2F</code>, because <code>/</code> already has a job in a URL</li>
+<li>Without <code>timezone</code>, the time comes back in GMT, which reads oddly for Atlanta</li>
+<li>The reading is live, so your number will differ from mine</li>
+</ul>
+<div style="margin-top: 25px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;">
+<p><a href="#/sec:exercise01"><span class="button">Back to exercise</span></a></p>
+</div>
+</div></div>
+</div>
+</section>
+<section id="sec:appendix02" class="slide level2 scrollable">
+<h2>Appendix 02</h2>
+<h3 id="exercise-02-solution">Exercise 02 solution</h3>
+<div style="margin-top: 20px; font-size: 22px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ol type="1">
+<li><code>courses</code> → <code>1</code> → <code>title</code> → “Introduction to AI Applications”</li>
+<li><code>courses</code> → <code>0</code> → <code>instructor</code> → <code>office</code> → “PAIS 480”</li>
+<li><code>courses</code> → <code>0</code> → <code>enrolled</code> is 40, and <code>courses</code> → <code>1</code> → <code>enrolled</code> is 65. The total is <span class="alert">105</span></li>
+<li><code>updated</code> → <code>null</code>, which becomes <code>None</code> in Python</li>
+<li><code>courses</code> holds an array. Each course and each <code>instructor</code> is an object</li>
+</ol>
+<p>The same paths in Python, which we write in Lecture 19:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a>data[<span class="st">"courses"</span>][<span class="dv">1</span>][<span class="st">"title"</span>]</span>
+<span id="cb26-2"><a></a>data[<span class="st">"courses"</span>][<span class="dv">0</span>][<span class="st">"instructor"</span>][<span class="st">"office"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<ul>
+<li><code>courses</code> is an array, so the second course is position <span class="alert"><code>1</code></span>, not 2</li>
+<li>The office is four steps down: array, then course, then <code>instructor</code>, then <code>office</code></li>
+<li><code>null</code> is JSON’s word for “no value”. It is not the text <code>"null"</code></li>
+</ul>
+<div style="margin-top: 25px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;">
+<p><a href="#/sec:exercise02"><span class="button">Back to exercise</span></a></p>
+</div>
+</div></div>
+</div>
+</section>
+<section id="sec:appendix03" class="slide level2">
+<h2>Appendix 03</h2>
+<h3 id="exercise-03-solution">Exercise 03 solution</h3>
+<div style="margin-top: 20px; font-size: 21px;">
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-o</span> wb_pop_ury.json <span class="st">"https://api.worldbank.org/v2/country/URY/indicator/SP.POP.TOTL?format=json&amp;date=2014:2025"</span></span>
+<span id="cb27-2"><a></a></span>
+<span id="cb27-3"><a></a><span class="ex">python3</span> <span class="at">-m</span> json.tool wb_pop_ury.json</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Part of the output, around 2020:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb28-1"><a></a>        {</span>
+<span id="cb28-2"><a></a>            ...</span>
+<span id="cb28-3"><a></a>            "countryiso3code": "URY",</span>
+<span id="cb28-4"><a></a>            "date": "2020",</span>
+<span id="cb28-5"><a></a>            "value": 3398968,</span>
+<span id="cb28-6"><a></a>            ...</span>
+<span id="cb28-7"><a></a>        },</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The path: <code>1</code> → <code>5</code> → <code>value</code> → <span class="alert">3,398,968</span></p>
+</div><div class="column" style="width:45%;">
+<ul>
+<li>Only the country and the indicator change. The query string is the same as for Brazil</li>
+<li>Records run newest first, 2025 at position <code>0</code>, so 2020 is at position <code>5</code></li>
+<li>Uruguay’s population peaks in 2020 and falls a little every year after</li>
+<li>A misspelt indicator still returns status <code>200</code>, with an error message inside the JSON</li>
+<li>The saved file is also in <a href="https://github.com/danilofreire/datasci350/blob/main/lectures/lecture-18/data/wb_pop_ury.json"><code>data/wb_pop_ury.json</code></a></li>
+</ul>
+<div style="margin-top: 20px; background: rgba(27, 58, 107, 0.08); padding: 15px; border-radius: 10px; font-size: 20px;">
+<p><a href="#/sec:exercise03"><span class="button">Back to exercise</span></a></p>
+</div>
+</div></div>
+</div>
+</section>
+<section id="sec:appendix04" class="slide level2">
+<h2>Appendix 04: percent-encoding</h2>
+<h3 id="characters-that-need-a-code-inside-a-value">Characters that need a code inside a value</h3>
+<div style="margin-top: 20px; font-size: 22px;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>You write</th>
+<th>It travels as</th>
+<th></th>
+<th>You write</th>
+<th>It travels as</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>space</td>
+<td><code>%20</code> or <code>+</code></td>
+<td></td>
+<td><code>=</code></td>
+<td><code>%3D</code></td>
+</tr>
+<tr class="even">
+<td><code>/</code></td>
+<td><code>%2F</code></td>
+<td></td>
+<td><code>:</code></td>
+<td><code>%3A</code></td>
+</tr>
+<tr class="odd">
+<td><code>?</code></td>
+<td><code>%3F</code></td>
+<td></td>
+<td><code>#</code></td>
+<td><code>%23</code></td>
+</tr>
+<tr class="even">
+<td><code>&amp;</code></td>
+<td><code>%26</code></td>
+<td></td>
+<td><code>%</code></td>
+<td><code>%25</code></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>The pattern is <span class="alert">always the same</span>: <code>%</code> and the character’s byte in hexadecimal (remember them from Lecture 02? 😉)</li>
+<li><code>America/New_York</code> becomes <code>America%2FNew_York</code></li>
+<li><code>requests</code> encodes values for you, so you rarely write these by hand</li>
+<li>Full tables and rules: <a href="https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding">MDN</a>, <a href="https://www.w3schools.com/tags/ref_urlencode.asp">W3Schools</a>, and <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-2.1">RFC 3986 §2.1</a></li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="sec:appendix05" class="slide level2">
+<h2>Appendix 05: headers</h2>
+<h3 id="the-envelope-not-the-letter">The envelope, not the letter</h3>
+<div style="margin-top: 20px; font-size: 21px;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Every request and every reply carries <span class="alert">headers</span>: notes about the message itself</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="alert"><code>User-Agent</code></span></td>
+<td>Who is asking. Browsers set this, and polite scripts should too</td>
+</tr>
+<tr class="even">
+<td><span class="alert"><code>Accept</code></span></td>
+<td>What format you want back (<code>application/json</code>)</td>
+</tr>
+<tr class="odd">
+<td><span class="alert"><code>Authorization</code></span></td>
+<td>Your API key, for APIs that need one</td>
+</tr>
+<tr class="even">
+<td><code>Content-Type</code></td>
+<td>The format of the data being sent</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a></a><span class="ex">curl</span> <span class="at">-sI</span> <span class="st">"https://api.worldbank.org/v2/country/BRA/indicator/NY.GDP.PCAP.KD?format=json&amp;date=2014:2025"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb30-1"><a></a>HTTP/2 200</span>
+<span id="cb30-2"><a></a>content-type: application/json;charset=utf-8</span>
+<span id="cb30-3"><a></a>cache-control: public, max-age=86400</span>
+<span id="cb30-4"><a></a>server: cloudflare</span>
+<span id="cb30-5"><a></a>...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>-I</code> asks for the headers only, without the data</li>
+<li><code>content-type</code> confirms the reply is JSON</li>
+<li><code>max-age=86400</code> says the reply can be reused for a day (86,400 seconds)</li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="sec:appendix06" class="slide level2">
+<h2>Appendix 06: free APIs worth exploring</h2>
+<h3 id="six-keyless-places-to-practise-this-week">Six keyless places to practise this week</h3>
+<div style="margin-top: 20px; font-size: 20px;">
+<p>All of these answered a keyless request on 21 August 2026</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>API</th>
+<th>What it gives you</th>
+<th>Documentation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="alert">Open-Meteo</span></td>
+<td>Weather forecasts and history, anywhere</td>
+<td><a href="https://open-meteo.com/en/docs" class="uri">https://open-meteo.com/en/docs</a></td>
+</tr>
+<tr class="even">
+<td><span class="alert">World Bank</span></td>
+<td>29,544 development indicators, all countries</td>
+<td><a href="https://datahelpdesk.worldbank.org/knowledgebase/topics/125589" class="uri">https://datahelpdesk.worldbank.org/knowledgebase/topics/125589</a></td>
+</tr>
+<tr class="odd">
+<td><span class="alert">National Weather Service</span></td>
+<td>US forecasts and alerts, from <code>api.weather.gov/points/{lat},{lon}</code></td>
+<td><a href="https://www.weather.gov/documentation/services-web-api" class="uri">https://www.weather.gov/documentation/services-web-api</a></td>
+</tr>
+<tr class="even">
+<td><span class="alert">GitHub</span></td>
+<td>Repositories, users, commits (keyless with low limits)</td>
+<td><a href="https://docs.github.com/en/rest" class="uri">https://docs.github.com/en/rest</a></td>
+</tr>
+<tr class="odd">
+<td><span class="alert">Open Library</span></td>
+<td>Books, authors, covers, by ISBN (occasionally flaky)</td>
+<td><a href="https://openlibrary.org/developers/api" class="uri">https://openlibrary.org/developers/api</a></td>
+</tr>
+<tr class="even">
+<td><span class="alert">USGS Earthquakes</span></td>
+<td>Every recorded earthquake, live</td>
+<td><a href="https://earthquake.usgs.gov/fdsnws/event/1/" class="uri">https://earthquake.usgs.gov/fdsnws/event/1/</a></td>
+</tr>
+</tbody>
+</table>
+<div style="margin-top: 20px;">
+<p>Pick one this week and fetch something from it, in the browser or with <code>curl</code></p>
+</div>
+</div>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p><a href="https://danilofreire.github.io/datasci350/lectures/lecture-18/18-web-apis.html">Web APIs and JSON</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/multimodal/multimodal.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, Multimodal, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

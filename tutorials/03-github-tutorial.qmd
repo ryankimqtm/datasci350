@@ -1,5 +1,6 @@
 ---
 title: "DATASCI 350 - GitHub Tutorial"
+aliases: ["/03-github-tutorial.html"]
 lang: en-GB
 author: 
   - Danilo Freire
